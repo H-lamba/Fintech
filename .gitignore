@@ -10,4 +10,4 @@ mlruns/
 .DS_Store
 
 # Phase 3 -- fitted models are reproducible artifacts, not source
-models/
+/models/
