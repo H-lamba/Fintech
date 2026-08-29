@@ -1,0 +1,16 @@
+column_a,column_b,missing_corr
+next_12m_default_flag,next_12m_prepayment_flag,1.0
+next_3m_delinquency_flag,next_6m_delinquency_flag,0.6705
+next_6m_delinquency_flag,next_12m_default_flag,0.6368
+next_6m_delinquency_flag,next_12m_prepayment_flag,0.6368
+next_3m_delinquency_flag,next_12m_default_flag,0.4269
+next_3m_delinquency_flag,next_12m_prepayment_flag,0.4269
+next_12m_default_flag,exception_type,-0.02
+next_12m_prepayment_flag,exception_type,-0.02
+loss_severity_band,next_12m_default_flag,0.0187
+loss_severity_band,next_12m_prepayment_flag,0.0187
+next_6m_delinquency_flag,exception_type,-0.0147
+loss_severity_band,next_6m_delinquency_flag,0.0119
+next_3m_delinquency_flag,exception_type,-0.0112
+loss_severity_band,exception_type,-0.0109
+loss_severity_band,next_3m_delinquency_flag,0.008

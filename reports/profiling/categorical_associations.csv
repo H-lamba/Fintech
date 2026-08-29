@@ -1,0 +1,4 @@
+column_a,column_b,cramers_v
+current_status,next_state,0.6116
+current_status,exception_type,0.5747
+next_state,exception_type,0.5513

@@ -1,0 +1,8 @@
+dimension,value,examples
+predicted type,Time Travel,5
+predicted type,Balance Discrepancy,5
+predicted type,Zombie Loan,5
+predicted type,Impossible State Transition,5
+predicted type,No exception,5
+evidence,rule-supported,20
+evidence,model-only,5

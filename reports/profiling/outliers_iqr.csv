@@ -1,0 +1,19 @@
+column,method,lower_fence,upper_fence,n_outliers,pct_outliers
+original_term_months,IQR (k=1.5),360.0,360.0,57419,21.415
+remaining_term_months,IQR (k=1.5),251.0,411.0,57419,21.415
+next_3m_delinquency_flag,IQR (k=1.5),0.0,0.0,29637,11.053
+next_12m_default_flag,IQR (k=1.5),0.0,0.0,21976,8.196
+next_12m_prepayment_flag,IQR (k=1.5),0.0,0.0,21735,8.106
+next_6m_delinquency_flag,IQR (k=1.5),0.0,0.0,21535,8.032
+days_past_due,IQR (k=1.5),0.0,0.0,18187,6.783
+current_balance,IQR (k=1.5),26718.195,620853.115,11072,4.129
+original_balance,IQR (k=1.5),34000.0,642000.0,7020,2.618
+interest_rate,IQR (k=1.5),1.6035,7.2155,6097,2.274
+prepayment_flag,IQR (k=1.5),0.0,0.0,1965,0.733
+credit_score,IQR (k=1.5),578.0,834.0,1917,0.715
+default_flag,IQR (k=1.5),0.0,0.0,1848,0.689
+ltv,IQR (k=1.5),48.725,99.645,1237,0.461
+loan_age_months,IQR (k=1.5),-26.0,62.0,0,0.0
+vintage_year,IQR (k=1.5),2013.5,2025.5,0,0.0
+dti,IQR (k=1.5),14.33,56.41,0,0.0
+month_index,IQR (k=1.5),-26.0,62.0,0,0.0

@@ -1,0 +1,26 @@
+loan_id,reporting_month,dq_score,dq_band,penalty,dq_reasons
+ZMVS8H7S3EGD,2023-06-01,19.2,critical,16.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:interest_rate; source_conflict
+ZMVS8H7S3EGD,2023-11-01,19.2,critical,16.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:interest_rate; source_conflict
+482BADKKEGM4,2022-12-01,21.22,critical,15.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:interest_rate; source_conflict
+MS64XFD9Y0UF,2020-11-01,21.22,critical,15.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; source_conflict
+PLN6WAU1S4JE,2023-01-01,21.22,critical,15.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:interest_rate; source_conflict
+T5BO3RJNQPPP,2022-02-01,21.22,critical,15.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; source_conflict
+WDRBQ0QBQ686,2023-08-01,21.22,critical,15.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:interest_rate; source_conflict
+S93DW6EUGV4C,2022-03-01,22.31,critical,15.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:original_balance; outlier:current_balance
+3FB4VEUTFSSZ,2019-04-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+410E9M9SHP92,2019-09-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+4JP7ZJF4Y8AV,2020-12-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+5190WXPEHCEQ,2020-10-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+G89743XTRHGJ,2018-03-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+L3ONVMTX2XJ4,2019-05-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+NMP66JGYCZDK,2019-08-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+NQYW5HY285SH,2022-01-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+VLLJ8EDQH7N6,2022-02-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+Z3FKXJLHU0KK,2020-04-01,23.46,critical,14.5,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; source_conflict
+3NL36RFX7L1Z,2017-12-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:current_balance
+9C2IW95BWI3T,2018-08-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:original_balance; outlier:current_balance
+IRGL51YLQH05,2023-08-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:interest_rate
+J42M6INYVX25,2018-09-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:current_balance
+LC6O385UQHQL,2022-05-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:interest_rate
+R12EPVXCE84B,2017-08-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:original_balance; outlier:current_balance
+R28F9BTFDWKF,2020-04-01,24.66,critical,14.0,rule:json__TEMPORAL_ORDERING; rule:missing_document_status; date:origination_after_reporting; date:loan_age_inconsistent; outlier:remaining_term_months; outlier:current_balance

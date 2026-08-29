@@ -1,0 +1,29 @@
+rule,description,severity,applicable,n_violations,pct_violations
+missing_document_status,document_status missing or explicitly incomplete,low,True,31675,11.8135
+json__BALANCE_CEILING,Balance may not exceed the original balance absent a capitalising modification.,high,True,2316,0.8638
+balance_exceeds_original,current_balance greater than original_balance without a modification flag,high,True,2316,0.8638
+json__TEMPORAL_ORDERING,A performance record may not predate origination.,high,True,1724,0.643
+json__LOAN_ID_PRESENT,Every remittance record must carry a loan identifier.,high,True,0,0.0
+json__REPORTING_MONTH_PRESENT,Every record must carry a reporting period.,high,True,0,0.0
+json__BALANCE_SIGN,Unpaid principal balance may not be negative.,high,True,0,0.0
+json__DPD_RANGE,Days past due must fall within a plausible reporting range.,medium,True,0,0.0
+json__STATUS_DOMAIN,Performance status must be a recognised state.,high,True,0,0.0
+json__SEQUENTIAL_DELINQUENCY,Delinquency status and days past due must agree; buckets may not be skipped.,high,True,0,0.0
+json__ABSORBING_STATE_FINALITY,A prepaid or defaulted loan is terminal and must carry a zero balance.,high,True,0,0.0
+json__DEFAULT_DELINQUENCY_CONSISTENCY,A defaulted loan must be at least 90 days delinquent.,high,True,0,0.0
+json__RATE_RANGE,Note rate must fall within a plausible range.,medium,True,0,0.0
+json__TERM_NON_NEGATIVE,Remaining term may not be negative.,medium,True,0,0.0
+json__MUTUALLY_EXCLUSIVE_TERMINATION,A loan cannot both default and prepay in the same period.,high,True,0,0.0
+json__DOCUMENT_STATUS_DOMAIN,Document status must be a recognised value.,low,True,0,0.0
+negative_balance,current_balance is negative,high,True,0,0.0
+prepaid_with_positive_balance,prepayment_flag set but current_balance is still materially above zero,high,True,0,0.0
+default_without_delinquency,default_flag set but days_past_due is below the 90-day default threshold,high,True,0,0.0
+delinquent_but_current_status,days_past_due > 0 while current_status reads as current/performing,high,True,0,0.0
+current_status_but_high_dpd,current_status says current while days_past_due exceeds 30,medium,True,0,0.0
+closed_status_with_balance,loan marked closed/prepaid/liquidated yet carries a balance,high,True,0,0.0
+negative_remaining_term,remaining_term_months is negative,high,True,0,0.0
+implausible_interest_rate,interest_rate outside a plausible 0-25% band,medium,True,0,0.0
+negative_loan_age,loan_age_months is negative,high,True,0,0.0
+dpd_implausibly_large,days_past_due exceeds 1080 (three years) -- likely a unit or sentinel error,medium,True,0,0.0
+default_and_prepaid_together,default_flag and prepayment_flag both set on the same record,high,True,0,0.0
+zero_original_balance,original_balance is zero or negative,high,True,0,0.0

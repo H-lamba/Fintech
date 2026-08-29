@@ -1,0 +1,6 @@
+,pred_No exception,pred_Balance Discrepancy,pred_Impossible State Transition,pred_Time Travel,pred_Zombie Loan
+true_No exception,66124,0,0,0,0
+true_Balance Discrepancy,0,576,0,0,0
+true_Impossible State Transition,0,0,434,0,0
+true_Time Travel,0,0,0,90,0
+true_Zombie Loan,0,0,0,0,349

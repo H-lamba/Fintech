@@ -1,0 +1,6 @@
+servicer_name,n_records,mean_dq_score,pct_with_rule_violation,n_stale,n_source_conflict
+Cornerstone Loan Servicing,54508,91.54,15.23,0,3284
+Meridian Residential Capital,54208,92.14,12.69,0,3007
+Beacon Home Loans,52795,92.26,12.77,0,3088
+Northgate Financial Servicing,52711,92.35,12.84,0,3111
+Atlas Mortgage Services,53903,92.42,12.14,0,3150

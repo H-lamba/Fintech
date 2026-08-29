@@ -1,0 +1,5 @@
+check,n_violations,pct_violations
+origination_after_reporting,1724,0.643
+last_update_before_reporting_month,0,0.0
+loan_age_inconsistent_with_dates,1718,0.641
+reporting_month_in_future,0,0.0

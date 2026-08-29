@@ -1,0 +1,11 @@
+scenario,horizon_month,stated_multiplier,attainable_multiplier,credit_score_shift,reached,shortfall
+Adverse-Credit,1,1.0,,0.0,True,
+Adverse-Credit,12,1.774,1.774,-92.50003913917467,True,0.0
+Adverse-Credit,24,2.1193,2.038368321911133,-250.0,False,0.08093167808886692
+Adverse-Credit,36,2.3807,2.056117509603095,-250.0,False,0.32458249039690523
+Adverse-Credit,48,2.6,2.0711928027846733,-250.0,False,0.5288071972153268
+High-Prepayment,1,1.0,,0.0,True,
+High-Prepayment,12,0.9415,0.9415,7.000017524499308,True,0.0
+High-Prepayment,24,0.8777,0.8777,14.499956841359928,True,0.0
+High-Prepayment,36,0.8138,0.8138,22.499983949455213,True,0.0
+High-Prepayment,48,0.75,0.75,31.499980823161103,True,0.0

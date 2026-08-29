@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survival & Competing-Risk Report (Task 3)</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+         max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; line-height: 1.6; }
+  h1 { border-bottom: 2px solid currentColor; padding-bottom: .4rem; }
+  h2 { margin-top: 2.5rem; border-bottom: 1px solid rgba(128,128,128,.35); padding-bottom: .25rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .9rem;
+           display: block; overflow-x: auto; }
+  th, td { border: 1px solid rgba(128,128,128,.35); padding: .4rem .6rem; text-align: left; }
+  th { background: rgba(128,128,128,.12); }
+  tr:nth-child(even) td { background: rgba(128,128,128,.06); }
+  /* Figures are rendered on a light chart surface, so they get that surface
+     behind them regardless of the reader's theme -- otherwise a dark-mode page
+     puts a light chart in a dark frame with no border. */
+  img { max-width: 100%; height: auto; display: block; margin: 1rem auto;
+         background: #fcfcfb; padding: .5rem; border-radius: 6px;
+         border: 1px solid rgba(128,128,128,.25); }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+  pre { overflow-x: auto; padding: .75rem; background: rgba(128,128,128,.1); border-radius: 6px; }
+</style>
+</head>
+<body>
+<h1>Survival &amp; Competing-Risk Report (Task 3)</h1>
+<p><em>Generated 2026-08-29 15:02:50</em></p>
+<h2>What this models</h2>
+<p>Time to <strong>default</strong> and time to <strong>prepayment</strong>, as competing risks, on a clock measured in <strong>months on book</strong> rather than calendar months. Two loans originated four years apart are compared at the same age, which is what stops a young vintage from looking safe merely because it has not had time to fail yet.</p>
+<p>Models are fitted on vintages originated up to <strong>2021-06</strong> (5,896 loans) and evaluated on later vintages (3,989 loans) that the model has never seen. Splitting on origination rather than reporting month keeps each loan's history intact -- a duration model cannot represent half a loan -- while still guaranteeing the holdout is strictly forward in time.</p>
+<h2>Outcomes</h2>
+<p>Every loan ends in exactly one of these states at the observation cutoff.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">outcome</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">censored</td>
+<td style="text-align: right;">6072</td>
+<td style="text-align: right;">0.614264</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">1965</td>
+<td style="text-align: right;">0.198786</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">1848</td>
+<td style="text-align: right;">0.18695</td>
+</tr>
+</tbody>
+</table>
+<h2>Censoring and data-quality bookkeeping</h2>
+<p>Every count the transformation from panel to duration data produced.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">metric</th>
+<th style="text-align: left;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">loans</td>
+<td style="text-align: left;">9885</td>
+</tr>
+<tr>
+<td style="text-align: left;">observation_cutoff</td>
+<td style="text-align: left;">2023-12</td>
+</tr>
+<tr>
+<td style="text-align: left;">events_default</td>
+<td style="text-align: left;">1848</td>
+</tr>
+<tr>
+<td style="text-align: left;">events_prepaid</td>
+<td style="text-align: left;">1965</td>
+</tr>
+<tr>
+<td style="text-align: left;">censored_total</td>
+<td style="text-align: left;">6072</td>
+</tr>
+<tr>
+<td style="text-align: left;">censored_administrative</td>
+<td style="text-align: left;">5348</td>
+</tr>
+<tr>
+<td style="text-align: left;">censored_lost_to_followup</td>
+<td style="text-align: left;">724</td>
+</tr>
+<tr>
+<td style="text-align: left;">left_truncated_loans</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">left_truncation_enabled</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">calendar_vs_age_order_anomalies</td>
+<td style="text-align: left;">1528</td>
+</tr>
+<tr>
+<td style="text-align: left;">zombie_rows_dropped</td>
+<td style="text-align: left;">1319</td>
+</tr>
+<tr>
+<td style="text-align: left;">zombie_loans_affected</td>
+<td style="text-align: left;">664</td>
+</tr>
+<tr>
+<td style="text-align: left;">degenerate_events_given_one_month</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">degenerate_censored_dropped</td>
+<td style="text-align: left;">115</td>
+</tr>
+<tr>
+<td style="text-align: left;">total_exposure_months</td>
+<td style="text-align: left;">260064.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">median_follow_up_months</td>
+<td style="text-align: left;">23.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">censoring_rate</td>
+<td style="text-align: left;">0.6142640364188164</td>
+</tr>
+</tbody>
+</table>
+<h2>How censoring was treated</h2>
+<p>A survival model is defined by what it does with the loans that <em>did not</em> have
+an event. This pipeline treats them in four distinct ways, and the counts
+behind each are in the censoring table above.</p>
+<p><strong>1. Right-censoring at the observation cutoff (administrative).</strong>
+Most loans in the book are still performing when the panel ends. They are not
+"no default" observations -- they are "no default <em>yet</em>", and the difference is
+the whole subject. Each contributes its full exposure (<code>exit_month - entry_month</code>)
+to every risk set it survives through, and contributes no event. Dropping them
+would be catastrophic: only resolved loans would remain, and 1,848 of the 3,813
+resolved loans defaulted, so the "default rate" would read 48% against the
+36-month Aalen-Johansen estimate of 21%. Administrative censoring is non-informative by construction -- the
+cutoff date has nothing to do with any individual loan's risk -- which is the
+condition Kaplan-Meier, Aalen-Johansen and Cox all require.</p>
+<p><strong>2. Right-censoring before the cutoff (loss to follow-up).</strong>
+A smaller group stops being reported before the cutoff. These are handled
+identically in the arithmetic, but counted separately in the report, because
+they are the ones that could break the non-informative assumption: if loans
+disappear from the feed <em>because</em> they are deteriorating, every estimate here
+is optimistic. The rate is reported so a reviewer can judge that risk rather
+than take it on trust.</p>
+<p><strong>3. Prepayment as a competing risk, not as censoring.</strong>
+A prepaid loan has left the portfolio and can never default. Treating it as
+censored asserts that it might still default at some unobserved future time,
+which inflates default incidence -- on this pack, <code>1 - KM</code> puts 36-month default
+at 23.9% against the Aalen-Johansen estimate of 21.0%, a 2.9pp overstatement
+from that assumption alone. Cause-specific hazards are estimated with the
+competing event censored (correct for a <em>hazard</em>), and cumulative incidence is
+then rebuilt with the Aalen-Johansen weighting (correct for a <em>probability</em>).
+Both are reported side by side.</p>
+<p><strong>4. Left truncation (delayed entry).</strong>
+A loan first observed at month 10 is only in the sample because it survived to
+month 10; counting it in the risk set from month 0 would understate early
+hazards. Every estimator here takes an <code>entry</code> argument and builds its risk set
+as <code>{entry &lt; t &lt;= exit}</code>. On this pack no loan is genuinely truncated -- every
+loan has a month-0 row -- but 1,528 loans have a <em>calendar</em>-first row at a later
+age because their month-0 row carries a corrupted <code>reporting_month</code> (the Phase 1
+"Time Travel" defect). Reading entry off calendar order would manufacture
+1,528 left-truncated loans out of a data defect, so durations are taken on the
+loan-age axis throughout and the disagreement between the two orderings is
+counted rather than absorbed.</p>
+<p><strong>A fifth case that is not censoring at all: zombie rows.</strong>
+<code>Default</code> and <code>Prepaid</code> are absorbing states. Where an active row appears after
+one, it is the Phase 1 "Zombie Loan" defect, not a recovery. The outcome is
+therefore read from the <em>earliest absorbing row by loan age</em> and later rows are
+discarded. Reading the last row instead -- the obvious <code>groupby().last()</code> --
+reclassifies 664 resolved loans in this pack as still active, which would move
+them from the event count into the censored count and bias every curve downward.</p>
+<h2>Baseline: constant hazard</h2>
+<p>Occurrence over exposure -- one monthly hazard per cause, no covariates. Censored loans contribute exposure to the denominator, which is why they cannot be dropped.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cause</th>
+<th style="text-align: right;">events</th>
+<th style="text-align: right;">exposure_months</th>
+<th style="text-align: right;">monthly_hazard</th>
+<th style="text-align: right;">annualised_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">1482</td>
+<td style="text-align: right;">204599</td>
+<td style="text-align: right;">0.00724344</td>
+<td style="text-align: right;">0.0835407</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">1557</td>
+<td style="text-align: right;">204599</td>
+<td style="text-align: right;">0.00761001</td>
+<td style="text-align: right;">0.0875932</td>
+</tr>
+</tbody>
+</table>
+<h2>Cumulative incidence at fixed horizons</h2>
+<p>Aalen-Johansen competing-risk estimates, with the naive <code>1 - KM</code> alongside. The gap between the two columns is the cost of treating the competing event as censoring.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cause</th>
+<th style="text-align: right;">months_on_book</th>
+<th style="text-align: right;">cif_aalen_johansen</th>
+<th style="text-align: right;">naive_1_minus_km</th>
+<th style="text-align: right;">overstatement_pp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.0747768</td>
+<td style="text-align: right;">0.0788233</td>
+<td style="text-align: right;">0.40465</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0.15121</td>
+<td style="text-align: right;">0.165966</td>
+<td style="text-align: right;">1.47559</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0.210194</td>
+<td style="text-align: right;">0.239432</td>
+<td style="text-align: right;">2.92384</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.250164</td>
+<td style="text-align: right;">0.294193</td>
+<td style="text-align: right;">4.40288</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.083944</td>
+<td style="text-align: right;">0.086161</td>
+<td style="text-align: right;">0.221696</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0.152579</td>
+<td style="text-align: right;">0.164099</td>
+<td style="text-align: right;">1.152</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0.208834</td>
+<td style="text-align: right;">0.234561</td>
+<td style="text-align: right;">2.57267</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.259774</td>
+<td style="text-align: right;">0.303826</td>
+<td style="text-align: right;">4.40522</td>
+</tr>
+</tbody>
+</table>
+<h2>Model comparison (holdout vintages)</h2>
+<p>Concordance is Harrell's C on the holdout; Brier scores are IPCW-weighted, with the censoring distribution estimated on train. The constant-hazard model scores C = 0.5 by construction -- it has no covariates -- so the comparison that matters for it is the Brier column.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cause</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">concordance</th>
+<th style="text-align: right;">integrated_brier</th>
+<th style="text-align: right;">brier_12m</th>
+<th style="text-align: right;">brier_24m</th>
+<th style="text-align: right;">brier_36m</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">constant_hazard</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.0645763</td>
+<td style="text-align: right;">0.0527666</td>
+<td style="text-align: right;">0.0728258</td>
+<td style="text-align: right;">0.059887</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">kaplan_meier</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.084517</td>
+<td style="text-align: right;">0.0569623</td>
+<td style="text-align: right;">0.0933802</td>
+<td style="text-align: right;">0.0943454</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">cox</td>
+<td style="text-align: right;">0.822436</td>
+<td style="text-align: right;">0.0440103</td>
+<td style="text-align: right;">0.0465355</td>
+<td style="text-align: right;">0.0490936</td>
+<td style="text-align: right;">0.0313185</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">constant_hazard</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.0706927</td>
+<td style="text-align: right;">0.0647126</td>
+<td style="text-align: right;">0.0773332</td>
+<td style="text-align: right;">0.0633919</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">kaplan_meier</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.094694</td>
+<td style="text-align: right;">0.0714519</td>
+<td style="text-align: right;">0.101689</td>
+<td style="text-align: right;">0.103947</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">cox</td>
+<td style="text-align: right;">0.558084</td>
+<td style="text-align: right;">0.0702642</td>
+<td style="text-align: right;">0.0643381</td>
+<td style="text-align: right;">0.0767043</td>
+<td style="text-align: right;">0.06331</td>
+</tr>
+</tbody>
+</table>
+<h2>Cause-specific hazard ratios</h2>
+<p>Per one standard deviation for continuous covariates. Above 1 raises the hazard.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cause</th>
+<th style="text-align: left;">covariate</th>
+<th style="text-align: right;">hazard_ratio</th>
+<th style="text-align: right;">hr_lower_95</th>
+<th style="text-align: right;">hr_upper_95</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">1.4124</td>
+<td style="text-align: right;">1.33332</td>
+<td style="text-align: right;">1.49616</td>
+<td style="text-align: right;">11.7463</td>
+<td style="text-align: right;">7.37683e-32</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">occupancy_type_Second_Home</td>
+<td style="text-align: right;">1.15279</td>
+<td style="text-align: right;">0.886252</td>
+<td style="text-align: right;">1.49949</td>
+<td style="text-align: right;">1.05986</td>
+<td style="text-align: right;">0.289209</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">occupancy_type_Primary_Residence</td>
+<td style="text-align: right;">1.10691</td>
+<td style="text-align: right;">0.934577</td>
+<td style="text-align: right;">1.31103</td>
+<td style="text-align: right;">1.17637</td>
+<td style="text-align: right;">0.239447</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">1.07457</td>
+<td style="text-align: right;">1.01408</td>
+<td style="text-align: right;">1.13866</td>
+<td style="text-align: right;">2.43305</td>
+<td style="text-align: right;">0.0149722</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">1.02123</td>
+<td style="text-align: right;">0.965179</td>
+<td style="text-align: right;">1.08053</td>
+<td style="text-align: right;">0.729342</td>
+<td style="text-align: right;">0.465793</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">property_type_PUD</td>
+<td style="text-align: right;">1.0173</td>
+<td style="text-align: right;">0.835569</td>
+<td style="text-align: right;">1.23855</td>
+<td style="text-align: right;">0.170798</td>
+<td style="text-align: right;">0.864383</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">property_type_Single_Family_Detached</td>
+<td style="text-align: right;">1.01084</td>
+<td style="text-align: right;">0.880467</td>
+<td style="text-align: right;">1.16051</td>
+<td style="text-align: right;">0.152977</td>
+<td style="text-align: right;">0.878416</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">original_term_months</td>
+<td style="text-align: right;">1.0073</td>
+<td style="text-align: right;">0.958257</td>
+<td style="text-align: right;">1.05885</td>
+<td style="text-align: right;">0.28551</td>
+<td style="text-align: right;">0.775253</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">loan_purpose_Home_Purchase</td>
+<td style="text-align: right;">0.956403</td>
+<td style="text-align: right;">0.836283</td>
+<td style="text-align: right;">1.09378</td>
+<td style="text-align: right;">-0.650958</td>
+<td style="text-align: right;">0.515073</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">log_original_balance</td>
+<td style="text-align: right;">0.949045</td>
+<td style="text-align: right;">0.902563</td>
+<td style="text-align: right;">0.997921</td>
+<td style="text-align: right;">-2.04118</td>
+<td style="text-align: right;">0.0412328</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">loan_purpose_Rate_Term_Refinance</td>
+<td style="text-align: right;">0.942341</td>
+<td style="text-align: right;">0.806425</td>
+<td style="text-align: right;">1.10116</td>
+<td style="text-align: right;">-0.74731</td>
+<td style="text-align: right;">0.454876</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">0.414765</td>
+<td style="text-align: right;">0.386981</td>
+<td style="text-align: right;">0.444544</td>
+<td style="text-align: right;">-24.8768</td>
+<td style="text-align: right;">1.32638e-136</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">1.23364</td>
+<td style="text-align: right;">1.15735</td>
+<td style="text-align: right;">1.31495</td>
+<td style="text-align: right;">6.44695</td>
+<td style="text-align: right;">1.14121e-10</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">property_type_PUD</td>
+<td style="text-align: right;">1.16453</td>
+<td style="text-align: right;">0.965366</td>
+<td style="text-align: right;">1.40479</td>
+<td style="text-align: right;">1.59164</td>
+<td style="text-align: right;">0.111464</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">loan_purpose_Rate_Term_Refinance</td>
+<td style="text-align: right;">1.08609</td>
+<td style="text-align: right;">0.932267</td>
+<td style="text-align: right;">1.2653</td>
+<td style="text-align: right;">1.05986</td>
+<td style="text-align: right;">0.289208</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">occupancy_type_Second_Home</td>
+<td style="text-align: right;">1.03518</td>
+<td style="text-align: right;">0.809873</td>
+<td style="text-align: right;">1.32317</td>
+<td style="text-align: right;">0.276089</td>
+<td style="text-align: right;">0.78248</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">log_original_balance</td>
+<td style="text-align: right;">1.02349</td>
+<td style="text-align: right;">0.974639</td>
+<td style="text-align: right;">1.07478</td>
+<td style="text-align: right;">0.930427</td>
+<td style="text-align: right;">0.35215</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">property_type_Single_Family_Detached</td>
+<td style="text-align: right;">1.01779</td>
+<td style="text-align: right;">0.889497</td>
+<td style="text-align: right;">1.16459</td>
+<td style="text-align: right;">0.256551</td>
+<td style="text-align: right;">0.797526</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">1.01658</td>
+<td style="text-align: right;">0.959223</td>
+<td style="text-align: right;">1.07736</td>
+<td style="text-align: right;">0.554878</td>
+<td style="text-align: right;">0.578978</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">1.00553</td>
+<td style="text-align: right;">0.951813</td>
+<td style="text-align: right;">1.06228</td>
+<td style="text-align: right;">0.196877</td>
+<td style="text-align: right;">0.843923</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">original_term_months</td>
+<td style="text-align: right;">0.986611</td>
+<td style="text-align: right;">0.939762</td>
+<td style="text-align: right;">1.0358</td>
+<td style="text-align: right;">-0.543042</td>
+<td style="text-align: right;">0.587101</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">loan_purpose_Home_Purchase</td>
+<td style="text-align: right;">0.974394</td>
+<td style="text-align: right;">0.850133</td>
+<td style="text-align: right;">1.11682</td>
+<td style="text-align: right;">-0.372679</td>
+<td style="text-align: right;">0.709388</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">0.968381</td>
+<td style="text-align: right;">0.917459</td>
+<td style="text-align: right;">1.02213</td>
+<td style="text-align: right;">-1.1658</td>
+<td style="text-align: right;">0.243697</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">occupancy_type_Primary_Residence</td>
+<td style="text-align: right;">0.882906</td>
+<td style="text-align: right;">0.755923</td>
+<td style="text-align: right;">1.03122</td>
+<td style="text-align: right;">-1.57192</td>
+<td style="text-align: right;">0.11597</td>
+</tr>
+</tbody>
+</table>
+<h2>Proportional-hazards diagnostics</h2>
+<p>Schoenfeld residual test. A small p-value means that covariate's hazard ratio is not constant over loan age -- reported rather than corrected, because it is the assumption the Cox model rests on and it belongs in the model card.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cause</th>
+<th style="text-align: left;">error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: left;">Residuals for entries not implemented.</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: left;">Residuals for entries not implemented.</td>
+</tr>
+</tbody>
+</table>
+<h2>Calibration by risk decile</h2>
+<p>Predicted cumulative incidence against the Aalen-Johansen estimate computed inside each decile, so censoring is respected on both sides of the comparison.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cause</th>
+<th style="text-align: right;">horizon_months</th>
+<th style="text-align: right;">decile</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">mean_predicted</th>
+<th style="text-align: right;">observed_cif</th>
+<th style="text-align: right;">gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.01695</td>
+<td style="text-align: right;">0.00593163</td>
+<td style="text-align: right;">0.0110184</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.0343224</td>
+<td style="text-align: right;">0.00988409</td>
+<td style="text-align: right;">0.0244383</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.0522807</td>
+<td style="text-align: right;">0.018091</td>
+<td style="text-align: right;">0.0341897</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.0730693</td>
+<td style="text-align: right;">0.0353938</td>
+<td style="text-align: right;">0.0376755</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.0974495</td>
+<td style="text-align: right;">0.0585393</td>
+<td style="text-align: right;">0.0389102</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">398</td>
+<td style="text-align: right;">0.128452</td>
+<td style="text-align: right;">0.0965706</td>
+<td style="text-align: right;">0.0318809</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.16883</td>
+<td style="text-align: right;">0.160366</td>
+<td style="text-align: right;">0.00846407</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.228244</td>
+<td style="text-align: right;">0.272655</td>
+<td style="text-align: right;">-0.0444106</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.328507</td>
+<td style="text-align: right;">0.371439</td>
+<td style="text-align: right;">-0.0429322</td>
+</tr>
+<tr>
+<td style="text-align: left;">default</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.595273</td>
+<td style="text-align: right;">0.491718</td>
+<td style="text-align: right;">0.103554</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.081852</td>
+<td style="text-align: right;">0.0899043</td>
+<td style="text-align: right;">-0.00805226</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.111733</td>
+<td style="text-align: right;">0.135875</td>
+<td style="text-align: right;">-0.0241422</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.127499</td>
+<td style="text-align: right;">0.140947</td>
+<td style="text-align: right;">-0.0134483</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.138639</td>
+<td style="text-align: right;">0.130061</td>
+<td style="text-align: right;">0.00857845</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.148241</td>
+<td style="text-align: right;">0.146977</td>
+<td style="text-align: right;">0.00126362</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">398</td>
+<td style="text-align: right;">0.158115</td>
+<td style="text-align: right;">0.154546</td>
+<td style="text-align: right;">0.00356883</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.169647</td>
+<td style="text-align: right;">0.153654</td>
+<td style="text-align: right;">0.0159937</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.182391</td>
+<td style="text-align: right;">0.176108</td>
+<td style="text-align: right;">0.00628252</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.199923</td>
+<td style="text-align: right;">0.213357</td>
+<td style="text-align: right;">-0.0134339</td>
+</tr>
+<tr>
+<td style="text-align: left;">prepaid</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">0.235943</td>
+<td style="text-align: right;">0.173375</td>
+<td style="text-align: right;">0.062568</td>
+</tr>
+</tbody>
+</table>
+<h2>Event curves</h2>
+<p><strong>Competing risks over loan age</strong></p>
+<p><img alt="Competing risks over loan age" src="survival/cif_overview.png" /></p>
+<p><strong>Cumulative incidence by credit score band</strong></p>
+<p><img alt="Cumulative incidence by credit score band" src="survival/cif_by_credit_score_band.png" /></p>
+<p><strong>Cumulative incidence by vintage year</strong></p>
+<p><img alt="Cumulative incidence by vintage year" src="survival/cif_by_vintage_year.png" /></p>
+<p><strong>Cumulative incidence by ltv band</strong></p>
+<p><img alt="Cumulative incidence by ltv band" src="survival/cif_by_ltv_band.png" /></p>
+<p><strong>Predicted vs observed on the holdout</strong></p>
+<p><img alt="Predicted vs observed on the holdout" src="survival/model_comparison.png" /></p>
+<p><strong>Cause-specific hazard ratios</strong></p>
+<p><img alt="Cause-specific hazard ratios" src="survival/hazard_ratios.png" /></p>
+<p><strong>Calibration by risk decile</strong></p>
+<p><img alt="Calibration by risk decile" src="survival/calibration.png" /></p>
+</body>
+</html>

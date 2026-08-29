@@ -1,0 +1,5 @@
+column_a,column_b,correlation
+month_index,loan_age_months,1.0
+original_balance,current_balance,0.9612
+next_6m_delinquency_flag,next_12m_default_flag,0.7446
+remaining_term_months,original_term_months,0.7156

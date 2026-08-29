@@ -1,0 +1,6 @@
+exception_type,precision,recall,f1,support
+No exception,1.0,1.0,1.0,66124.0
+Balance Discrepancy,1.0,1.0,1.0,576.0
+Impossible State Transition,1.0,1.0,1.0,434.0
+Time Travel,1.0,1.0,1.0,90.0
+Zombie Loan,1.0,1.0,1.0,349.0

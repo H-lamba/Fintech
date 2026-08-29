@@ -1,0 +1,1263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anomaly & Exception Report (Task 4)</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+         max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; line-height: 1.6; }
+  h1 { border-bottom: 2px solid currentColor; padding-bottom: .4rem; }
+  h2 { margin-top: 2.5rem; border-bottom: 1px solid rgba(128,128,128,.35); padding-bottom: .25rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .9rem;
+           display: block; overflow-x: auto; }
+  th, td { border: 1px solid rgba(128,128,128,.35); padding: .4rem .6rem; text-align: left; }
+  th { background: rgba(128,128,128,.12); }
+  tr:nth-child(even) td { background: rgba(128,128,128,.06); }
+  /* Figures are rendered on a light chart surface, so they get that surface
+     behind them regardless of the reader's theme -- otherwise a dark-mode page
+     puts a light chart in a dark frame with no border. */
+  img { max-width: 100%; height: auto; display: block; margin: 1rem auto;
+         background: #fcfcfb; padding: .5rem; border-radius: 6px;
+         border: 1px solid rgba(128,128,128,.25); }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+  pre { overflow-x: auto; padding: .75rem; background: rgba(128,128,128,.1); border-radius: 6px; }
+</style>
+</head>
+<body>
+<h1>Anomaly &amp; Exception Report (Task 4)</h1>
+<p><em>Generated 2026-08-29 15:03:08</em></p>
+<h2>What this detects</h2>
+<p>Record-level data defects in the monthly performance panel: a continuous anomaly score for every row, a predicted probability and type for the <code>exception_required</code> / <code>exception_type</code> labels, the drivers behind each flag, and a curated queue a reviewer can work without opening the pipeline.</p>
+<p>Fitted on <code>2017-01 .. 2021-06</code> (108,125 records), tuned on <code>2021-07 .. 2022-12</code> (92,427) and reported on <code>2023-01 .. 2023-12</code> (67,573), which no detector was fitted or thresholded on.</p>
+<h2>How to read these numbers</h2>
+<p><strong>Read the near-perfect scores below as a property of the data, not of the model.</strong>
+The supervised head reaches 0.999 precision at 0.999 recall and a perfect
+per-class F1 on all five exception types. That is not a modelling achievement;
+it is what happens when every defect class carries a near-deterministic
+fingerprint:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">defect class</th>
+<th style="text-align: left;">fingerprint</th>
+<th style="text-align: left;">separability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: left;">balance above origination</td>
+<td style="text-align: left;">caught exactly by two row-level rules</td>
+</tr>
+<tr>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: left;">reporting month before origination</td>
+<td style="text-align: left;">caught exactly by the date checks</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">active row after a terminal row</td>
+<td style="text-align: left;">caught exactly by a sequence detector</td>
+</tr>
+<tr>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: left;">delinquency bucket skipped</td>
+<td style="text-align: left;">caught by a sequence detector</td>
+</tr>
+</tbody>
+</table>
+<p>Each was <em>injected</em> by a generator, and an injection leaves a cleaner trace
+than a real servicing error does. Real defects arrive partially, inconsistently
+and mixed with legitimate rarities. <strong>The numbers here measure whether the
+pipeline is wired correctly; they do not forecast performance on a real
+servicer feed.</strong> The parts that would transfer are the layering, the
+noisy-OR combination, the sequence detectors and the curation -- not the scores.</p>
+<p>The ablation table is included precisely so this is checkable rather than
+asserted: it shows how much of the result each layer is responsible for.</p>
+<h2>Detector comparison</h2>
+<p>Each detector measured on the held-out window. <code>flagged</code> is the size of the reviewer queue it implies; <code>precision@k</code> is what fraction of the first k records are real exceptions.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">detector</th>
+<th style="text-align: left;">labels_used</th>
+<th style="text-align: right;">flagged</th>
+<th style="text-align: right;">flagged_pct</th>
+<th style="text-align: right;">precision</th>
+<th style="text-align: right;">recall</th>
+<th style="text-align: right;">f1</th>
+<th style="text-align: right;">roc_auc</th>
+<th style="text-align: right;">pr_auc</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">positives</th>
+<th style="text-align: right;">precision@500</th>
+<th style="text-align: right;">recall@500</th>
+<th style="text-align: right;">brier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">row-level rules</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: right;">8745</td>
+<td style="text-align: right;">0.129416</td>
+<td style="text-align: right;">0.0869068</td>
+<td style="text-align: right;">0.5245</td>
+<td style="text-align: right;">0.149107</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">+ sequence detectors</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: right;">9584</td>
+<td style="text-align: right;">0.141832</td>
+<td style="text-align: right;">0.150668</td>
+<td style="text-align: right;">0.996549</td>
+<td style="text-align: right;">0.26176</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">isolation forest</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: right;">9584</td>
+<td style="text-align: right;">0.141832</td>
+<td style="text-align: right;">0.135851</td>
+<td style="text-align: right;">0.898551</td>
+<td style="text-align: right;">0.236019</td>
+<td style="text-align: right;">0.952753</td>
+<td style="text-align: right;">0.287969</td>
+<td style="text-align: right;">67573</td>
+<td style="text-align: right;">1449</td>
+<td style="text-align: right;">0.338</td>
+<td style="text-align: right;">0.116632</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">hybrid (rules + forest)</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: right;">9584</td>
+<td style="text-align: right;">0.141832</td>
+<td style="text-align: right;">0.151189</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.262667</td>
+<td style="text-align: right;">0.997984</td>
+<td style="text-align: right;">0.882887</td>
+<td style="text-align: right;">67573</td>
+<td style="text-align: right;">1449</td>
+<td style="text-align: right;">0.898</td>
+<td style="text-align: right;">0.309869</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">supervised (record state only)</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: right;">9584</td>
+<td style="text-align: right;">0.141832</td>
+<td style="text-align: right;">0.150563</td>
+<td style="text-align: right;">0.995859</td>
+<td style="text-align: right;">0.261579</td>
+<td style="text-align: right;">0.99815</td>
+<td style="text-align: right;">0.978632</td>
+<td style="text-align: right;">67573</td>
+<td style="text-align: right;">1449</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.345066</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">supervised (no sequence flags)</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: right;">9584</td>
+<td style="text-align: right;">0.141832</td>
+<td style="text-align: right;">0.151189</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.262667</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">67573</td>
+<td style="text-align: right;">1449</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.345066</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">supervised (all signals)</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: right;">1450</td>
+<td style="text-align: right;">0.0214583</td>
+<td style="text-align: right;">0.998621</td>
+<td style="text-align: right;">0.99931</td>
+<td style="text-align: right;">0.998965</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.999998</td>
+<td style="text-align: right;">67573</td>
+<td style="text-align: right;">1449</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.345066</td>
+<td style="text-align: right;">2.86179e-05</td>
+</tr>
+</tbody>
+</table>
+<h2>How the hybrid is built</h2>
+<p><strong>The two layers do different jobs, and the split is measurable.</strong></p>
+<p>Row-level rules -- the organiser's <code>validation_rules.json</code> plus this project's
+own domain checks -- decide from a single record. They catch every Balance
+Discrepancy and every Time Travel defect in this pack, and roughly one in ten
+Impossible State Transitions and Zombie Loans. That is not a tuning failure: an
+expression evaluated against one row cannot see last month's status, and cannot
+know the loan was already terminal.</p>
+<p><strong>Sequence-aware detectors</strong> close that gap. <code>post_absorbing_activity</code> and
+<code>illegal_status_transition</code> take recall on the two invisible classes from 12%
+and 9% to 100% and 99%, lifting overall recall from 52% to 99.7%. They are
+still deterministic -- they are rules, just rules that need the loan's history
+-- so they are reported as part of the deterministic layer, not as an ML
+result.</p>
+<p><strong>What is left for the model is precision.</strong> With the sequence detectors in
+place the deterministic layer reaches 99.7% recall at 15.1% precision: a queue
+of 9,584 records to find 1,449 exceptions, most of the excess coming from one
+low-severity rule that fires on 11.8% of the book. The supervised head cuts
+that queue to 1,450 records at 99.9% precision -- the same exceptions, a
+sixth of the reviewing.</p>
+<p><strong>The learned layer did find something the rules did not.</strong> The ablation row
+<em>supervised (record state only)</em> sees no sequence detector flags and no
+month-on-month context, yet still reaches 0.979 PR-AUC. Its dominant feature is
+<code>balance_vs_scheduled</code>, the ratio of reported balance to the amortisation
+schedule, and inspecting it explains why:</p>
+<ul>
+<li><strong>Zombie Loan</strong> rows carry a stale balance -- mean ratio 0.77 against 0.99
+  for clean records, with 85% deviating more than 10% from schedule.</li>
+<li><strong>Impossible State Transition</strong> rows sit at <em>exactly</em> 1.000 while genuine
+  90-DPD records sit at 1.005 or above, because a real three-months-delinquent
+  loan has accrued arrears and the injected row was written with a performing
+  loan's balance.</li>
+</ul>
+<p>Neither fingerprint was anticipated by any hand-written rule. This is the
+honest case for the learned layer: not that it beat the rules on the headline
+metric, but that it located a row-level signature of two defects that the rule
+author believed were only visible in sequence.</p>
+<p><strong>The unsupervised layer's unsupported flags are benign -- and that is the
+finding.</strong> Every one of the five highest-scoring records with no rule violation
+is an ordinary loan termination: <code>Default</code> or <code>Prepaid</code> with a zero balance,
+which is statistically extreme and operationally correct. An Isolation Forest
+run alone on this book would put clean terminations at the top of the reviewer
+queue. That is the concrete case for the hybrid: unsupervised novelty detection
+finds what is <em>unusual</em>, and only the rule layer knows what is <em>wrong</em>.</p>
+<p><strong>Scores combine as a noisy-OR, not a weighted average.</strong>
+<code>hybrid = 1 - (1 - rule_score) * (1 - ml_score)</code>. A fired high-severity rule
+sets a floor the model cannot argue down; the model can only add suspicion on
+top. A weighted average would let a confident model talk away a hard
+violation, which is not a trade a servicer would accept.</p>
+<p><strong>Continuous detectors are cut at a fixed queue size, not a fixed threshold.</strong>
+A rank-normalised score has no natural cut point -- a 0.5 threshold on the
+Isolation Forest flags half the book. Every row of the ablation is therefore
+evaluated at the same queue size the full deterministic layer produces, so the
+comparison is at equal reviewer cost.</p>
+<h3>Splitting</h3>
+<p>The exception labels are <strong>contemporaneous</strong>: <code>exception_required</code> describes
+the record it sits on, not a future outcome. So unlike Task 2 there is no
+forward window to purge -- but the split is still strictly by
+<code>reporting_month</code>, and for the same reason: a random split would put one month
+of a loan in training and the next month of the same loan in test, and the
+sequence features (<code>months_after_absorbing</code>, <code>status_severity_delta</code>) are
+explicitly built from adjacent months. Absorbing-state rows are <strong>kept</strong>, not
+dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.</p>
+<h2>Deterministic signal coverage</h2>
+<p>Every rule, date check and sequence detector: how often it fires and how often it is right. A signal that fires constantly and is almost never an exception is a reviewer's time being spent, so it is named rather than averaged away.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">signal</th>
+<th style="text-align: left;">layer</th>
+<th style="text-align: left;">severity</th>
+<th style="text-align: right;">n_fired</th>
+<th style="text-align: right;">pct_fired</th>
+<th style="text-align: right;">precision_vs_exception</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">rule__missing_document_status</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: right;">31675</td>
+<td style="text-align: right;">11.8135</td>
+<td style="text-align: right;">0.0251</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__balance_increase_without_modification</td>
+<td style="text-align: left;">seq</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">4788</td>
+<td style="text-align: right;">1.7857</td>
+<td style="text-align: right;">0.6855</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__illegal_status_transition</td>
+<td style="text-align: left;">seq</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">2394</td>
+<td style="text-align: right;">0.8929</td>
+<td style="text-align: right;">0.9783</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__BALANCE_CEILING</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">2316</td>
+<td style="text-align: right;">0.8638</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__balance_exceeds_original</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">2316</td>
+<td style="text-align: right;">0.8638</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__TEMPORAL_ORDERING</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">1724</td>
+<td style="text-align: right;">0.643</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">date__date__origination_after_reporting</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">1724</td>
+<td style="text-align: right;">0.643</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">date__date__loan_age_inconsistent</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">1718</td>
+<td style="text-align: right;">0.6407</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__delinquency_bucket_skip</td>
+<td style="text-align: left;">seq</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">1703</td>
+<td style="text-align: right;">0.6352</td>
+<td style="text-align: right;">0.9841</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__loan_age_regression</td>
+<td style="text-align: left;">seq</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">1601</td>
+<td style="text-align: right;">0.5971</td>
+<td style="text-align: right;">0.0518</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__post_absorbing_activity</td>
+<td style="text-align: left;">seq</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">1319</td>
+<td style="text-align: right;">0.4919</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__closed_status_with_balance</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__zero_original_balance</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__default_and_prepaid_together</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">date__date__last_update_before_reporting</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__dpd_implausibly_large</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__negative_loan_age</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__implausible_interest_rate</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__negative_remaining_term</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__LOAN_ID_PRESENT</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__current_status_but_high_dpd</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__REPORTING_MONTH_PRESENT</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__default_without_delinquency</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__prepaid_with_positive_balance</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__negative_balance</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__DOCUMENT_STATUS_DOMAIN</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__MUTUALLY_EXCLUSIVE_TERMINATION</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__TERM_NON_NEGATIVE</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__RATE_RANGE</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__DEFAULT_DELINQUENCY_CONSISTENCY</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__ABSORBING_STATE_FINALITY</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__SEQUENTIAL_DELINQUENCY</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__STATUS_DOMAIN</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__DPD_RANGE</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__BALANCE_SIGN</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__delinquent_but_current_status</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+</tbody>
+</table>
+<h2>Exception type classification</h2>
+<p>Five-way over every record, <code>None</code> included. Macro-F1 leads because <code>None</code> is 97.4% of the panel and accuracy is maximised by never predicting an exception.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">macro_f1</th>
+<th style="text-align: right;">weighted_f1</th>
+<th style="text-align: right;">accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<h3>Per-class performance</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">exception_type</th>
+<th style="text-align: right;">precision</th>
+<th style="text-align: right;">recall</th>
+<th style="text-align: right;">f1</th>
+<th style="text-align: right;">support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66124</td>
+</tr>
+<tr>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">576</td>
+</tr>
+<tr>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">434</td>
+</tr>
+<tr>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">90</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">349</td>
+</tr>
+</tbody>
+</table>
+<h3>Confusion matrix</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: right;">pred_No exception</th>
+<th style="text-align: right;">pred_Balance Discrepancy</th>
+<th style="text-align: right;">pred_Impossible State Transition</th>
+<th style="text-align: right;">pred_Time Travel</th>
+<th style="text-align: right;">pred_Zombie Loan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">true_No exception</td>
+<td style="text-align: right;">66124</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">true_Balance Discrepancy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">576</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">true_Impossible State Transition</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">434</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">true_Time Travel</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">true_Zombie Loan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">349</td>
+</tr>
+</tbody>
+</table>
+<h2>What drives the model</h2>
+<p>Mean absolute contribution to the predicted log-odds, from the booster's own per-row attributions. The <code>layer</code> column shows how much of the model's decision rests on deterministic evidence versus learned pattern.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">feature</th>
+<th style="text-align: right;">mean_abs_contribution</th>
+<th style="text-align: right;">share</th>
+<th style="text-align: left;">layer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">rule_score</td>
+<td style="text-align: right;">1.05815</td>
+<td style="text-align: right;">0.414118</td>
+<td style="text-align: left;">rule</td>
+</tr>
+<tr>
+<td style="text-align: left;">balance_delta_pct</td>
+<td style="text-align: right;">0.213164</td>
+<td style="text-align: right;">0.0834234</td>
+<td style="text-align: left;">sequence context</td>
+</tr>
+<tr>
+<td style="text-align: left;">loan_age_months</td>
+<td style="text-align: right;">0.196578</td>
+<td style="text-align: right;">0.0769325</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">0.165196</td>
+<td style="text-align: right;">0.0646509</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">dq_score</td>
+<td style="text-align: right;">0.160868</td>
+<td style="text-align: right;">0.062957</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">months_after_absorbing</td>
+<td style="text-align: right;">0.144502</td>
+<td style="text-align: right;">0.0565522</td>
+<td style="text-align: left;">sequence context</td>
+</tr>
+<tr>
+<td style="text-align: left;">days_past_due</td>
+<td style="text-align: right;">0.0958241</td>
+<td style="text-align: right;">0.0375016</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">transition_rarity</td>
+<td style="text-align: right;">0.0943235</td>
+<td style="text-align: right;">0.0369143</td>
+<td style="text-align: left;">sequence context</td>
+</tr>
+<tr>
+<td style="text-align: left;">months_observed_to_date</td>
+<td style="text-align: right;">0.0917411</td>
+<td style="text-align: right;">0.0359037</td>
+<td style="text-align: left;">sequence context</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__loan_age_regression</td>
+<td style="text-align: right;">0.0736291</td>
+<td style="text-align: right;">0.0288154</td>
+<td style="text-align: left;">sequence detector</td>
+</tr>
+<tr>
+<td style="text-align: left;">status_severity_delta</td>
+<td style="text-align: right;">0.0607521</td>
+<td style="text-align: right;">0.0237759</td>
+<td style="text-align: left;">sequence context</td>
+</tr>
+<tr>
+<td style="text-align: left;">balance_vs_scheduled</td>
+<td style="text-align: right;">0.0428133</td>
+<td style="text-align: right;">0.0167553</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">remaining_term_months</td>
+<td style="text-align: right;">0.0351668</td>
+<td style="text-align: right;">0.0137628</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">current_balance</td>
+<td style="text-align: right;">0.0263012</td>
+<td style="text-align: right;">0.0102932</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">dpd_delta</td>
+<td style="text-align: right;">0.0220789</td>
+<td style="text-align: right;">0.00864078</td>
+<td style="text-align: left;">sequence context</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__post_absorbing_activity</td>
+<td style="text-align: right;">0.016832</td>
+<td style="text-align: right;">0.00658734</td>
+<td style="text-align: left;">sequence detector</td>
+</tr>
+<tr>
+<td style="text-align: left;">status_severity</td>
+<td style="text-align: right;">0.0152247</td>
+<td style="text-align: right;">0.00595831</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__missing_document_status</td>
+<td style="text-align: right;">0.00959017</td>
+<td style="text-align: right;">0.0037532</td>
+<td style="text-align: left;">rule</td>
+</tr>
+<tr>
+<td style="text-align: left;">document_status</td>
+<td style="text-align: right;">0.0091787</td>
+<td style="text-align: right;">0.00359216</td>
+<td style="text-align: left;">record state</td>
+</tr>
+<tr>
+<td style="text-align: left;">seq__illegal_status_transition</td>
+<td style="text-align: right;">0.00819441</td>
+<td style="text-align: right;">0.00320695</td>
+<td style="text-align: left;">sequence detector</td>
+</tr>
+</tbody>
+</table>
+<h2>Curated reviewer queue</h2>
+<p>Stratified rather than top-N: a guaranteed block per exception type plus reserved slots for high-scoring records with no rule violation, which are the only rows in the queue that can teach the rule set something. Full file: <code>reports/anomaly_examples.csv</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">loan_id</th>
+<th style="text-align: left;">reporting_month</th>
+<th style="text-align: left;">current_status</th>
+<th style="text-align: right;">current_balance</th>
+<th style="text-align: right;">hybrid_score</th>
+<th style="text-align: right;">rule_score</th>
+<th style="text-align: right;">ml_score</th>
+<th style="text-align: right;">exception_probability</th>
+<th style="text-align: left;">triggered_rules</th>
+<th style="text-align: left;">top_drivers</th>
+<th style="text-align: left;">predicted_exception_type</th>
+<th style="text-align: left;">suggested_action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TKZBY2VDG0DX</td>
+<td style="text-align: left;">2023-02</td>
+<td style="text-align: left;">Default</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0.999756</td>
+<td style="text-align: left;">json__TEMPORAL_ORDERING; date__origination_after_reporting; date__loan_age_inconsistent</td>
+<td style="text-align: left;">days past due=157; balance delta pct=missing; loan age regression=0</td>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: left;">Reporting month precedes origination. Correct the timestamp at source; the row cannot be used for age-based analytics until it is fixed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">NHMLYYAJ40VH</td>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">1.05331e+06</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.99575</td>
+<td style="text-align: right;">0.999991</td>
+<td style="text-align: right;">0.999996</td>
+<td style="text-align: left;">json__BALANCE_CEILING; balance_exceeds_original; balance_increase_without_modification; missing_document_status</td>
+<td style="text-align: left;">balance delta pct=0.58; loan age regression=0; loan age months=54</td>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: left;">Balance exceeds origination with no modification recorded. Request the modification agreement, or treat the balance as a servicing error.</td>
+</tr>
+<tr>
+<td style="text-align: left;">K3MSRHPO8MHK</td>
+<td style="text-align: left;">2023-12</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">524929</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0.999989</td>
+<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
+<td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SW3CSFZ1HQ5Y</td>
+<td style="text-align: left;">2023-06</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">439531</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0.999987</td>
+<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
+<td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
+</tr>
+<tr>
+<td style="text-align: left;">RK1NEXSOD8VF</td>
+<td style="text-align: left;">2023-07</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">877969</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0.999988</td>
+<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
+<td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIMYS4DO8VYD</td>
+<td style="text-align: left;">2023-03</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">289513</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0.999988</td>
+<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
+<td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
+</tr>
+<tr>
+<td style="text-align: left;">XVXZK2HX6I1Z</td>
+<td style="text-align: left;">2023-06</td>
+<td style="text-align: left;">90-DPD</td>
+<td style="text-align: right;">327669</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.99575</td>
+<td style="text-align: right;">0.999972</td>
+<td style="text-align: right;">0.999997</td>
+<td style="text-align: left;">json__BALANCE_CEILING; balance_exceeds_original; balance_increase_without_modification; missing_document_status</td>
+<td style="text-align: left;">transition rarity=0.00228; balance delta pct=0.42; loan age regression=0</td>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: left;">Balance exceeds origination with no modification recorded. Request the modification agreement, or treat the balance as a servicing error.</td>
+</tr>
+<tr>
+<td style="text-align: left;">JUPT8JULM5C4</td>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">164633</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999972</td>
+<td style="text-align: right;">0.999983</td>
+<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
+<td style="text-align: left;">post absorbing activity=1; balance delta pct=missing; months after absorbing=1.00</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
+</tr>
+<tr>
+<td style="text-align: left;">ZBDXOWNX1MV2</td>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">595797</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999954</td>
+<td style="text-align: right;">0.999997</td>
+<td style="text-align: left;">json__BALANCE_CEILING; balance_exceeds_original; balance_increase_without_modification</td>
+<td style="text-align: left;">balance delta pct=0.61; loan age regression=0; loan age months=57</td>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: left;">Balance exceeds origination with no modification recorded. Request the modification agreement, or treat the balance as a servicing error.</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXIA6HA0N6QC</td>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">642106</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999954</td>
+<td style="text-align: right;">0.999997</td>
+<td style="text-align: left;">json__BALANCE_CEILING; balance_exceeds_original; balance_increase_without_modification</td>
+<td style="text-align: left;">balance delta pct=0.56; loan age regression=0; loan age months=45</td>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: left;">Balance exceeds origination with no modification recorded. Request the modification agreement, or treat the balance as a servicing error.</td>
+</tr>
+<tr>
+<td style="text-align: left;">KPUKLAHZT76N</td>
+<td style="text-align: left;">2023-02</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">577408</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.99575</td>
+<td style="text-align: right;">0.999935</td>
+<td style="text-align: right;">0.999997</td>
+<td style="text-align: left;">json__BALANCE_CEILING; balance_exceeds_original; balance_increase_without_modification; missing_document_status</td>
+<td style="text-align: left;">balance delta pct=0.42; loan age regression=0; loan age months=47</td>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: left;">Balance exceeds origination with no modification recorded. Request the modification agreement, or treat the balance as a servicing error.</td>
+</tr>
+<tr>
+<td style="text-align: left;">WDRBQ0QBQ686</td>
+<td style="text-align: left;">2023-09</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">522614</td>
+<td style="text-align: right;">0.999999</td>
+<td style="text-align: right;">0.999958</td>
+<td style="text-align: right;">0.969896</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: left;">json__TEMPORAL_ORDERING; date__origination_after_reporting; date__loan_age_inconsistent; loan_age_regression; (+2 more)</td>
+<td style="text-align: left;">TEMPORAL ORDERING=1; loan age months=1; balance delta pct=0.01</td>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: left;">Reporting month precedes origination. Correct the timestamp at source; the row cannot be used for age-based analytics until it is fixed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">MBYL6BVXFWF3</td>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">181885</td>
+<td style="text-align: right;">0.999998</td>
+<td style="text-align: right;">0.99995</td>
+<td style="text-align: right;">0.96184</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: left;">json__TEMPORAL_ORDERING; date__origination_after_reporting; date__loan_age_inconsistent; loan_age_regression; (+1 more)</td>
+<td style="text-align: left;">TEMPORAL ORDERING=1; loan age months=1; balance delta pct=0.00802</td>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: left;">Reporting month precedes origination. Correct the timestamp at source; the row cannot be used for age-based analytics until it is fixed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">6M8W8LCVI34V</td>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">394715</td>
+<td style="text-align: right;">0.999998</td>
+<td style="text-align: right;">0.99995</td>
+<td style="text-align: right;">0.959852</td>
+<td style="text-align: right;">0.999989</td>
+<td style="text-align: left;">json__TEMPORAL_ORDERING; date__origination_after_reporting; date__loan_age_inconsistent; loan_age_regression; (+1 more)</td>
+<td style="text-align: left;">loan age months=7; TEMPORAL ORDERING=1; balance delta pct=0.00345</td>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: left;">Reporting month precedes origination. Correct the timestamp at source; the row cannot be used for age-based analytics until it is fixed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">F8FTBB4AOTYG</td>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">405000</td>
+<td style="text-align: right;">0.999998</td>
+<td style="text-align: right;">0.99995</td>
+<td style="text-align: right;">0.95434</td>
+<td style="text-align: right;">0.999713</td>
+<td style="text-align: left;">json__TEMPORAL_ORDERING; date__origination_after_reporting; date__loan_age_inconsistent; loan_age_regression; (+1 more)</td>
+<td style="text-align: left;">TEMPORAL ORDERING=1; balance delta pct=0.00506; origination after reporting=1</td>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: left;">Reporting month precedes origination. Correct the timestamp at source; the row cannot be used for age-based analytics until it is fixed.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q1BT88BYDDWW</td>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: left;">90-DPD</td>
+<td style="text-align: right;">128652</td>
+<td style="text-align: right;">0.999997</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.999935</td>
+<td style="text-align: right;">0.999992</td>
+<td style="text-align: left;">illegal_status_transition; delinquency_bucket_skip</td>
+<td style="text-align: left;">status severity delta=3.00; transition rarity=0.00624; days past due=114</td>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: left;">Delinquency bucket skipped without an intermediate month. Request the missing month's file from the servicer before accepting the status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">8Q58AG12V4EE</td>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: left;">90-DPD</td>
+<td style="text-align: right;">821230</td>
+<td style="text-align: right;">0.999996</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.999917</td>
+<td style="text-align: right;">0.999994</td>
+<td style="text-align: left;">illegal_status_transition; delinquency_bucket_skip</td>
+<td style="text-align: left;">status severity delta=3.00; transition rarity=0.00624; days past due=117</td>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: left;">Delinquency bucket skipped without an intermediate month. Request the missing month's file from the servicer before accepting the status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIKB44SU1EM2</td>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: left;">90-DPD</td>
+<td style="text-align: right;">127297</td>
+<td style="text-align: right;">0.999996</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.999917</td>
+<td style="text-align: right;">0.999992</td>
+<td style="text-align: left;">illegal_status_transition; delinquency_bucket_skip</td>
+<td style="text-align: left;">status severity delta=3.00; transition rarity=0.00624; loan age regression=0</td>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: left;">Delinquency bucket skipped without an intermediate month. Request the missing month's file from the servicer before accepting the status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">U69KMGCS5CM2</td>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: left;">90-DPD</td>
+<td style="text-align: right;">319185</td>
+<td style="text-align: right;">0.999996</td>
+<td style="text-align: right;">0.9575</td>
+<td style="text-align: right;">0.999898</td>
+<td style="text-align: right;">0.999993</td>
+<td style="text-align: left;">illegal_status_transition; delinquency_bucket_skip; missing_document_status</td>
+<td style="text-align: left;">status severity delta=3.00; transition rarity=0.00624; days past due=109</td>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: left;">Delinquency bucket skipped without an intermediate month. Request the missing month's file from the servicer before accepting the status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">G4ICJBUP27P2</td>
+<td style="text-align: left;">2023-08</td>
+<td style="text-align: left;">90-DPD</td>
+<td style="text-align: right;">151389</td>
+<td style="text-align: right;">0.999994</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.999889</td>
+<td style="text-align: right;">0.999992</td>
+<td style="text-align: left;">illegal_status_transition; delinquency_bucket_skip</td>
+<td style="text-align: left;">status severity delta=3.00; transition rarity=0.00624; days past due=115</td>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: left;">Delinquency bucket skipped without an intermediate month. Request the missing month's file from the servicer before accepting the status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">FHXZWFZV2PN2</td>
+<td style="text-align: left;">2023-02</td>
+<td style="text-align: left;">Default</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999991</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999991</td>
+<td style="text-align: right;">3.21051e-05</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=123 (15 sigma)</td>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
+</tr>
+<tr>
+<td style="text-align: left;">ZJPBLUJS3016</td>
+<td style="text-align: left;">2023-09</td>
+<td style="text-align: left;">Prepaid</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">8.64613e-05</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=125 (15 sigma)</td>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
+</tr>
+<tr>
+<td style="text-align: left;">E040T9Q4QEV0</td>
+<td style="text-align: left;">2023-07</td>
+<td style="text-align: left;">Default</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">1.74678e-05</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=134 (14 sigma)</td>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TH3DJBWK3R3V</td>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: left;">Default</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">5.40921e-05</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=153 (13 sigma)</td>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
+</tr>
+<tr>
+<td style="text-align: left;">IVR96W49E6ZI</td>
+<td style="text-align: left;">2023-12</td>
+<td style="text-align: left;">Default</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">3.84809e-05</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); loan age months=59 (5 sigma)</td>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
+</tr>
+</tbody>
+</table>
+<h3>Queue composition</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">dimension</th>
+<th style="text-align: left;">value</th>
+<th style="text-align: right;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">predicted type</td>
+<td style="text-align: left;">Time Travel</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">predicted type</td>
+<td style="text-align: left;">Balance Discrepancy</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">predicted type</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">predicted type</td>
+<td style="text-align: left;">Impossible State Transition</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">predicted type</td>
+<td style="text-align: left;">No exception</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">evidence</td>
+<td style="text-align: left;">rule-supported</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td style="text-align: left;">evidence</td>
+<td style="text-align: left;">model-only</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+<h2>Figures</h2>
+<p><strong>What each detector layer buys</strong></p>
+<p><img alt="What each detector layer buys" src="anomaly/detector_comparison.png" /></p>
+<p><strong>What the exception model leans on</strong></p>
+<p><img alt="What the exception model leans on" src="anomaly/driver_layers.png" /></p>
+</body>
+</html>

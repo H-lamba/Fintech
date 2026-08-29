@@ -1,0 +1,57 @@
+feature,mean_abs_contribution,share,layer
+rule_score,1.0581546665040813,0.4141178689978345,rule
+balance_delta_pct,0.2131636938113352,0.08342343272037778,sequence context
+loan_age_months,0.19657804863932765,0.07693249878415297,record state
+interest_rate,0.16519619779090683,0.06465094334624025,record state
+dq_score,0.1608677911458333,0.06295698442628778,record state
+months_after_absorbing,0.14450222074029848,0.056552178630113595,sequence context
+days_past_due,0.09582414580483603,0.03750159812680221,record state
+transition_rarity,0.0943234885475303,0.03691430308840795,sequence context
+months_observed_to_date,0.0917411485720642,0.0359036822769901,sequence context
+seq__loan_age_regression,0.07362910229687522,0.02881537822834704,sequence detector
+status_severity_delta,0.06075211101240577,0.02377585767560409,sequence context
+balance_vs_scheduled,0.042813256101981764,0.016755333547208658,record state
+remaining_term_months,0.035166750106752936,0.013762808098651165,record state
+current_balance,0.026301234836001344,0.010293212955607634,record state
+dpd_delta,0.022078922909308005,0.008640775110105166,sequence context
+seq__post_absorbing_activity,0.016831987284949442,0.006587342026729156,sequence detector
+status_severity,0.015224671210227428,0.005958305148907782,record state
+rule__missing_document_status,0.009590170621346254,0.003753195205534947,rule
+document_status,0.009178696253433155,0.0035921611962531417,record state
+seq__illegal_status_transition,0.00819441445569866,0.00320695410557535,sequence detector
+original_balance,0.005705667564517652,0.0022329617472976486,record state
+current_status,0.003132449158970833,0.001225910740197125,record state
+source_system,0.0019399499393262223,0.0007592159825655835,record state
+rule__json__BALANCE_CEILING,0.0017830461323904315,0.0006978103372258842,rule
+rule__json__TEMPORAL_ORDERING,0.0014737048953442332,0.00057674700127524,rule
+rule__balance_exceeds_original,0.0004680325896231832,0.00018316855254878095,rule
+seq__delinquency_bucket_skip,0.0003837296235517865,0.00015017586654095632,sequence detector
+date__date__origination_after_reporting,0.00020236194647807207,7.919607661762348e-05,date
+date__date__loan_age_inconsistent,0.0,0.0,date
+seq__balance_increase_without_modification,0.0,0.0,sequence detector
+rule__json__LOAN_ID_PRESENT,0.0,0.0,rule
+date__date__last_update_before_reporting,0.0,0.0,date
+rule__negative_balance,0.0,0.0,rule
+rule__json__BALANCE_SIGN,0.0,0.0,rule
+rule__json__DPD_RANGE,0.0,0.0,rule
+rule__json__STATUS_DOMAIN,0.0,0.0,rule
+rule__json__SEQUENTIAL_DELINQUENCY,0.0,0.0,rule
+rule__json__ABSORBING_STATE_FINALITY,0.0,0.0,rule
+rule__json__DEFAULT_DELINQUENCY_CONSISTENCY,0.0,0.0,rule
+rule__json__RATE_RANGE,0.0,0.0,rule
+rule__json__TERM_NON_NEGATIVE,0.0,0.0,rule
+rule__json__MUTUALLY_EXCLUSIVE_TERMINATION,0.0,0.0,rule
+rule__json__DOCUMENT_STATUS_DOMAIN,0.0,0.0,rule
+rule__prepaid_with_positive_balance,0.0,0.0,rule
+rule__json__REPORTING_MONTH_PRESENT,0.0,0.0,rule
+rule__default_without_delinquency,0.0,0.0,rule
+rule__delinquent_but_current_status,0.0,0.0,rule
+rule__current_status_but_high_dpd,0.0,0.0,rule
+rule__closed_status_with_balance,0.0,0.0,rule
+rule__negative_remaining_term,0.0,0.0,rule
+rule__implausible_interest_rate,0.0,0.0,rule
+rule__negative_loan_age,0.0,0.0,rule
+rule__dpd_implausibly_large,0.0,0.0,rule
+rule__default_and_prepaid_together,0.0,0.0,rule
+rule__zero_original_balance,0.0,0.0,rule
+servicer_name,0.0,0.0,record state

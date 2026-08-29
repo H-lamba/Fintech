@@ -1,0 +1,19 @@
+{
+  "loans": 9885,
+  "observation_cutoff": "2023-12",
+  "events_default": 1848,
+  "events_prepaid": 1965,
+  "censored_total": 6072,
+  "censored_administrative": 5348,
+  "censored_lost_to_followup": 724,
+  "left_truncated_loans": 0,
+  "left_truncation_enabled": true,
+  "calendar_vs_age_order_anomalies": 1528,
+  "zombie_rows_dropped": 1319,
+  "zombie_loans_affected": 664,
+  "degenerate_events_given_one_month": 0,
+  "degenerate_censored_dropped": 115,
+  "total_exposure_months": 260064.0,
+  "median_follow_up_months": 23.0,
+  "censoring_rate": 0.6142640364188164
+}

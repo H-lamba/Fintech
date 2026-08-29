@@ -1,0 +1,1495 @@
+period,column,psi_vs_first_period,drift_band
+2017-02,month_index,18.2859,MAJOR shift
+2017-02,loan_age_months,18.2859,MAJOR shift
+2017-02,remaining_term_months,17.8238,MAJOR shift
+2017-02,original_balance,25.146,MAJOR shift
+2017-02,current_balance,25.146,MAJOR shift
+2017-02,interest_rate,25.146,MAJOR shift
+2017-02,vintage_year,0.0,stable
+2017-02,days_past_due,3.1792,MAJOR shift
+2017-02,prepayment_flag,0.0,stable
+2017-02,default_flag,0.0,stable
+2017-02,next_3m_delinquency_flag,0.0,stable
+2017-02,next_6m_delinquency_flag,0.0,stable
+2017-02,next_12m_default_flag,0.0,stable
+2017-02,next_12m_prepayment_flag,4.3741,MAJOR shift
+2017-02,credit_score,17.8238,MAJOR shift
+2017-02,ltv,25.146,MAJOR shift
+2017-02,dti,25.146,MAJOR shift
+2017-02,original_term_months,0.0338,stable
+2017-03,month_index,25.0485,MAJOR shift
+2017-03,loan_age_months,25.0485,MAJOR shift
+2017-03,remaining_term_months,24.5864,MAJOR shift
+2017-03,original_balance,24.7844,MAJOR shift
+2017-03,current_balance,24.5864,MAJOR shift
+2017-03,interest_rate,24.5864,MAJOR shift
+2017-03,vintage_year,0.0,stable
+2017-03,days_past_due,3.4874,MAJOR shift
+2017-03,prepayment_flag,0.0,stable
+2017-03,default_flag,0.0,stable
+2017-03,next_3m_delinquency_flag,1.7177,MAJOR shift
+2017-03,next_6m_delinquency_flag,1.7177,MAJOR shift
+2017-03,next_12m_default_flag,1.7177,MAJOR shift
+2017-03,next_12m_prepayment_flag,4.3741,MAJOR shift
+2017-03,credit_score,24.5864,MAJOR shift
+2017-03,ltv,24.5864,MAJOR shift
+2017-03,dti,24.5864,MAJOR shift
+2017-03,original_term_months,4.3741,MAJOR shift
+2017-04,month_index,24.8304,MAJOR shift
+2017-04,loan_age_months,24.8304,MAJOR shift
+2017-04,remaining_term_months,24.3683,MAJOR shift
+2017-04,original_balance,24.2297,MAJOR shift
+2017-04,current_balance,24.2297,MAJOR shift
+2017-04,interest_rate,24.2297,MAJOR shift
+2017-04,vintage_year,0.0,stable
+2017-04,days_past_due,1.1618,MAJOR shift
+2017-04,prepayment_flag,0.0,stable
+2017-04,default_flag,0.0,stable
+2017-04,next_3m_delinquency_flag,2.4858,MAJOR shift
+2017-04,next_6m_delinquency_flag,2.7917,MAJOR shift
+2017-04,next_12m_default_flag,1.304,MAJOR shift
+2017-04,next_12m_prepayment_flag,0.3081,MAJOR shift
+2017-04,credit_score,24.2297,MAJOR shift
+2017-04,ltv,24.2297,MAJOR shift
+2017-04,dti,24.2297,MAJOR shift
+2017-04,original_term_months,5.4603,MAJOR shift
+2017-05,month_index,24.7225,MAJOR shift
+2017-05,loan_age_months,24.7225,MAJOR shift
+2017-05,remaining_term_months,24.1343,MAJOR shift
+2017-05,original_balance,24.2604,MAJOR shift
+2017-05,current_balance,24.1343,MAJOR shift
+2017-05,interest_rate,24.1343,MAJOR shift
+2017-05,vintage_year,0.0,stable
+2017-05,days_past_due,2.1124,MAJOR shift
+2017-05,prepayment_flag,0.0,stable
+2017-05,default_flag,0.0,stable
+2017-05,next_3m_delinquency_flag,2.4858,MAJOR shift
+2017-05,next_6m_delinquency_flag,2.4858,MAJOR shift
+2017-05,next_12m_default_flag,1.304,MAJOR shift
+2017-05,next_12m_prepayment_flag,0.3081,MAJOR shift
+2017-05,credit_score,24.2604,MAJOR shift
+2017-05,ltv,24.1343,MAJOR shift
+2017-05,dti,24.1343,MAJOR shift
+2017-05,original_term_months,2.2952,MAJOR shift
+2017-06,month_index,24.5965,MAJOR shift
+2017-06,loan_age_months,24.5965,MAJOR shift
+2017-06,remaining_term_months,24.1343,MAJOR shift
+2017-06,original_balance,24.1343,MAJOR shift
+2017-06,current_balance,24.1343,MAJOR shift
+2017-06,interest_rate,24.1343,MAJOR shift
+2017-06,vintage_year,0.0,stable
+2017-06,days_past_due,0.0,stable
+2017-06,prepayment_flag,0.0,stable
+2017-06,default_flag,0.0,stable
+2017-06,next_3m_delinquency_flag,0.0,stable
+2017-06,next_6m_delinquency_flag,0.0,stable
+2017-06,next_12m_default_flag,2.4858,MAJOR shift
+2017-06,next_12m_prepayment_flag,0.0924,stable
+2017-06,credit_score,24.1343,MAJOR shift
+2017-06,ltv,24.1343,MAJOR shift
+2017-06,dti,24.1343,MAJOR shift
+2017-06,original_term_months,6.4719,MAJOR shift
+2017-07,month_index,19.3236,MAJOR shift
+2017-07,loan_age_months,19.3236,MAJOR shift
+2017-07,remaining_term_months,18.6806,MAJOR shift
+2017-07,original_balance,19.344,MAJOR shift
+2017-07,current_balance,23.3966,MAJOR shift
+2017-07,interest_rate,19.2837,MAJOR shift
+2017-07,vintage_year,0.0,stable
+2017-07,days_past_due,0.4663,MAJOR shift
+2017-07,prepayment_flag,0.4663,MAJOR shift
+2017-07,default_flag,0.0,stable
+2017-07,next_3m_delinquency_flag,0.0,stable
+2017-07,next_6m_delinquency_flag,0.0,stable
+2017-07,next_12m_default_flag,0.5435,MAJOR shift
+2017-07,next_12m_prepayment_flag,0.351,MAJOR shift
+2017-07,credit_score,23.4569,MAJOR shift
+2017-07,ltv,23.3966,MAJOR shift
+2017-07,dti,23.3966,MAJOR shift
+2017-07,original_term_months,6.9292,MAJOR shift
+2017-08,month_index,19.987,MAJOR shift
+2017-08,loan_age_months,19.987,MAJOR shift
+2017-08,remaining_term_months,19.4043,MAJOR shift
+2017-08,original_balance,23.3966,MAJOR shift
+2017-08,current_balance,23.3966,MAJOR shift
+2017-08,interest_rate,23.3966,MAJOR shift
+2017-08,vintage_year,0.0,stable
+2017-08,days_past_due,0.9366,MAJOR shift
+2017-08,prepayment_flag,0.4663,MAJOR shift
+2017-08,default_flag,0.0,stable
+2017-08,next_3m_delinquency_flag,1.5546,MAJOR shift
+2017-08,next_6m_delinquency_flag,1.5546,MAJOR shift
+2017-08,next_12m_default_flag,2.2384,MAJOR shift
+2017-08,next_12m_prepayment_flag,0.227,moderate shift
+2017-08,credit_score,23.4569,MAJOR shift
+2017-08,ltv,23.3966,MAJOR shift
+2017-08,dti,23.4569,MAJOR shift
+2017-08,original_term_months,2.8623,MAJOR shift
+2017-09,month_index,24.1478,MAJOR shift
+2017-09,loan_age_months,24.1478,MAJOR shift
+2017-09,remaining_term_months,23.5536,MAJOR shift
+2017-09,original_balance,23.5536,MAJOR shift
+2017-09,current_balance,23.4876,MAJOR shift
+2017-09,interest_rate,23.4876,MAJOR shift
+2017-09,vintage_year,0.0,stable
+2017-09,days_past_due,1.0353,MAJOR shift
+2017-09,prepayment_flag,0.0,stable
+2017-09,default_flag,0.0,stable
+2017-09,next_3m_delinquency_flag,0.5152,MAJOR shift
+2017-09,next_6m_delinquency_flag,0.0,stable
+2017-09,next_12m_default_flag,1.229,MAJOR shift
+2017-09,next_12m_prepayment_flag,0.1721,moderate shift
+2017-09,credit_score,19.3578,MAJOR shift
+2017-09,ltv,23.4876,MAJOR shift
+2017-09,dti,23.4876,MAJOR shift
+2017-09,original_term_months,0.5482,MAJOR shift
+2017-10,month_index,12.3651,MAJOR shift
+2017-10,loan_age_months,12.3651,MAJOR shift
+2017-10,remaining_term_months,19.3614,MAJOR shift
+2017-10,original_balance,23.3903,MAJOR shift
+2017-10,current_balance,23.2362,MAJOR shift
+2017-10,interest_rate,23.339,MAJOR shift
+2017-10,vintage_year,0.0,stable
+2017-10,days_past_due,1.1819,MAJOR shift
+2017-10,prepayment_flag,0.0,stable
+2017-10,default_flag,0.0,stable
+2017-10,next_3m_delinquency_flag,1.8632,MAJOR shift
+2017-10,next_6m_delinquency_flag,1.8632,MAJOR shift
+2017-10,next_12m_default_flag,1.4188,MAJOR shift
+2017-10,next_12m_prepayment_flag,0.2772,MAJOR shift
+2017-10,credit_score,19.4128,MAJOR shift
+2017-10,ltv,23.2876,MAJOR shift
+2017-10,dti,23.2876,MAJOR shift
+2017-10,original_term_months,1.9873,MAJOR shift
+2017-11,month_index,23.9494,MAJOR shift
+2017-11,loan_age_months,23.9494,MAJOR shift
+2017-11,remaining_term_months,23.3807,MAJOR shift
+2017-11,original_balance,19.2658,MAJOR shift
+2017-11,current_balance,23.274,MAJOR shift
+2017-11,interest_rate,19.2658,MAJOR shift
+2017-11,vintage_year,0.0,stable
+2017-11,days_past_due,0.4076,MAJOR shift
+2017-11,prepayment_flag,0.4076,MAJOR shift
+2017-11,default_flag,0.0,stable
+2017-11,next_3m_delinquency_flag,0.445,MAJOR shift
+2017-11,next_6m_delinquency_flag,0.0,stable
+2017-11,next_12m_default_flag,0.0,stable
+2017-11,next_12m_prepayment_flag,0.4085,MAJOR shift
+2017-11,credit_score,23.434,MAJOR shift
+2017-11,ltv,23.274,MAJOR shift
+2017-11,dti,23.274,MAJOR shift
+2017-11,original_term_months,0.1816,moderate shift
+2017-12,month_index,15.1984,MAJOR shift
+2017-12,loan_age_months,15.1984,MAJOR shift
+2017-12,remaining_term_months,18.6052,MAJOR shift
+2017-12,original_balance,23.5041,MAJOR shift
+2017-12,current_balance,23.5041,MAJOR shift
+2017-12,interest_rate,23.4411,MAJOR shift
+2017-12,vintage_year,0.0,stable
+2017-12,days_past_due,0.4896,MAJOR shift
+2017-12,prepayment_flag,0.4896,MAJOR shift
+2017-12,default_flag,0.4896,MAJOR shift
+2017-12,next_3m_delinquency_flag,0.0,stable
+2017-12,next_6m_delinquency_flag,0.0,stable
+2017-12,next_12m_default_flag,0.0,stable
+2017-12,next_12m_prepayment_flag,0.5945,MAJOR shift
+2017-12,credit_score,23.4411,MAJOR shift
+2017-12,ltv,23.4411,MAJOR shift
+2017-12,dti,23.4411,MAJOR shift
+2017-12,original_term_months,1.1351,MAJOR shift
+2018-01,month_index,22.6612,MAJOR shift
+2018-01,loan_age_months,22.6612,MAJOR shift
+2018-01,remaining_term_months,21.5993,MAJOR shift
+2018-01,original_balance,12.5386,MAJOR shift
+2018-01,current_balance,21.6679,MAJOR shift
+2018-01,interest_rate,12.5472,MAJOR shift
+2018-01,vintage_year,0.1111,moderate shift
+2018-01,days_past_due,0.2578,MAJOR shift
+2018-01,prepayment_flag,0.0514,stable
+2018-01,default_flag,0.0,stable
+2018-01,next_3m_delinquency_flag,0.8773,MAJOR shift
+2018-01,next_6m_delinquency_flag,0.5863,MAJOR shift
+2018-01,next_12m_default_flag,0.5186,MAJOR shift
+2018-01,next_12m_prepayment_flag,0.4878,MAJOR shift
+2018-01,credit_score,12.6972,MAJOR shift
+2018-01,ltv,12.4979,MAJOR shift
+2018-01,dti,12.5226,MAJOR shift
+2018-01,original_term_months,0.8028,MAJOR shift
+2018-02,month_index,11.1528,MAJOR shift
+2018-02,loan_age_months,11.1528,MAJOR shift
+2018-02,remaining_term_months,11.3402,MAJOR shift
+2018-02,original_balance,15.8067,MAJOR shift
+2018-02,current_balance,20.9418,MAJOR shift
+2018-02,interest_rate,15.4442,MAJOR shift
+2018-02,vintage_year,0.0929,stable
+2018-02,days_past_due,0.1091,moderate shift
+2018-02,prepayment_flag,0.0272,stable
+2018-02,default_flag,0.0,stable
+2018-02,next_3m_delinquency_flag,1.0042,MAJOR shift
+2018-02,next_6m_delinquency_flag,0.5899,MAJOR shift
+2018-02,next_12m_default_flag,0.7977,MAJOR shift
+2018-02,next_12m_prepayment_flag,0.4206,MAJOR shift
+2018-02,credit_score,12.2501,MAJOR shift
+2018-02,ltv,15.3883,MAJOR shift
+2018-02,dti,18.1575,MAJOR shift
+2018-02,original_term_months,0.827,MAJOR shift
+2018-03,month_index,10.469,MAJOR shift
+2018-03,loan_age_months,10.469,MAJOR shift
+2018-03,remaining_term_months,10.5303,MAJOR shift
+2018-03,original_balance,12.2257,MAJOR shift
+2018-03,current_balance,20.4844,MAJOR shift
+2018-03,interest_rate,12.5707,MAJOR shift
+2018-03,vintage_year,0.1433,moderate shift
+2018-03,days_past_due,0.1828,moderate shift
+2018-03,prepayment_flag,0.0163,stable
+2018-03,default_flag,0.0,stable
+2018-03,next_3m_delinquency_flag,1.0808,MAJOR shift
+2018-03,next_6m_delinquency_flag,0.7121,MAJOR shift
+2018-03,next_12m_default_flag,0.8431,MAJOR shift
+2018-03,next_12m_prepayment_flag,0.3964,MAJOR shift
+2018-03,credit_score,12.0449,MAJOR shift
+2018-03,ltv,12.7338,MAJOR shift
+2018-03,dti,12.7419,MAJOR shift
+2018-03,original_term_months,0.92,MAJOR shift
+2018-04,month_index,13.5271,MAJOR shift
+2018-04,loan_age_months,13.5271,MAJOR shift
+2018-04,remaining_term_months,13.5892,MAJOR shift
+2018-04,original_balance,12.0576,MAJOR shift
+2018-04,current_balance,20.2154,MAJOR shift
+2018-04,interest_rate,12.1657,MAJOR shift
+2018-04,vintage_year,0.0436,stable
+2018-04,days_past_due,0.3355,MAJOR shift
+2018-04,prepayment_flag,0.0436,stable
+2018-04,default_flag,0.0,stable
+2018-04,next_3m_delinquency_flag,1.0583,MAJOR shift
+2018-04,next_6m_delinquency_flag,0.7856,MAJOR shift
+2018-04,next_12m_default_flag,0.8277,MAJOR shift
+2018-04,next_12m_prepayment_flag,0.3696,MAJOR shift
+2018-04,credit_score,12.2957,MAJOR shift
+2018-04,ltv,12.786,MAJOR shift
+2018-04,dti,12.7887,MAJOR shift
+2018-04,original_term_months,1.0198,MAJOR shift
+2018-05,month_index,14.6803,MAJOR shift
+2018-05,loan_age_months,14.6803,MAJOR shift
+2018-05,remaining_term_months,14.5868,MAJOR shift
+2018-05,original_balance,12.2357,MAJOR shift
+2018-05,current_balance,19.997,MAJOR shift
+2018-05,interest_rate,12.2343,MAJOR shift
+2018-05,vintage_year,0.1456,moderate shift
+2018-05,days_past_due,0.3667,MAJOR shift
+2018-05,prepayment_flag,0.0607,stable
+2018-05,default_flag,0.0099,stable
+2018-05,next_3m_delinquency_flag,1.3236,MAJOR shift
+2018-05,next_6m_delinquency_flag,1.0089,MAJOR shift
+2018-05,next_12m_default_flag,0.9744,MAJOR shift
+2018-05,next_12m_prepayment_flag,0.379,MAJOR shift
+2018-05,credit_score,12.1722,MAJOR shift
+2018-05,ltv,12.8172,MAJOR shift
+2018-05,dti,12.8291,MAJOR shift
+2018-05,original_term_months,1.0458,MAJOR shift
+2018-06,month_index,12.6374,MAJOR shift
+2018-06,loan_age_months,12.6374,MAJOR shift
+2018-06,remaining_term_months,12.5333,MAJOR shift
+2018-06,original_balance,12.3103,MAJOR shift
+2018-06,current_balance,19.8156,MAJOR shift
+2018-06,interest_rate,12.5586,MAJOR shift
+2018-06,vintage_year,0.1559,moderate shift
+2018-06,days_past_due,0.4545,MAJOR shift
+2018-06,prepayment_flag,0.0387,stable
+2018-06,default_flag,0.0081,stable
+2018-06,next_3m_delinquency_flag,1.3979,MAJOR shift
+2018-06,next_6m_delinquency_flag,0.9299,MAJOR shift
+2018-06,next_12m_default_flag,0.9586,MAJOR shift
+2018-06,next_12m_prepayment_flag,0.351,MAJOR shift
+2018-06,credit_score,12.3611,MAJOR shift
+2018-06,ltv,12.8274,MAJOR shift
+2018-06,dti,15.2339,MAJOR shift
+2018-06,original_term_months,1.0577,MAJOR shift
+2018-07,month_index,15.0008,MAJOR shift
+2018-07,loan_age_months,15.0008,MAJOR shift
+2018-07,remaining_term_months,14.8266,MAJOR shift
+2018-07,original_balance,12.1165,MAJOR shift
+2018-07,current_balance,19.6842,MAJOR shift
+2018-07,interest_rate,12.4505,MAJOR shift
+2018-07,vintage_year,0.135,moderate shift
+2018-07,days_past_due,0.3475,MAJOR shift
+2018-07,prepayment_flag,0.0828,stable
+2018-07,default_flag,0.043,stable
+2018-07,next_3m_delinquency_flag,1.3837,MAJOR shift
+2018-07,next_6m_delinquency_flag,0.9493,MAJOR shift
+2018-07,next_12m_default_flag,0.9758,MAJOR shift
+2018-07,next_12m_prepayment_flag,0.3746,MAJOR shift
+2018-07,credit_score,12.3524,MAJOR shift
+2018-07,ltv,12.8546,MAJOR shift
+2018-07,dti,15.2171,MAJOR shift
+2018-07,original_term_months,1.0983,MAJOR shift
+2018-08,month_index,12.7953,MAJOR shift
+2018-08,loan_age_months,12.7953,MAJOR shift
+2018-08,remaining_term_months,12.868,MAJOR shift
+2018-08,original_balance,12.0776,MAJOR shift
+2018-08,current_balance,19.5447,MAJOR shift
+2018-08,interest_rate,12.5185,MAJOR shift
+2018-08,vintage_year,0.1726,moderate shift
+2018-08,days_past_due,0.3213,MAJOR shift
+2018-08,prepayment_flag,0.0288,stable
+2018-08,default_flag,0.0288,stable
+2018-08,next_3m_delinquency_flag,1.3823,MAJOR shift
+2018-08,next_6m_delinquency_flag,0.9671,MAJOR shift
+2018-08,next_12m_default_flag,1.0375,MAJOR shift
+2018-08,next_12m_prepayment_flag,0.3737,MAJOR shift
+2018-08,credit_score,12.2376,MAJOR shift
+2018-08,ltv,12.8702,MAJOR shift
+2018-08,dti,15.1867,MAJOR shift
+2018-08,original_term_months,1.0479,MAJOR shift
+2018-09,month_index,13.0142,MAJOR shift
+2018-09,loan_age_months,13.0142,MAJOR shift
+2018-09,remaining_term_months,12.8769,MAJOR shift
+2018-09,original_balance,11.973,MAJOR shift
+2018-09,current_balance,19.4577,MAJOR shift
+2018-09,interest_rate,12.58,MAJOR shift
+2018-09,vintage_year,0.1267,moderate shift
+2018-09,days_past_due,0.5108,MAJOR shift
+2018-09,prepayment_flag,0.1103,moderate shift
+2018-09,default_flag,0.0398,stable
+2018-09,next_3m_delinquency_flag,1.448,MAJOR shift
+2018-09,next_6m_delinquency_flag,0.9188,MAJOR shift
+2018-09,next_12m_default_flag,1.071,MAJOR shift
+2018-09,next_12m_prepayment_flag,0.403,MAJOR shift
+2018-09,credit_score,12.1941,MAJOR shift
+2018-09,ltv,12.8937,MAJOR shift
+2018-09,dti,15.1764,MAJOR shift
+2018-09,original_term_months,1.0757,MAJOR shift
+2018-10,month_index,15.4761,MAJOR shift
+2018-10,loan_age_months,15.4761,MAJOR shift
+2018-10,remaining_term_months,15.1547,MAJOR shift
+2018-10,original_balance,12.022,MAJOR shift
+2018-10,current_balance,19.342,MAJOR shift
+2018-10,interest_rate,12.6068,MAJOR shift
+2018-10,vintage_year,0.1439,moderate shift
+2018-10,days_past_due,0.4557,MAJOR shift
+2018-10,prepayment_flag,0.0357,stable
+2018-10,default_flag,0.0702,stable
+2018-10,next_3m_delinquency_flag,1.4779,MAJOR shift
+2018-10,next_6m_delinquency_flag,0.9782,MAJOR shift
+2018-10,next_12m_default_flag,1.0958,MAJOR shift
+2018-10,next_12m_prepayment_flag,0.4085,MAJOR shift
+2018-10,credit_score,12.1352,MAJOR shift
+2018-10,ltv,12.9307,MAJOR shift
+2018-10,dti,12.9812,MAJOR shift
+2018-10,original_term_months,1.0403,MAJOR shift
+2018-11,month_index,15.5118,MAJOR shift
+2018-11,loan_age_months,15.5118,MAJOR shift
+2018-11,remaining_term_months,15.257,MAJOR shift
+2018-11,original_balance,11.908,MAJOR shift
+2018-11,current_balance,19.2406,MAJOR shift
+2018-11,interest_rate,12.63,MAJOR shift
+2018-11,vintage_year,0.1668,moderate shift
+2018-11,days_past_due,0.4841,MAJOR shift
+2018-11,prepayment_flag,0.0514,stable
+2018-11,default_flag,0.0451,stable
+2018-11,next_3m_delinquency_flag,1.4048,MAJOR shift
+2018-11,next_6m_delinquency_flag,0.961,MAJOR shift
+2018-11,next_12m_default_flag,1.0466,MAJOR shift
+2018-11,next_12m_prepayment_flag,0.4085,MAJOR shift
+2018-11,credit_score,12.094,MAJOR shift
+2018-11,ltv,12.9442,MAJOR shift
+2018-11,dti,13.008,MAJOR shift
+2018-11,original_term_months,1.0353,MAJOR shift
+2018-12,month_index,15.906,MAJOR shift
+2018-12,loan_age_months,15.906,MAJOR shift
+2018-12,remaining_term_months,15.6742,MAJOR shift
+2018-12,original_balance,11.954,MAJOR shift
+2018-12,current_balance,19.1692,MAJOR shift
+2018-12,interest_rate,12.6775,MAJOR shift
+2018-12,vintage_year,0.1141,moderate shift
+2018-12,days_past_due,0.5386,MAJOR shift
+2018-12,prepayment_flag,0.0528,stable
+2018-12,default_flag,0.0412,stable
+2018-12,next_3m_delinquency_flag,1.4512,MAJOR shift
+2018-12,next_6m_delinquency_flag,0.9635,MAJOR shift
+2018-12,next_12m_default_flag,1.0794,MAJOR shift
+2018-12,next_12m_prepayment_flag,0.4034,MAJOR shift
+2018-12,credit_score,11.9853,MAJOR shift
+2018-12,ltv,12.7386,MAJOR shift
+2018-12,dti,13.042,MAJOR shift
+2018-12,original_term_months,1.0636,MAJOR shift
+2019-01,month_index,15.6977,MAJOR shift
+2019-01,loan_age_months,15.6977,MAJOR shift
+2019-01,remaining_term_months,15.4721,MAJOR shift
+2019-01,original_balance,12.0316,MAJOR shift
+2019-01,current_balance,19.1029,MAJOR shift
+2019-01,interest_rate,12.6887,MAJOR shift
+2019-01,vintage_year,1.0809,MAJOR shift
+2019-01,days_past_due,0.5026,MAJOR shift
+2019-01,prepayment_flag,0.0542,stable
+2019-01,default_flag,0.0597,stable
+2019-01,next_3m_delinquency_flag,1.3574,MAJOR shift
+2019-01,next_6m_delinquency_flag,0.9409,MAJOR shift
+2019-01,next_12m_default_flag,0.9987,MAJOR shift
+2019-01,next_12m_prepayment_flag,0.43,MAJOR shift
+2019-01,credit_score,12.0376,MAJOR shift
+2019-01,ltv,12.7503,MAJOR shift
+2019-01,dti,13.0719,MAJOR shift
+2019-01,original_term_months,1.0477,MAJOR shift
+2019-02,month_index,15.8376,MAJOR shift
+2019-02,loan_age_months,15.8376,MAJOR shift
+2019-02,remaining_term_months,15.5307,MAJOR shift
+2019-02,original_balance,11.9843,MAJOR shift
+2019-02,current_balance,19.0355,MAJOR shift
+2019-02,interest_rate,12.5573,MAJOR shift
+2019-02,vintage_year,1.8861,MAJOR shift
+2019-02,days_past_due,0.4845,MAJOR shift
+2019-02,prepayment_flag,0.0768,stable
+2019-02,default_flag,0.0455,stable
+2019-02,next_3m_delinquency_flag,1.4303,MAJOR shift
+2019-02,next_6m_delinquency_flag,1.0108,MAJOR shift
+2019-02,next_12m_default_flag,1.0509,MAJOR shift
+2019-02,next_12m_prepayment_flag,0.4566,MAJOR shift
+2019-02,credit_score,12.0912,MAJOR shift
+2019-02,ltv,12.7676,MAJOR shift
+2019-02,dti,13.089,MAJOR shift
+2019-02,original_term_months,1.0892,MAJOR shift
+2019-03,month_index,15.9679,MAJOR shift
+2019-03,loan_age_months,15.9679,MAJOR shift
+2019-03,remaining_term_months,15.8878,MAJOR shift
+2019-03,original_balance,11.9584,MAJOR shift
+2019-03,current_balance,18.9933,MAJOR shift
+2019-03,interest_rate,12.5661,MAJOR shift
+2019-03,vintage_year,2.5913,MAJOR shift
+2019-03,days_past_due,0.4951,MAJOR shift
+2019-03,prepayment_flag,0.048,stable
+2019-03,default_flag,0.0881,stable
+2019-03,next_3m_delinquency_flag,1.3706,MAJOR shift
+2019-03,next_6m_delinquency_flag,0.9842,MAJOR shift
+2019-03,next_12m_default_flag,1.0379,MAJOR shift
+2019-03,next_12m_prepayment_flag,0.4172,MAJOR shift
+2019-03,credit_score,11.9901,MAJOR shift
+2019-03,ltv,12.5458,MAJOR shift
+2019-03,dti,13.1027,MAJOR shift
+2019-03,original_term_months,1.1055,MAJOR shift
+2019-04,month_index,14.0188,MAJOR shift
+2019-04,loan_age_months,14.0188,MAJOR shift
+2019-04,remaining_term_months,15.8074,MAJOR shift
+2019-04,original_balance,11.9021,MAJOR shift
+2019-04,current_balance,18.9253,MAJOR shift
+2019-04,interest_rate,12.5864,MAJOR shift
+2019-04,vintage_year,3.468,MAJOR shift
+2019-04,days_past_due,0.4462,MAJOR shift
+2019-04,prepayment_flag,0.0537,stable
+2019-04,default_flag,0.0491,stable
+2019-04,next_3m_delinquency_flag,1.3595,MAJOR shift
+2019-04,next_6m_delinquency_flag,1.0233,MAJOR shift
+2019-04,next_12m_default_flag,1.0428,MAJOR shift
+2019-04,next_12m_prepayment_flag,0.4374,MAJOR shift
+2019-04,credit_score,12.0548,MAJOR shift
+2019-04,ltv,14.8656,MAJOR shift
+2019-04,dti,13.1263,MAJOR shift
+2019-04,original_term_months,1.088,MAJOR shift
+2019-05,month_index,15.7227,MAJOR shift
+2019-05,loan_age_months,15.7227,MAJOR shift
+2019-05,remaining_term_months,15.4973,MAJOR shift
+2019-05,original_balance,11.9794,MAJOR shift
+2019-05,current_balance,18.8503,MAJOR shift
+2019-05,interest_rate,12.6111,MAJOR shift
+2019-05,vintage_year,4.2002,MAJOR shift
+2019-05,days_past_due,0.5198,MAJOR shift
+2019-05,prepayment_flag,0.0548,stable
+2019-05,default_flag,0.0252,stable
+2019-05,next_3m_delinquency_flag,1.4053,MAJOR shift
+2019-05,next_6m_delinquency_flag,1.0123,MAJOR shift
+2019-05,next_12m_default_flag,1.0703,MAJOR shift
+2019-05,next_12m_prepayment_flag,0.4442,MAJOR shift
+2019-05,credit_score,12.0822,MAJOR shift
+2019-05,ltv,12.5915,MAJOR shift
+2019-05,dti,13.1552,MAJOR shift
+2019-05,original_term_months,1.0744,MAJOR shift
+2019-06,month_index,15.8439,MAJOR shift
+2019-06,loan_age_months,15.8439,MAJOR shift
+2019-06,remaining_term_months,15.5479,MAJOR shift
+2019-06,original_balance,11.9558,MAJOR shift
+2019-06,current_balance,18.8216,MAJOR shift
+2019-06,interest_rate,12.6318,MAJOR shift
+2019-06,vintage_year,4.7939,MAJOR shift
+2019-06,days_past_due,0.516,MAJOR shift
+2019-06,prepayment_flag,0.0819,stable
+2019-06,default_flag,0.0439,stable
+2019-06,next_3m_delinquency_flag,1.4274,MAJOR shift
+2019-06,next_6m_delinquency_flag,1.055,MAJOR shift
+2019-06,next_12m_default_flag,1.1205,MAJOR shift
+2019-06,next_12m_prepayment_flag,0.4406,MAJOR shift
+2019-06,credit_score,12.0652,MAJOR shift
+2019-06,ltv,12.842,MAJOR shift
+2019-06,dti,13.1778,MAJOR shift
+2019-06,original_term_months,1.1145,MAJOR shift
+2019-07,month_index,13.9685,MAJOR shift
+2019-07,loan_age_months,13.9685,MAJOR shift
+2019-07,remaining_term_months,13.7464,MAJOR shift
+2019-07,original_balance,12.0148,MAJOR shift
+2019-07,current_balance,18.7836,MAJOR shift
+2019-07,interest_rate,12.6486,MAJOR shift
+2019-07,vintage_year,5.4103,MAJOR shift
+2019-07,days_past_due,0.4776,MAJOR shift
+2019-07,prepayment_flag,0.0853,stable
+2019-07,default_flag,0.0649,stable
+2019-07,next_3m_delinquency_flag,1.4337,MAJOR shift
+2019-07,next_6m_delinquency_flag,1.0304,MAJOR shift
+2019-07,next_12m_default_flag,1.1175,MAJOR shift
+2019-07,next_12m_prepayment_flag,0.4698,MAJOR shift
+2019-07,credit_score,11.9826,MAJOR shift
+2019-07,ltv,12.7172,MAJOR shift
+2019-07,dti,15.2123,MAJOR shift
+2019-07,original_term_months,1.1063,MAJOR shift
+2019-08,month_index,13.9627,MAJOR shift
+2019-08,loan_age_months,13.9627,MAJOR shift
+2019-08,remaining_term_months,13.6689,MAJOR shift
+2019-08,original_balance,12.0977,MAJOR shift
+2019-08,current_balance,18.7353,MAJOR shift
+2019-08,interest_rate,12.6758,MAJOR shift
+2019-08,vintage_year,5.9032,MAJOR shift
+2019-08,days_past_due,0.5177,MAJOR shift
+2019-08,prepayment_flag,0.0509,stable
+2019-08,default_flag,0.0819,stable
+2019-08,next_3m_delinquency_flag,1.3678,MAJOR shift
+2019-08,next_6m_delinquency_flag,1.0202,MAJOR shift
+2019-08,next_12m_default_flag,1.1394,MAJOR shift
+2019-08,next_12m_prepayment_flag,0.4501,MAJOR shift
+2019-08,credit_score,12.0285,MAJOR shift
+2019-08,ltv,12.7287,MAJOR shift
+2019-08,dti,15.212,MAJOR shift
+2019-08,original_term_months,1.1112,MAJOR shift
+2019-09,month_index,15.9808,MAJOR shift
+2019-09,loan_age_months,15.9808,MAJOR shift
+2019-09,remaining_term_months,15.7035,MAJOR shift
+2019-09,original_balance,12.1364,MAJOR shift
+2019-09,current_balance,18.7027,MAJOR shift
+2019-09,interest_rate,12.7022,MAJOR shift
+2019-09,vintage_year,6.3496,MAJOR shift
+2019-09,days_past_due,0.5051,MAJOR shift
+2019-09,prepayment_flag,0.0821,stable
+2019-09,default_flag,0.0596,stable
+2019-09,next_3m_delinquency_flag,1.3384,MAJOR shift
+2019-09,next_6m_delinquency_flag,1.0514,MAJOR shift
+2019-09,next_12m_default_flag,1.137,MAJOR shift
+2019-09,next_12m_prepayment_flag,0.4671,MAJOR shift
+2019-09,credit_score,12.056,MAJOR shift
+2019-09,ltv,12.74,MAJOR shift
+2019-09,dti,14.9851,MAJOR shift
+2019-09,original_term_months,1.1402,MAJOR shift
+2019-10,month_index,13.5633,MAJOR shift
+2019-10,loan_age_months,13.5633,MAJOR shift
+2019-10,remaining_term_months,13.6417,MAJOR shift
+2019-10,original_balance,12.1717,MAJOR shift
+2019-10,current_balance,18.6608,MAJOR shift
+2019-10,interest_rate,14.6991,MAJOR shift
+2019-10,vintage_year,6.8483,MAJOR shift
+2019-10,days_past_due,0.4497,MAJOR shift
+2019-10,prepayment_flag,0.0572,stable
+2019-10,default_flag,0.0751,stable
+2019-10,next_3m_delinquency_flag,1.3211,MAJOR shift
+2019-10,next_6m_delinquency_flag,0.9631,MAJOR shift
+2019-10,next_12m_default_flag,1.1048,MAJOR shift
+2019-10,next_12m_prepayment_flag,0.4509,MAJOR shift
+2019-10,credit_score,12.0198,MAJOR shift
+2019-10,ltv,12.7627,MAJOR shift
+2019-10,dti,15.2168,MAJOR shift
+2019-10,original_term_months,1.1357,MAJOR shift
+2019-11,month_index,11.9529,MAJOR shift
+2019-11,loan_age_months,11.9529,MAJOR shift
+2019-11,remaining_term_months,11.9386,MAJOR shift
+2019-11,original_balance,12.1239,MAJOR shift
+2019-11,current_balance,18.6086,MAJOR shift
+2019-11,interest_rate,14.8433,MAJOR shift
+2019-11,vintage_year,7.2525,MAJOR shift
+2019-11,days_past_due,0.4464,MAJOR shift
+2019-11,prepayment_flag,0.0553,stable
+2019-11,default_flag,0.0417,stable
+2019-11,next_3m_delinquency_flag,1.3864,MAJOR shift
+2019-11,next_6m_delinquency_flag,1.0153,MAJOR shift
+2019-11,next_12m_default_flag,1.1578,MAJOR shift
+2019-11,next_12m_prepayment_flag,0.4485,MAJOR shift
+2019-11,credit_score,12.0742,MAJOR shift
+2019-11,ltv,14.7376,MAJOR shift
+2019-11,dti,17.1768,MAJOR shift
+2019-11,original_term_months,1.1456,MAJOR shift
+2019-12,month_index,12.1255,MAJOR shift
+2019-12,loan_age_months,12.1255,MAJOR shift
+2019-12,remaining_term_months,12.086,MAJOR shift
+2019-12,original_balance,12.135,MAJOR shift
+2019-12,current_balance,18.5857,MAJOR shift
+2019-12,interest_rate,14.721,MAJOR shift
+2019-12,vintage_year,7.6386,MAJOR shift
+2019-12,days_past_due,0.4804,MAJOR shift
+2019-12,prepayment_flag,0.0533,stable
+2019-12,default_flag,0.0533,stable
+2019-12,next_3m_delinquency_flag,1.3496,MAJOR shift
+2019-12,next_6m_delinquency_flag,1.0427,MAJOR shift
+2019-12,next_12m_default_flag,1.1635,MAJOR shift
+2019-12,next_12m_prepayment_flag,0.4321,MAJOR shift
+2019-12,credit_score,12.104,MAJOR shift
+2019-12,ltv,12.7998,MAJOR shift
+2019-12,dti,14.9899,MAJOR shift
+2019-12,original_term_months,1.1863,MAJOR shift
+2020-01,month_index,12.0392,MAJOR shift
+2020-01,loan_age_months,12.0392,MAJOR shift
+2020-01,remaining_term_months,11.979,MAJOR shift
+2020-01,original_balance,12.1272,MAJOR shift
+2020-01,current_balance,18.5476,MAJOR shift
+2020-01,interest_rate,14.6933,MAJOR shift
+2020-01,vintage_year,7.8278,MAJOR shift
+2020-01,days_past_due,0.4543,MAJOR shift
+2020-01,prepayment_flag,0.0386,stable
+2020-01,default_flag,0.0771,stable
+2020-01,next_3m_delinquency_flag,1.3706,MAJOR shift
+2020-01,next_6m_delinquency_flag,1.0444,MAJOR shift
+2020-01,next_12m_default_flag,1.1406,MAJOR shift
+2020-01,next_12m_prepayment_flag,0.4122,MAJOR shift
+2020-01,credit_score,12.1252,MAJOR shift
+2020-01,ltv,12.8176,MAJOR shift
+2020-01,dti,14.8569,MAJOR shift
+2020-01,original_term_months,1.215,MAJOR shift
+2020-02,month_index,12.2613,MAJOR shift
+2020-02,loan_age_months,12.2613,MAJOR shift
+2020-02,remaining_term_months,12.1814,MAJOR shift
+2020-02,original_balance,12.0934,MAJOR shift
+2020-02,current_balance,18.5287,MAJOR shift
+2020-02,interest_rate,14.663,MAJOR shift
+2020-02,vintage_year,8.0633,MAJOR shift
+2020-02,days_past_due,0.4588,MAJOR shift
+2020-02,prepayment_flag,0.0712,stable
+2020-02,default_flag,0.0712,stable
+2020-02,next_3m_delinquency_flag,1.441,MAJOR shift
+2020-02,next_6m_delinquency_flag,1.0557,MAJOR shift
+2020-02,next_12m_default_flag,1.1493,MAJOR shift
+2020-02,next_12m_prepayment_flag,0.4255,MAJOR shift
+2020-02,credit_score,12.0897,MAJOR shift
+2020-02,ltv,12.5942,MAJOR shift
+2020-02,dti,14.857,MAJOR shift
+2020-02,original_term_months,1.1822,MAJOR shift
+2020-03,month_index,12.0872,MAJOR shift
+2020-03,loan_age_months,12.0872,MAJOR shift
+2020-03,remaining_term_months,11.95,MAJOR shift
+2020-03,original_balance,12.1142,MAJOR shift
+2020-03,current_balance,18.5003,MAJOR shift
+2020-03,interest_rate,14.6426,MAJOR shift
+2020-03,vintage_year,8.2738,MAJOR shift
+2020-03,days_past_due,0.4685,MAJOR shift
+2020-03,prepayment_flag,0.0756,stable
+2020-03,default_flag,0.0632,stable
+2020-03,next_3m_delinquency_flag,1.462,MAJOR shift
+2020-03,next_6m_delinquency_flag,1.0413,MAJOR shift
+2020-03,next_12m_default_flag,1.1283,MAJOR shift
+2020-03,next_12m_prepayment_flag,0.4367,MAJOR shift
+2020-03,credit_score,12.072,MAJOR shift
+2020-03,ltv,12.6084,MAJOR shift
+2020-03,dti,14.8623,MAJOR shift
+2020-03,original_term_months,1.2111,MAJOR shift
+2020-04,month_index,12.3783,MAJOR shift
+2020-04,loan_age_months,12.3783,MAJOR shift
+2020-04,remaining_term_months,12.3107,MAJOR shift
+2020-04,original_balance,12.1389,MAJOR shift
+2020-04,current_balance,18.468,MAJOR shift
+2020-04,interest_rate,14.6297,MAJOR shift
+2020-04,vintage_year,8.5056,MAJOR shift
+2020-04,days_past_due,0.538,MAJOR shift
+2020-04,prepayment_flag,0.0641,stable
+2020-04,default_flag,0.0612,stable
+2020-04,next_3m_delinquency_flag,1.4695,MAJOR shift
+2020-04,next_6m_delinquency_flag,1.095,MAJOR shift
+2020-04,next_12m_default_flag,1.1343,MAJOR shift
+2020-04,next_12m_prepayment_flag,0.4554,MAJOR shift
+2020-04,credit_score,12.0497,MAJOR shift
+2020-04,ltv,12.628,MAJOR shift
+2020-04,dti,14.7777,MAJOR shift
+2020-04,original_term_months,1.1988,MAJOR shift
+2020-05,month_index,12.2533,MAJOR shift
+2020-05,loan_age_months,12.2533,MAJOR shift
+2020-05,remaining_term_months,12.0859,MAJOR shift
+2020-05,original_balance,12.0848,MAJOR shift
+2020-05,current_balance,18.4357,MAJOR shift
+2020-05,interest_rate,14.76,MAJOR shift
+2020-05,vintage_year,8.8157,MAJOR shift
+2020-05,days_past_due,0.5471,MAJOR shift
+2020-05,prepayment_flag,0.0534,stable
+2020-05,default_flag,0.0649,stable
+2020-05,next_3m_delinquency_flag,1.5008,MAJOR shift
+2020-05,next_6m_delinquency_flag,1.0885,MAJOR shift
+2020-05,next_12m_default_flag,1.1292,MAJOR shift
+2020-05,next_12m_prepayment_flag,0.4481,MAJOR shift
+2020-05,credit_score,12.0638,MAJOR shift
+2020-05,ltv,12.6464,MAJOR shift
+2020-05,dti,14.7823,MAJOR shift
+2020-05,original_term_months,1.1987,MAJOR shift
+2020-06,month_index,12.0404,MAJOR shift
+2020-06,loan_age_months,12.0404,MAJOR shift
+2020-06,remaining_term_months,11.8982,MAJOR shift
+2020-06,original_balance,12.1731,MAJOR shift
+2020-06,current_balance,18.4115,MAJOR shift
+2020-06,interest_rate,14.6124,MAJOR shift
+2020-06,vintage_year,9.0168,MAJOR shift
+2020-06,days_past_due,0.5499,MAJOR shift
+2020-06,prepayment_flag,0.0798,stable
+2020-06,default_flag,0.0545,stable
+2020-06,next_3m_delinquency_flag,1.4948,MAJOR shift
+2020-06,next_6m_delinquency_flag,1.1049,MAJOR shift
+2020-06,next_12m_default_flag,1.1481,MAJOR shift
+2020-06,next_12m_prepayment_flag,0.4662,MAJOR shift
+2020-06,credit_score,12.1103,MAJOR shift
+2020-06,ltv,12.7962,MAJOR shift
+2020-06,dti,14.7849,MAJOR shift
+2020-06,original_term_months,1.1758,MAJOR shift
+2020-07,month_index,12.1957,MAJOR shift
+2020-07,loan_age_months,12.1957,MAJOR shift
+2020-07,remaining_term_months,12.1079,MAJOR shift
+2020-07,original_balance,12.2197,MAJOR shift
+2020-07,current_balance,18.392,MAJOR shift
+2020-07,interest_rate,14.6107,MAJOR shift
+2020-07,vintage_year,9.246,MAJOR shift
+2020-07,days_past_due,0.5311,MAJOR shift
+2020-07,prepayment_flag,0.045,stable
+2020-07,default_flag,0.1003,moderate shift
+2020-07,next_3m_delinquency_flag,1.4087,MAJOR shift
+2020-07,next_6m_delinquency_flag,1.0619,MAJOR shift
+2020-07,next_12m_default_flag,1.087,MAJOR shift
+2020-07,next_12m_prepayment_flag,0.4418,MAJOR shift
+2020-07,credit_score,12.0159,MAJOR shift
+2020-07,ltv,12.8098,MAJOR shift
+2020-07,dti,14.7928,MAJOR shift
+2020-07,original_term_months,1.2083,MAJOR shift
+2020-08,month_index,12.1089,MAJOR shift
+2020-08,loan_age_months,12.1089,MAJOR shift
+2020-08,remaining_term_months,12.0161,MAJOR shift
+2020-08,original_balance,12.219,MAJOR shift
+2020-08,current_balance,18.3817,MAJOR shift
+2020-08,interest_rate,14.7474,MAJOR shift
+2020-08,vintage_year,9.4675,MAJOR shift
+2020-08,days_past_due,0.4968,MAJOR shift
+2020-08,prepayment_flag,0.0704,stable
+2020-08,default_flag,0.095,stable
+2020-08,next_3m_delinquency_flag,1.3916,MAJOR shift
+2020-08,next_6m_delinquency_flag,1.0159,MAJOR shift
+2020-08,next_12m_default_flag,1.0441,MAJOR shift
+2020-08,next_12m_prepayment_flag,0.4452,MAJOR shift
+2020-08,credit_score,12.0642,MAJOR shift
+2020-08,ltv,12.8228,MAJOR shift
+2020-08,dti,14.7994,MAJOR shift
+2020-08,original_term_months,1.1794,MAJOR shift
+2020-09,month_index,12.3264,MAJOR shift
+2020-09,loan_age_months,12.3264,MAJOR shift
+2020-09,remaining_term_months,12.112,MAJOR shift
+2020-09,original_balance,12.2624,MAJOR shift
+2020-09,current_balance,18.3383,MAJOR shift
+2020-09,interest_rate,14.7433,MAJOR shift
+2020-09,vintage_year,9.6519,MAJOR shift
+2020-09,days_past_due,0.5109,MAJOR shift
+2020-09,prepayment_flag,0.048,stable
+2020-09,default_flag,0.0794,stable
+2020-09,next_3m_delinquency_flag,1.3943,MAJOR shift
+2020-09,next_6m_delinquency_flag,1.0027,MAJOR shift
+2020-09,next_12m_default_flag,1.0069,MAJOR shift
+2020-09,next_12m_prepayment_flag,0.4428,MAJOR shift
+2020-09,credit_score,12.0078,MAJOR shift
+2020-09,ltv,12.8328,MAJOR shift
+2020-09,dti,14.8113,MAJOR shift
+2020-09,original_term_months,1.1715,MAJOR shift
+2020-10,month_index,12.242,MAJOR shift
+2020-10,loan_age_months,12.242,MAJOR shift
+2020-10,remaining_term_months,12.0873,MAJOR shift
+2020-10,original_balance,12.2365,MAJOR shift
+2020-10,current_balance,18.3309,MAJOR shift
+2020-10,interest_rate,14.7473,MAJOR shift
+2020-10,vintage_year,9.849,MAJOR shift
+2020-10,days_past_due,0.4651,MAJOR shift
+2020-10,prepayment_flag,0.0701,stable
+2020-10,default_flag,0.0701,stable
+2020-10,next_3m_delinquency_flag,1.3051,MAJOR shift
+2020-10,next_6m_delinquency_flag,0.9678,MAJOR shift
+2020-10,next_12m_default_flag,0.9591,MAJOR shift
+2020-10,next_12m_prepayment_flag,0.4457,MAJOR shift
+2020-10,credit_score,12.0707,MAJOR shift
+2020-10,ltv,12.8401,MAJOR shift
+2020-10,dti,14.8169,MAJOR shift
+2020-10,original_term_months,1.1892,MAJOR shift
+2020-11,month_index,12.2416,MAJOR shift
+2020-11,loan_age_months,12.2416,MAJOR shift
+2020-11,remaining_term_months,12.1601,MAJOR shift
+2020-11,original_balance,12.1307,MAJOR shift
+2020-11,current_balance,18.3039,MAJOR shift
+2020-11,interest_rate,14.7497,MAJOR shift
+2020-11,vintage_year,10.0349,MAJOR shift
+2020-11,days_past_due,0.5052,MAJOR shift
+2020-11,prepayment_flag,0.0509,stable
+2020-11,default_flag,0.076,stable
+2020-11,next_3m_delinquency_flag,1.3208,MAJOR shift
+2020-11,next_6m_delinquency_flag,0.9265,MAJOR shift
+2020-11,next_12m_default_flag,0.9525,MAJOR shift
+2020-11,next_12m_prepayment_flag,0.4413,MAJOR shift
+2020-11,credit_score,12.0759,MAJOR shift
+2020-11,ltv,12.8546,MAJOR shift
+2020-11,dti,14.827,MAJOR shift
+2020-11,original_term_months,1.1821,MAJOR shift
+2020-12,month_index,12.3109,MAJOR shift
+2020-12,loan_age_months,12.3109,MAJOR shift
+2020-12,remaining_term_months,12.2046,MAJOR shift
+2020-12,original_balance,12.1646,MAJOR shift
+2020-12,current_balance,18.2867,MAJOR shift
+2020-12,interest_rate,14.759,MAJOR shift
+2020-12,vintage_year,10.2414,MAJOR shift
+2020-12,days_past_due,0.5004,MAJOR shift
+2020-12,prepayment_flag,0.0618,stable
+2020-12,default_flag,0.0843,stable
+2020-12,next_3m_delinquency_flag,1.268,MAJOR shift
+2020-12,next_6m_delinquency_flag,0.8775,MAJOR shift
+2020-12,next_12m_default_flag,0.913,MAJOR shift
+2020-12,next_12m_prepayment_flag,0.4316,MAJOR shift
+2020-12,credit_score,12.0824,MAJOR shift
+2020-12,ltv,12.7303,MAJOR shift
+2020-12,dti,14.828,MAJOR shift
+2020-12,original_term_months,1.1642,MAJOR shift
+2021-01,month_index,12.4687,MAJOR shift
+2021-01,loan_age_months,12.4687,MAJOR shift
+2021-01,remaining_term_months,12.2121,MAJOR shift
+2021-01,original_balance,12.1863,MAJOR shift
+2021-01,current_balance,18.2685,MAJOR shift
+2021-01,interest_rate,14.752,MAJOR shift
+2021-01,vintage_year,10.318,MAJOR shift
+2021-01,days_past_due,0.426,MAJOR shift
+2021-01,prepayment_flag,0.0753,stable
+2021-01,default_flag,0.0559,stable
+2021-01,next_3m_delinquency_flag,1.2191,MAJOR shift
+2021-01,next_6m_delinquency_flag,0.8641,MAJOR shift
+2021-01,next_12m_default_flag,0.9469,MAJOR shift
+2021-01,next_12m_prepayment_flag,0.4342,MAJOR shift
+2021-01,credit_score,12.0706,MAJOR shift
+2021-01,ltv,12.8798,MAJOR shift
+2021-01,dti,14.8288,MAJOR shift
+2021-01,original_term_months,1.1743,MAJOR shift
+2021-02,month_index,12.1245,MAJOR shift
+2021-02,loan_age_months,12.1245,MAJOR shift
+2021-02,remaining_term_months,12.0944,MAJOR shift
+2021-02,original_balance,12.0973,MAJOR shift
+2021-02,current_balance,18.2423,MAJOR shift
+2021-02,interest_rate,14.7542,MAJOR shift
+2021-02,vintage_year,10.4234,MAJOR shift
+2021-02,days_past_due,0.4695,MAJOR shift
+2021-02,prepayment_flag,0.0501,stable
+2021-02,default_flag,0.0787,stable
+2021-02,next_3m_delinquency_flag,1.1612,MAJOR shift
+2021-02,next_6m_delinquency_flag,0.811,MAJOR shift
+2021-02,next_12m_default_flag,0.89,MAJOR shift
+2021-02,next_12m_prepayment_flag,0.4279,MAJOR shift
+2021-02,credit_score,12.0615,MAJOR shift
+2021-02,ltv,12.8919,MAJOR shift
+2021-02,dti,13.0035,MAJOR shift
+2021-02,original_term_months,1.1686,MAJOR shift
+2021-03,month_index,12.3138,MAJOR shift
+2021-03,loan_age_months,12.3138,MAJOR shift
+2021-03,remaining_term_months,12.2367,MAJOR shift
+2021-03,original_balance,12.1574,MAJOR shift
+2021-03,current_balance,18.2246,MAJOR shift
+2021-03,interest_rate,14.7559,MAJOR shift
+2021-03,vintage_year,10.5312,MAJOR shift
+2021-03,days_past_due,0.4218,MAJOR shift
+2021-03,prepayment_flag,0.0605,stable
+2021-03,default_flag,0.0582,stable
+2021-03,next_3m_delinquency_flag,1.1699,MAJOR shift
+2021-03,next_6m_delinquency_flag,0.8407,MAJOR shift
+2021-03,next_12m_default_flag,0.8998,MAJOR shift
+2021-03,next_12m_prepayment_flag,0.4244,MAJOR shift
+2021-03,credit_score,12.0909,MAJOR shift
+2021-03,ltv,13.1374,MAJOR shift
+2021-03,dti,13.0176,MAJOR shift
+2021-03,original_term_months,1.1688,MAJOR shift
+2021-04,month_index,12.156,MAJOR shift
+2021-04,loan_age_months,12.156,MAJOR shift
+2021-04,remaining_term_months,12.1582,MAJOR shift
+2021-04,original_balance,12.1531,MAJOR shift
+2021-04,current_balance,18.1964,MAJOR shift
+2021-04,interest_rate,14.7623,MAJOR shift
+2021-04,vintage_year,10.6348,MAJOR shift
+2021-04,days_past_due,0.3882,MAJOR shift
+2021-04,prepayment_flag,0.0548,stable
+2021-04,default_flag,0.0548,stable
+2021-04,next_3m_delinquency_flag,1.2101,MAJOR shift
+2021-04,next_6m_delinquency_flag,0.862,MAJOR shift
+2021-04,next_12m_default_flag,0.9232,MAJOR shift
+2021-04,next_12m_prepayment_flag,0.4259,MAJOR shift
+2021-04,credit_score,12.1079,MAJOR shift
+2021-04,ltv,12.9133,MAJOR shift
+2021-04,dti,13.0251,MAJOR shift
+2021-04,original_term_months,1.1971,MAJOR shift
+2021-05,month_index,12.384,MAJOR shift
+2021-05,loan_age_months,12.384,MAJOR shift
+2021-05,remaining_term_months,12.2142,MAJOR shift
+2021-05,original_balance,12.1758,MAJOR shift
+2021-05,current_balance,18.1806,MAJOR shift
+2021-05,interest_rate,14.7698,MAJOR shift
+2021-05,vintage_year,10.7575,MAJOR shift
+2021-05,days_past_due,0.4231,MAJOR shift
+2021-05,prepayment_flag,0.0692,stable
+2021-05,default_flag,0.0491,stable
+2021-05,next_3m_delinquency_flag,1.2855,MAJOR shift
+2021-05,next_6m_delinquency_flag,0.8779,MAJOR shift
+2021-05,next_12m_default_flag,0.938,MAJOR shift
+2021-05,next_12m_prepayment_flag,0.4259,MAJOR shift
+2021-05,credit_score,12.0401,MAJOR shift
+2021-05,ltv,12.9203,MAJOR shift
+2021-05,dti,13.0369,MAJOR shift
+2021-05,original_term_months,1.1841,MAJOR shift
+2021-06,month_index,12.3183,MAJOR shift
+2021-06,loan_age_months,12.3183,MAJOR shift
+2021-06,remaining_term_months,12.1753,MAJOR shift
+2021-06,original_balance,12.1228,MAJOR shift
+2021-06,current_balance,18.1741,MAJOR shift
+2021-06,interest_rate,14.7782,MAJOR shift
+2021-06,vintage_year,10.8907,MAJOR shift
+2021-06,days_past_due,0.4152,MAJOR shift
+2021-06,prepayment_flag,0.0634,stable
+2021-06,default_flag,0.0768,stable
+2021-06,next_3m_delinquency_flag,1.2639,MAJOR shift
+2021-06,next_6m_delinquency_flag,0.8365,MAJOR shift
+2021-06,next_12m_default_flag,0.8895,MAJOR shift
+2021-06,next_12m_prepayment_flag,0.4123,MAJOR shift
+2021-06,credit_score,12.0922,MAJOR shift
+2021-06,ltv,12.9329,MAJOR shift
+2021-06,dti,13.0445,MAJOR shift
+2021-06,original_term_months,1.2079,MAJOR shift
+2021-07,month_index,12.3054,MAJOR shift
+2021-07,loan_age_months,12.3054,MAJOR shift
+2021-07,remaining_term_months,12.1448,MAJOR shift
+2021-07,original_balance,12.1093,MAJOR shift
+2021-07,current_balance,18.1558,MAJOR shift
+2021-07,interest_rate,14.7881,MAJOR shift
+2021-07,vintage_year,10.9834,MAJOR shift
+2021-07,days_past_due,0.4308,MAJOR shift
+2021-07,prepayment_flag,0.0847,stable
+2021-07,default_flag,0.0454,stable
+2021-07,next_3m_delinquency_flag,1.282,MAJOR shift
+2021-07,next_6m_delinquency_flag,0.8558,MAJOR shift
+2021-07,next_12m_default_flag,0.9106,MAJOR shift
+2021-07,next_12m_prepayment_flag,0.4238,MAJOR shift
+2021-07,credit_score,12.1072,MAJOR shift
+2021-07,ltv,12.9404,MAJOR shift
+2021-07,dti,13.0519,MAJOR shift
+2021-07,original_term_months,1.21,MAJOR shift
+2021-08,month_index,12.4306,MAJOR shift
+2021-08,loan_age_months,12.4306,MAJOR shift
+2021-08,remaining_term_months,12.2688,MAJOR shift
+2021-08,original_balance,12.1112,MAJOR shift
+2021-08,current_balance,18.1294,MAJOR shift
+2021-08,interest_rate,14.795,MAJOR shift
+2021-08,vintage_year,11.1243,MAJOR shift
+2021-08,days_past_due,0.4692,MAJOR shift
+2021-08,prepayment_flag,0.057,stable
+2021-08,default_flag,0.057,stable
+2021-08,next_3m_delinquency_flag,1.1919,MAJOR shift
+2021-08,next_6m_delinquency_flag,0.8705,MAJOR shift
+2021-08,next_12m_default_flag,0.8844,MAJOR shift
+2021-08,next_12m_prepayment_flag,0.4143,MAJOR shift
+2021-08,credit_score,12.0982,MAJOR shift
+2021-08,ltv,12.7258,MAJOR shift
+2021-08,dti,13.0607,MAJOR shift
+2021-08,original_term_months,1.2053,MAJOR shift
+2021-09,month_index,12.3029,MAJOR shift
+2021-09,loan_age_months,12.3029,MAJOR shift
+2021-09,remaining_term_months,12.2595,MAJOR shift
+2021-09,original_balance,12.1264,MAJOR shift
+2021-09,current_balance,18.1205,MAJOR shift
+2021-09,interest_rate,14.801,MAJOR shift
+2021-09,vintage_year,11.2413,MAJOR shift
+2021-09,days_past_due,0.4451,MAJOR shift
+2021-09,prepayment_flag,0.0794,stable
+2021-09,default_flag,0.0458,stable
+2021-09,next_3m_delinquency_flag,1.2219,MAJOR shift
+2021-09,next_6m_delinquency_flag,0.8936,MAJOR shift
+2021-09,next_12m_default_flag,0.8887,MAJOR shift
+2021-09,next_12m_prepayment_flag,0.4194,MAJOR shift
+2021-09,credit_score,12.1179,MAJOR shift
+2021-09,ltv,12.7343,MAJOR shift
+2021-09,dti,12.8342,MAJOR shift
+2021-09,original_term_months,1.2031,MAJOR shift
+2021-10,month_index,12.4233,MAJOR shift
+2021-10,loan_age_months,12.4233,MAJOR shift
+2021-10,remaining_term_months,12.3433,MAJOR shift
+2021-10,original_balance,12.1672,MAJOR shift
+2021-10,current_balance,18.11,MAJOR shift
+2021-10,interest_rate,14.8095,MAJOR shift
+2021-10,vintage_year,11.3396,MAJOR shift
+2021-10,days_past_due,0.4007,MAJOR shift
+2021-10,prepayment_flag,0.0823,stable
+2021-10,default_flag,0.0551,stable
+2021-10,next_3m_delinquency_flag,1.2336,MAJOR shift
+2021-10,next_6m_delinquency_flag,0.8951,MAJOR shift
+2021-10,next_12m_default_flag,0.8887,MAJOR shift
+2021-10,next_12m_prepayment_flag,0.4271,MAJOR shift
+2021-10,credit_score,12.0985,MAJOR shift
+2021-10,ltv,12.7468,MAJOR shift
+2021-10,dti,12.8513,MAJOR shift
+2021-10,original_term_months,1.1932,MAJOR shift
+2021-11,month_index,12.4299,MAJOR shift
+2021-11,loan_age_months,12.4299,MAJOR shift
+2021-11,remaining_term_months,12.2842,MAJOR shift
+2021-11,original_balance,12.1871,MAJOR shift
+2021-11,current_balance,18.0926,MAJOR shift
+2021-11,interest_rate,14.8196,MAJOR shift
+2021-11,vintage_year,11.4072,MAJOR shift
+2021-11,days_past_due,0.4261,MAJOR shift
+2021-11,prepayment_flag,0.0606,stable
+2021-11,default_flag,0.0647,stable
+2021-11,next_3m_delinquency_flag,1.2098,MAJOR shift
+2021-11,next_6m_delinquency_flag,0.8952,MAJOR shift
+2021-11,next_12m_default_flag,0.8907,MAJOR shift
+2021-11,next_12m_prepayment_flag,0.4287,MAJOR shift
+2021-11,credit_score,12.112,MAJOR shift
+2021-11,ltv,12.7427,MAJOR shift
+2021-11,dti,12.8501,MAJOR shift
+2021-11,original_term_months,1.2112,MAJOR shift
+2021-12,month_index,12.5222,MAJOR shift
+2021-12,loan_age_months,12.5222,MAJOR shift
+2021-12,remaining_term_months,12.3521,MAJOR shift
+2021-12,original_balance,12.2617,MAJOR shift
+2021-12,current_balance,18.077,MAJOR shift
+2021-12,interest_rate,14.8287,MAJOR shift
+2021-12,vintage_year,11.5246,MAJOR shift
+2021-12,days_past_due,0.4488,MAJOR shift
+2021-12,prepayment_flag,0.0655,stable
+2021-12,default_flag,0.0575,stable
+2021-12,next_3m_delinquency_flag,1.2108,MAJOR shift
+2021-12,next_6m_delinquency_flag,0.8943,MAJOR shift
+2021-12,next_12m_default_flag,0.8845,MAJOR shift
+2021-12,next_12m_prepayment_flag,0.4254,MAJOR shift
+2021-12,credit_score,12.1028,MAJOR shift
+2021-12,ltv,12.7511,MAJOR shift
+2021-12,dti,12.8673,MAJOR shift
+2021-12,original_term_months,1.1863,MAJOR shift
+2022-01,month_index,12.3877,MAJOR shift
+2022-01,loan_age_months,12.3877,MAJOR shift
+2022-01,remaining_term_months,12.179,MAJOR shift
+2022-01,original_balance,12.257,MAJOR shift
+2022-01,current_balance,18.0662,MAJOR shift
+2022-01,interest_rate,14.7906,MAJOR shift
+2022-01,vintage_year,11.5238,MAJOR shift
+2022-01,days_past_due,0.4374,MAJOR shift
+2022-01,prepayment_flag,0.0623,stable
+2022-01,default_flag,0.0703,stable
+2022-01,next_3m_delinquency_flag,1.2286,MAJOR shift
+2022-01,next_6m_delinquency_flag,0.8363,MAJOR shift
+2022-01,next_12m_default_flag,0.8661,MAJOR shift
+2022-01,next_12m_prepayment_flag,0.4118,MAJOR shift
+2022-01,credit_score,12.1057,MAJOR shift
+2022-01,ltv,12.7668,MAJOR shift
+2022-01,dti,12.6423,MAJOR shift
+2022-01,original_term_months,1.168,MAJOR shift
+2022-02,month_index,12.3478,MAJOR shift
+2022-02,loan_age_months,12.3478,MAJOR shift
+2022-02,remaining_term_months,12.1423,MAJOR shift
+2022-02,original_balance,12.2494,MAJOR shift
+2022-02,current_balance,18.0473,MAJOR shift
+2022-02,interest_rate,14.9006,MAJOR shift
+2022-02,vintage_year,11.6057,MAJOR shift
+2022-02,days_past_due,0.4363,MAJOR shift
+2022-02,prepayment_flag,0.0774,stable
+2022-02,default_flag,0.0461,stable
+2022-02,next_3m_delinquency_flag,1.2771,MAJOR shift
+2022-02,next_6m_delinquency_flag,0.8854,MAJOR shift
+2022-02,next_12m_default_flag,0.893,MAJOR shift
+2022-02,next_12m_prepayment_flag,0.4222,MAJOR shift
+2022-02,credit_score,12.1601,MAJOR shift
+2022-02,ltv,13.007,MAJOR shift
+2022-02,dti,12.7438,MAJOR shift
+2022-02,original_term_months,1.1628,MAJOR shift
+2022-03,month_index,12.213,MAJOR shift
+2022-03,loan_age_months,12.213,MAJOR shift
+2022-03,remaining_term_months,12.0758,MAJOR shift
+2022-03,original_balance,12.2239,MAJOR shift
+2022-03,current_balance,18.0361,MAJOR shift
+2022-03,interest_rate,14.8734,MAJOR shift
+2022-03,vintage_year,11.656,MAJOR shift
+2022-03,days_past_due,0.4035,MAJOR shift
+2022-03,prepayment_flag,0.0721,stable
+2022-03,default_flag,0.0567,stable
+2022-03,next_3m_delinquency_flag,1.2643,MAJOR shift
+2022-03,next_6m_delinquency_flag,0.9079,MAJOR shift
+2022-03,next_12m_default_flag,0.94,MAJOR shift
+2022-03,next_12m_prepayment_flag,0.4277,MAJOR shift
+2022-03,credit_score,12.1235,MAJOR shift
+2022-03,ltv,12.7825,MAJOR shift
+2022-03,dti,12.7552,MAJOR shift
+2022-03,original_term_months,1.1683,MAJOR shift
+2022-04,month_index,12.358,MAJOR shift
+2022-04,loan_age_months,12.358,MAJOR shift
+2022-04,remaining_term_months,12.0338,MAJOR shift
+2022-04,original_balance,12.2327,MAJOR shift
+2022-04,current_balance,18.0194,MAJOR shift
+2022-04,interest_rate,15.0823,MAJOR shift
+2022-04,vintage_year,11.7166,MAJOR shift
+2022-04,days_past_due,0.4501,MAJOR shift
+2022-04,prepayment_flag,0.0577,stable
+2022-04,default_flag,0.0673,stable
+2022-04,next_3m_delinquency_flag,1.301,MAJOR shift
+2022-04,next_6m_delinquency_flag,0.9173,MAJOR shift
+2022-04,next_12m_default_flag,0.9508,MAJOR shift
+2022-04,next_12m_prepayment_flag,0.4165,MAJOR shift
+2022-04,credit_score,12.1112,MAJOR shift
+2022-04,ltv,13.017,MAJOR shift
+2022-04,dti,12.8659,MAJOR shift
+2022-04,original_term_months,1.1797,MAJOR shift
+2022-05,month_index,12.2998,MAJOR shift
+2022-05,loan_age_months,12.2998,MAJOR shift
+2022-05,remaining_term_months,12.1145,MAJOR shift
+2022-05,original_balance,12.2074,MAJOR shift
+2022-05,current_balance,18.0124,MAJOR shift
+2022-05,interest_rate,15.0634,MAJOR shift
+2022-05,vintage_year,11.756,MAJOR shift
+2022-05,days_past_due,0.439,MAJOR shift
+2022-05,prepayment_flag,0.0663,stable
+2022-05,default_flag,0.0701,stable
+2022-05,next_3m_delinquency_flag,1.2407,MAJOR shift
+2022-05,next_6m_delinquency_flag,0.9013,MAJOR shift
+2022-05,next_12m_default_flag,0.963,MAJOR shift
+2022-05,next_12m_prepayment_flag,0.4098,MAJOR shift
+2022-05,credit_score,12.1047,MAJOR shift
+2022-05,ltv,13.0315,MAJOR shift
+2022-05,dti,12.8706,MAJOR shift
+2022-05,original_term_months,1.1768,MAJOR shift
+2022-06,month_index,12.4133,MAJOR shift
+2022-06,loan_age_months,12.4133,MAJOR shift
+2022-06,remaining_term_months,12.179,MAJOR shift
+2022-06,original_balance,12.2033,MAJOR shift
+2022-06,current_balance,17.9922,MAJOR shift
+2022-06,interest_rate,14.9052,MAJOR shift
+2022-06,vintage_year,11.8548,MAJOR shift
+2022-06,days_past_due,0.4225,MAJOR shift
+2022-06,prepayment_flag,0.0768,stable
+2022-06,default_flag,0.0435,stable
+2022-06,next_3m_delinquency_flag,1.2865,MAJOR shift
+2022-06,next_6m_delinquency_flag,0.9375,MAJOR shift
+2022-06,next_12m_default_flag,0.9837,MAJOR shift
+2022-06,next_12m_prepayment_flag,0.3965,MAJOR shift
+2022-06,credit_score,12.1171,MAJOR shift
+2022-06,ltv,13.0379,MAJOR shift
+2022-06,dti,12.8789,MAJOR shift
+2022-06,original_term_months,1.1781,MAJOR shift
+2022-07,month_index,12.361,MAJOR shift
+2022-07,loan_age_months,12.361,MAJOR shift
+2022-07,remaining_term_months,12.1313,MAJOR shift
+2022-07,original_balance,12.1976,MAJOR shift
+2022-07,current_balance,17.9771,MAJOR shift
+2022-07,interest_rate,14.8892,MAJOR shift
+2022-07,vintage_year,11.9522,MAJOR shift
+2022-07,days_past_due,0.4317,MAJOR shift
+2022-07,prepayment_flag,0.0626,stable
+2022-07,default_flag,0.0589,stable
+2022-07,next_3m_delinquency_flag,1.2582,MAJOR shift
+2022-07,next_6m_delinquency_flag,0.9321,MAJOR shift
+2022-07,next_12m_default_flag,0.9732,MAJOR shift
+2022-07,next_12m_prepayment_flag,0.393,MAJOR shift
+2022-07,credit_score,12.082,MAJOR shift
+2022-07,ltv,13.0488,MAJOR shift
+2022-07,dti,12.8887,MAJOR shift
+2022-07,original_term_months,1.1945,MAJOR shift
+2022-08,month_index,12.2153,MAJOR shift
+2022-08,loan_age_months,12.2153,MAJOR shift
+2022-08,remaining_term_months,12.03,MAJOR shift
+2022-08,original_balance,12.1688,MAJOR shift
+2022-08,current_balance,17.9711,MAJOR shift
+2022-08,interest_rate,14.8835,MAJOR shift
+2022-08,vintage_year,12.0593,MAJOR shift
+2022-08,days_past_due,0.4549,MAJOR shift
+2022-08,prepayment_flag,0.0745,stable
+2022-08,default_flag,0.0546,stable
+2022-08,next_3m_delinquency_flag,1.3384,MAJOR shift
+2022-08,next_6m_delinquency_flag,0.9358,MAJOR shift
+2022-08,next_12m_default_flag,0.9811,MAJOR shift
+2022-08,next_12m_prepayment_flag,0.4012,MAJOR shift
+2022-08,credit_score,12.0845,MAJOR shift
+2022-08,ltv,13.0551,MAJOR shift
+2022-08,dti,12.8974,MAJOR shift
+2022-08,original_term_months,1.1814,MAJOR shift
+2022-09,month_index,12.4593,MAJOR shift
+2022-09,loan_age_months,12.4593,MAJOR shift
+2022-09,remaining_term_months,12.2075,MAJOR shift
+2022-09,original_balance,12.1978,MAJOR shift
+2022-09,current_balance,17.9447,MAJOR shift
+2022-09,interest_rate,14.8758,MAJOR shift
+2022-09,vintage_year,12.1363,MAJOR shift
+2022-09,days_past_due,0.4645,MAJOR shift
+2022-09,prepayment_flag,0.0609,stable
+2022-09,default_flag,0.045,stable
+2022-09,next_3m_delinquency_flag,1.3855,MAJOR shift
+2022-09,next_6m_delinquency_flag,0.9761,MAJOR shift
+2022-09,next_12m_default_flag,1.0082,MAJOR shift
+2022-09,next_12m_prepayment_flag,0.3959,MAJOR shift
+2022-09,credit_score,12.1069,MAJOR shift
+2022-09,ltv,13.0607,MAJOR shift
+2022-09,dti,12.9031,MAJOR shift
+2022-09,original_term_months,1.195,MAJOR shift
+2022-10,month_index,12.453,MAJOR shift
+2022-10,loan_age_months,12.453,MAJOR shift
+2022-10,remaining_term_months,12.3491,MAJOR shift
+2022-10,original_balance,12.2261,MAJOR shift
+2022-10,current_balance,17.9406,MAJOR shift
+2022-10,interest_rate,14.8716,MAJOR shift
+2022-10,vintage_year,12.2163,MAJOR shift
+2022-10,days_past_due,0.454,MAJOR shift
+2022-10,prepayment_flag,0.0547,stable
+2022-10,default_flag,0.0688,stable
+2022-10,next_3m_delinquency_flag,1.3934,MAJOR shift
+2022-10,next_6m_delinquency_flag,0.9485,MAJOR shift
+2022-10,next_12m_default_flag,0.9888,MAJOR shift
+2022-10,next_12m_prepayment_flag,0.3778,MAJOR shift
+2022-10,credit_score,12.1139,MAJOR shift
+2022-10,ltv,13.0651,MAJOR shift
+2022-10,dti,12.9139,MAJOR shift
+2022-10,original_term_months,1.1814,MAJOR shift
+2022-11,month_index,12.2901,MAJOR shift
+2022-11,loan_age_months,12.2901,MAJOR shift
+2022-11,remaining_term_months,12.0085,MAJOR shift
+2022-11,original_balance,12.194,MAJOR shift
+2022-11,current_balance,17.938,MAJOR shift
+2022-11,interest_rate,14.8677,MAJOR shift
+2022-11,vintage_year,12.3031,MAJOR shift
+2022-11,days_past_due,0.487,MAJOR shift
+2022-11,prepayment_flag,0.063,stable
+2022-11,default_flag,0.0701,stable
+2022-11,next_3m_delinquency_flag,1.3797,MAJOR shift
+2022-11,next_6m_delinquency_flag,0.9657,MAJOR shift
+2022-11,next_12m_default_flag,1.0036,MAJOR shift
+2022-11,next_12m_prepayment_flag,0.3804,MAJOR shift
+2022-11,credit_score,12.1146,MAJOR shift
+2022-11,ltv,13.0724,MAJOR shift
+2022-11,dti,13.0589,MAJOR shift
+2022-11,original_term_months,1.1712,MAJOR shift
+2022-12,month_index,12.4115,MAJOR shift
+2022-12,loan_age_months,12.4115,MAJOR shift
+2022-12,remaining_term_months,12.2651,MAJOR shift
+2022-12,original_balance,12.2346,MAJOR shift
+2022-12,current_balance,17.9198,MAJOR shift
+2022-12,interest_rate,14.8671,MAJOR shift
+2022-12,vintage_year,12.3802,MAJOR shift
+2022-12,days_past_due,0.4915,MAJOR shift
+2022-12,prepayment_flag,0.0624,stable
+2022-12,default_flag,0.0538,stable
+2022-12,next_3m_delinquency_flag,1.3743,MAJOR shift
+2022-12,next_6m_delinquency_flag,0.9573,MAJOR shift
+2022-12,next_12m_default_flag,0.9893,MAJOR shift
+2022-12,next_12m_prepayment_flag,0.3792,MAJOR shift
+2022-12,credit_score,12.1202,MAJOR shift
+2022-12,ltv,13.0768,MAJOR shift
+2022-12,dti,13.06,MAJOR shift
+2022-12,original_term_months,1.1831,MAJOR shift
+2023-01,month_index,12.3293,MAJOR shift
+2023-01,loan_age_months,12.3293,MAJOR shift
+2023-01,remaining_term_months,12.1453,MAJOR shift
+2023-01,original_balance,12.2353,MAJOR shift
+2023-01,current_balance,17.9351,MAJOR shift
+2023-01,interest_rate,16.5699,MAJOR shift
+2023-01,vintage_year,12.5966,MAJOR shift
+2023-01,days_past_due,0.4667,MAJOR shift
+2023-01,prepayment_flag,0.0782,stable
+2023-01,default_flag,0.0624,stable
+2023-01,next_3m_delinquency_flag,1.3479,MAJOR shift
+2023-01,next_6m_delinquency_flag,0.9495,MAJOR shift
+2023-01,next_12m_default_flag,1.0132,MAJOR shift
+2023-01,next_12m_prepayment_flag,0.3932,MAJOR shift
+2023-01,credit_score,12.0984,MAJOR shift
+2023-01,ltv,13.0769,MAJOR shift
+2023-01,dti,13.066,MAJOR shift
+2023-01,original_term_months,1.1879,MAJOR shift
+2023-02,month_index,12.494,MAJOR shift
+2023-02,loan_age_months,12.494,MAJOR shift
+2023-02,remaining_term_months,12.3413,MAJOR shift
+2023-02,original_balance,12.2331,MAJOR shift
+2023-02,current_balance,17.9216,MAJOR shift
+2023-02,interest_rate,14.8195,MAJOR shift
+2023-02,vintage_year,12.8217,MAJOR shift
+2023-02,days_past_due,0.475,MAJOR shift
+2023-02,prepayment_flag,0.0557,stable
+2023-02,default_flag,0.0557,stable
+2023-02,next_3m_delinquency_flag,1.3909,MAJOR shift
+2023-02,next_6m_delinquency_flag,0.9325,MAJOR shift
+2023-02,next_12m_default_flag,0.9999,MAJOR shift
+2023-02,next_12m_prepayment_flag,0.397,MAJOR shift
+2023-02,credit_score,12.0939,MAJOR shift
+2023-02,ltv,13.0719,MAJOR shift
+2023-02,dti,12.9286,MAJOR shift
+2023-02,original_term_months,1.1909,MAJOR shift
+2023-03,month_index,12.4965,MAJOR shift
+2023-03,loan_age_months,12.4965,MAJOR shift
+2023-03,remaining_term_months,12.2773,MAJOR shift
+2023-03,original_balance,12.2527,MAJOR shift
+2023-03,current_balance,17.9319,MAJOR shift
+2023-03,interest_rate,14.7985,MAJOR shift
+2023-03,vintage_year,13.0916,MAJOR shift
+2023-03,days_past_due,0.4969,MAJOR shift
+2023-03,prepayment_flag,0.0609,stable
+2023-03,default_flag,0.0679,stable
+2023-03,next_3m_delinquency_flag,1.3321,MAJOR shift
+2023-03,next_6m_delinquency_flag,0.9388,MAJOR shift
+2023-03,next_12m_default_flag,0.9842,MAJOR shift
+2023-03,next_12m_prepayment_flag,0.3955,MAJOR shift
+2023-03,credit_score,12.0583,MAJOR shift
+2023-03,ltv,13.0722,MAJOR shift
+2023-03,dti,12.9325,MAJOR shift
+2023-03,original_term_months,1.1933,MAJOR shift
+2023-04,month_index,12.319,MAJOR shift
+2023-04,loan_age_months,12.319,MAJOR shift
+2023-04,remaining_term_months,12.1467,MAJOR shift
+2023-04,original_balance,12.2923,MAJOR shift
+2023-04,current_balance,17.9353,MAJOR shift
+2023-04,interest_rate,16.645,MAJOR shift
+2023-04,vintage_year,13.378,MAJOR shift
+2023-04,days_past_due,0.4922,MAJOR shift
+2023-04,prepayment_flag,0.0788,stable
+2023-04,default_flag,0.0507,stable
+2023-04,next_3m_delinquency_flag,1.2769,MAJOR shift
+2023-04,next_6m_delinquency_flag,0.9466,MAJOR shift
+2023-04,next_12m_default_flag,0.9879,MAJOR shift
+2023-04,next_12m_prepayment_flag,0.395,MAJOR shift
+2023-04,credit_score,12.0642,MAJOR shift
+2023-04,ltv,12.6976,MAJOR shift
+2023-04,dti,12.9305,MAJOR shift
+2023-04,original_term_months,1.1744,MAJOR shift
+2023-05,month_index,12.4577,MAJOR shift
+2023-05,loan_age_months,12.4577,MAJOR shift
+2023-05,remaining_term_months,12.2841,MAJOR shift
+2023-05,original_balance,12.2882,MAJOR shift
+2023-05,current_balance,17.9515,MAJOR shift
+2023-05,interest_rate,16.6321,MAJOR shift
+2023-05,vintage_year,13.6566,MAJOR shift
+2023-05,days_past_due,0.4691,MAJOR shift
+2023-05,prepayment_flag,0.0788,stable
+2023-05,default_flag,0.0823,stable
+2023-05,next_3m_delinquency_flag,1.2463,MAJOR shift
+2023-05,next_6m_delinquency_flag,0.9023,MAJOR shift
+2023-05,next_12m_default_flag,0.9414,MAJOR shift
+2023-05,next_12m_prepayment_flag,0.402,MAJOR shift
+2023-05,credit_score,12.091,MAJOR shift
+2023-05,ltv,12.6964,MAJOR shift
+2023-05,dti,12.9319,MAJOR shift
+2023-05,original_term_months,1.1799,MAJOR shift
+2023-06,month_index,12.3546,MAJOR shift
+2023-06,loan_age_months,12.3546,MAJOR shift
+2023-06,remaining_term_months,12.0672,MAJOR shift
+2023-06,original_balance,12.3996,MAJOR shift
+2023-06,current_balance,17.933,MAJOR shift
+2023-06,interest_rate,16.6237,MAJOR shift
+2023-06,vintage_year,13.9682,MAJOR shift
+2023-06,days_past_due,0.4419,MAJOR shift
+2023-06,prepayment_flag,0.0703,stable
+2023-06,default_flag,0.0476,stable
+2023-06,next_3m_delinquency_flag,1.2846,MAJOR shift
+2023-06,next_6m_delinquency_flag,0.9199,MAJOR shift
+2023-06,next_12m_default_flag,0.9827,MAJOR shift
+2023-06,next_12m_prepayment_flag,0.4024,MAJOR shift
+2023-06,credit_score,12.1252,MAJOR shift
+2023-06,ltv,12.9265,MAJOR shift
+2023-06,dti,12.922,MAJOR shift
+2023-06,original_term_months,1.1772,MAJOR shift
+2023-07,month_index,12.4473,MAJOR shift
+2023-07,loan_age_months,12.4473,MAJOR shift
+2023-07,remaining_term_months,12.3233,MAJOR shift
+2023-07,original_balance,12.4059,MAJOR shift
+2023-07,current_balance,17.9442,MAJOR shift
+2023-07,interest_rate,16.8471,MAJOR shift
+2023-07,vintage_year,14.2774,MAJOR shift
+2023-07,days_past_due,0.4343,MAJOR shift
+2023-07,prepayment_flag,0.0789,stable
+2023-07,default_flag,0.0647,stable
+2023-07,next_3m_delinquency_flag,1.2482,MAJOR shift
+2023-07,next_6m_delinquency_flag,0.8674,MAJOR shift
+2023-07,next_12m_default_flag,0.9914,MAJOR shift
+2023-07,next_12m_prepayment_flag,0.4165,MAJOR shift
+2023-07,credit_score,12.1862,MAJOR shift
+2023-07,ltv,12.9245,MAJOR shift
+2023-07,dti,12.9291,MAJOR shift
+2023-07,original_term_months,1.1579,MAJOR shift
+2023-08,month_index,12.4411,MAJOR shift
+2023-08,loan_age_months,12.4411,MAJOR shift
+2023-08,remaining_term_months,12.1852,MAJOR shift
+2023-08,original_balance,12.4019,MAJOR shift
+2023-08,current_balance,17.9378,MAJOR shift
+2023-08,interest_rate,16.8456,MAJOR shift
+2023-08,vintage_year,14.6582,MAJOR shift
+2023-08,days_past_due,0.4509,MAJOR shift
+2023-08,prepayment_flag,0.0527,stable
+2023-08,default_flag,0.0756,stable
+2023-08,next_3m_delinquency_flag,1.2276,MAJOR shift
+2023-08,next_6m_delinquency_flag,0.875,MAJOR shift
+2023-08,next_12m_default_flag,0.9542,MAJOR shift
+2023-08,next_12m_prepayment_flag,0.4016,MAJOR shift
+2023-08,credit_score,12.1589,MAJOR shift
+2023-08,ltv,12.9251,MAJOR shift
+2023-08,dti,12.9218,MAJOR shift
+2023-08,original_term_months,1.1743,MAJOR shift
+2023-09,month_index,12.4525,MAJOR shift
+2023-09,loan_age_months,12.4525,MAJOR shift
+2023-09,remaining_term_months,12.3193,MAJOR shift
+2023-09,original_balance,12.3807,MAJOR shift
+2023-09,current_balance,17.9354,MAJOR shift
+2023-09,interest_rate,16.8406,MAJOR shift
+2023-09,vintage_year,15.1233,MAJOR shift
+2023-09,days_past_due,0.4428,MAJOR shift
+2023-09,prepayment_flag,0.0597,stable
+2023-09,default_flag,0.0649,stable
+2023-09,next_3m_delinquency_flag,1.2148,MAJOR shift
+2023-09,next_6m_delinquency_flag,0.8674,MAJOR shift
+2023-09,next_12m_default_flag,0.9254,MAJOR shift
+2023-09,next_12m_prepayment_flag,0.3972,MAJOR shift
+2023-09,credit_score,12.2075,MAJOR shift
+2023-09,ltv,12.9215,MAJOR shift
+2023-09,dti,13.0604,MAJOR shift
+2023-09,original_term_months,1.1803,MAJOR shift
+2023-10,month_index,12.3228,MAJOR shift
+2023-10,loan_age_months,12.3228,MAJOR shift
+2023-10,remaining_term_months,12.1097,MAJOR shift
+2023-10,original_balance,12.3845,MAJOR shift
+2023-10,current_balance,17.9595,MAJOR shift
+2023-10,interest_rate,16.8369,MAJOR shift
+2023-10,vintage_year,15.6674,MAJOR shift
+2023-10,days_past_due,0.4192,MAJOR shift
+2023-10,prepayment_flag,0.1081,moderate shift
+2023-10,default_flag,0.0613,stable
+2023-10,next_3m_delinquency_flag,1.2621,MAJOR shift
+2023-10,next_6m_delinquency_flag,0.8912,MAJOR shift
+2023-10,next_12m_default_flag,0.9578,MAJOR shift
+2023-10,next_12m_prepayment_flag,0.4187,MAJOR shift
+2023-10,credit_score,12.1884,MAJOR shift
+2023-10,ltv,12.9208,MAJOR shift
+2023-10,dti,13.1951,MAJOR shift
+2023-10,original_term_months,1.1839,MAJOR shift
+2023-11,month_index,12.3475,MAJOR shift
+2023-11,loan_age_months,12.3475,MAJOR shift
+2023-11,remaining_term_months,12.1492,MAJOR shift
+2023-11,original_balance,12.3861,MAJOR shift
+2023-11,current_balance,17.9404,MAJOR shift
+2023-11,interest_rate,16.8431,MAJOR shift
+2023-11,vintage_year,16.4808,MAJOR shift
+2023-11,days_past_due,0.4188,MAJOR shift
+2023-11,prepayment_flag,0.0547,stable
+2023-11,default_flag,0.0653,stable
+2023-11,next_3m_delinquency_flag,1.2908,MAJOR shift
+2023-11,next_6m_delinquency_flag,0.9178,MAJOR shift
+2023-11,next_12m_default_flag,0.9736,MAJOR shift
+2023-11,next_12m_prepayment_flag,0.4185,MAJOR shift
+2023-11,credit_score,12.2419,MAJOR shift
+2023-11,ltv,13.153,MAJOR shift
+2023-11,dti,13.0543,MAJOR shift
+2023-11,original_term_months,1.1909,MAJOR shift
+2023-12,month_index,12.3899,MAJOR shift
+2023-12,loan_age_months,12.3899,MAJOR shift
+2023-12,remaining_term_months,12.1985,MAJOR shift
+2023-12,original_balance,12.381,MAJOR shift
+2023-12,current_balance,17.9387,MAJOR shift
+2023-12,interest_rate,16.8457,MAJOR shift
+2023-12,vintage_year,26.0522,MAJOR shift
+2023-12,days_past_due,0.4659,MAJOR shift
+2023-12,prepayment_flag,0.0534,stable
+2023-12,default_flag,0.0586,stable
+2023-12,next_3m_delinquency_flag,1.2977,MAJOR shift
+2023-12,next_6m_delinquency_flag,0.9073,MAJOR shift
+2023-12,next_12m_default_flag,0.9951,MAJOR shift
+2023-12,next_12m_prepayment_flag,0.4053,MAJOR shift
+2023-12,credit_score,12.2307,MAJOR shift
+2023-12,ltv,12.9162,MAJOR shift
+2023-12,dti,13.0537,MAJOR shift
+2023-12,original_term_months,1.1894,MAJOR shift

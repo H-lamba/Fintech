@@ -1,0 +1,60 @@
+feature,family,information_window,dtype,in_baseline,pct_present,n_unique,definition
+credit_score,static,origination,numeric,False,100.0,302,Borrower FICO at origination (500-850).
+credit_score_band,static,origination,categorical,True,100.0,6,Credit score bucket.
+dti,static,origination,numeric,False,100.0,3074,"Debt-to-income at origination, percent."
+dti_band,static,origination,categorical,False,100.0,4,DTI bucket.
+interest_rate,static,origination,numeric,True,100.0,4259,"Annual fixed note rate, percent."
+loan_purpose,static,origination,categorical,False,100.0,3,"Purchase, rate/term refinance, or cash-out."
+ltv,static,origination,numeric,False,100.0,3685,"Loan-to-value at origination, percent."
+ltv_band,static,origination,categorical,False,100.0,5,LTV bucket.
+occupancy_type,static,origination,categorical,False,100.0,3,"Primary residence, investment, or second home."
+original_balance,static,origination,numeric,False,100.0,673,"Unpaid principal balance at origination, USD."
+original_term_months,static,origination,numeric,False,100.0,3,Contractual term at origination.
+property_type,static,origination,categorical,False,100.0,3,"Single-family, condominium, or PUD."
+state,static,origination,categorical,False,100.0,30,US state of the mortgaged property.
+vintage_year,static,origination,numeric,False,100.0,6,Calendar year of origination.
+balance_gap_abs,contemporaneous,as-at t,numeric,False,100.0,257740,"current_balance - expected_balance, in USD."
+balance_ratio,contemporaneous,as-at t,numeric,True,100.0,241013,current_balance / original_balance: how much principal is left.
+balance_vs_expected,contemporaneous,as-at t,numeric,False,100.0,253563,current_balance / expected_balance. Below 1 means paying down faster than schedule; a large deviation is also the Balance Discrepancy defect signature.
+current_balance,contemporaneous,as-at t,numeric,True,100.0,241645,"Unpaid principal balance, USD."
+current_status,contemporaneous,as-at t,categorical,True,100.0,6,Performance state: Current / 30 / 60 / 90-DPD.
+days_past_due,contemporaneous,as-at t,numeric,True,100.0,182,Days delinquent at the reporting month.
+doc_status_ordinal,contemporaneous,as-at t,numeric,False,100.0,3,document_status encoded Complete < Pending < Missing.
+document_status,contemporaneous,as-at t,categorical,False,100.0,3,Document file completeness.
+is_delinquent,contemporaneous,as-at t,numeric,False,100.0,2,1 where days_past_due > 0.
+loan_age_months,contemporaneous,as-at t,numeric,True,100.0,62,Months elapsed since origination.
+month_cos,contemporaneous,as-at t,numeric,False,100.0,11,Second component of the cyclical month encoding.
+month_sin,contemporaneous,as-at t,numeric,False,100.0,11,"Cyclical encoding of the calendar month, so December and January are adjacent."
+remaining_term_months,contemporaneous,as-at t,numeric,False,100.0,180,Contractual months remaining.
+servicer_name,contemporaneous,as-at t,categorical,False,100.0,5,Institution servicing the loan this month.
+source_system,contemporaneous,as-at t,categorical,False,100.0,3,System of record that produced the row.
+status_ordinal,contemporaneous,as-at t,numeric,False,100.0,6,"current_status encoded worst-last, so a tree can split on severity."
+term_progress,contemporaneous,as-at t,numeric,False,100.0,127,loan_age_months / original_term_months: position in the amortisation schedule.
+balance_pctile_in_month,cross_sectional,month t,numeric,False,100.0,257360,Percentile rank of current_balance within month t.
+rate_spread,cross_sectional,month t,numeric,False,100.0,23691,"interest_rate minus the month's median rate: the refinance incentive, and the main driver of prepayment."
+delinquent_months_to_date,rolling,0..t,numeric,False,100.0,21,Count of months with days_past_due > 0 so far.
+doc_status_changes_to_date,rolling,0..t,numeric,False,100.0,1,Count of document-status changes so far.
+dpd_delta_1m,rolling,t-1..t,numeric,False,95.25,329,Change in days_past_due between month t-1 and month t.
+dpd_delta_3m,rolling,t-3..t,numeric,False,88.12,301,Change in days_past_due between month t-3 and month t.
+dpd_delta_6m,rolling,t-6..t,numeric,False,77.99,333,Change in days_past_due between month t-6 and month t.
+dpd_lag_1m,rolling,t-1..t,numeric,False,95.25,181,days_past_due as at month t-1.
+dpd_lag_3m,rolling,t-3..t,numeric,False,88.12,92,days_past_due as at month t-3.
+dpd_lag_6m,rolling,t-6..t,numeric,False,77.99,96,days_past_due as at month t-6.
+dpd_max_12m,rolling,t-12..t,numeric,False,100.0,182,"Maximum days_past_due over the last 12 calendar months, inclusive of t."
+dpd_max_3m,rolling,t-3..t,numeric,False,100.0,182,"Maximum days_past_due over the last 3 calendar months, inclusive of t."
+dpd_max_6m,rolling,t-6..t,numeric,False,100.0,182,"Maximum days_past_due over the last 6 calendar months, inclusive of t."
+dpd_mean_12m,rolling,t-12..t,numeric,False,100.0,2310,"Mean days_past_due over the last 12 calendar months, inclusive of t."
+dpd_mean_3m,rolling,t-3..t,numeric,False,100.0,476,"Mean days_past_due over the last 3 calendar months, inclusive of t."
+dpd_mean_6m,rolling,t-6..t,numeric,False,100.0,1001,"Mean days_past_due over the last 6 calendar months, inclusive of t."
+modified_ever,rolling,0..t,numeric,False,100.0,2,1 once the loan has received a loss-mitigation modification.
+months_since_delinquency,rolling,0..t,numeric,False,6.78,1,"Months since the most recent delinquent month; 0 if delinquent now, null if never."
+months_since_modification,rolling,0..t,numeric,False,1.7,1,Months since the modification; null if never modified.
+paydown_1m,rolling,t-1..t,numeric,False,95.0,238409,Proportional change in current_balance between month t-1 and month t.
+paydown_3m,rolling,t-3..t,numeric,False,88.12,229371,Proportional change in current_balance between month t-3 and month t.
+paydown_6m,rolling,t-6..t,numeric,False,77.98,204926,Proportional change in current_balance between month t-6 and month t.
+servicer_transfers_to_date,rolling,0..t,numeric,False,100.0,1,Count of servicer changes so far.
+source_changes_to_date,rolling,0..t,numeric,False,100.0,1,Count of source-system changes so far.
+status_changed_this_month,rolling,t-1..t,numeric,False,100.0,2,1 where the status differs from last month.
+status_changes_to_date,rolling,0..t,numeric,False,100.0,21,Count of month-on-month status transitions so far.
+worst_status_to_date,rolling,0..t,numeric,False,100.0,6,Running maximum of status_ordinal.
+dq_score,quality,as-at t,numeric,False,100.0,31,Phase 1 record-level data-quality score (100 = clean). A record the profiler distrusts is a record whose reported status may be wrong.

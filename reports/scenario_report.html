@@ -1,0 +1,3525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scenario & Stress Simulation Report (Task 5)</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+         max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; line-height: 1.6; }
+  h1 { border-bottom: 2px solid currentColor; padding-bottom: .4rem; }
+  h2 { margin-top: 2.5rem; border-bottom: 1px solid rgba(128,128,128,.35); padding-bottom: .25rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .9rem;
+           display: block; overflow-x: auto; }
+  th, td { border: 1px solid rgba(128,128,128,.35); padding: .4rem .6rem; text-align: left; }
+  th { background: rgba(128,128,128,.12); }
+  tr:nth-child(even) td { background: rgba(128,128,128,.06); }
+  /* Figures are rendered on a light chart surface, so they get that surface
+     behind them regardless of the reader's theme -- otherwise a dark-mode page
+     puts a light chart in a dark frame with no border. */
+  img { max-width: 100%; height: auto; display: block; margin: 1rem auto;
+         background: #fcfcfb; padding: .5rem; border-radius: 6px;
+         border: 1px solid rgba(128,128,128,.25); }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+  pre { overflow-x: auto; padding: .75rem; background: rgba(128,128,128,.1); border-radius: 6px; }
+</style>
+</head>
+<body>
+<h1>Scenario &amp; Stress Simulation Report (Task 5)</h1>
+<p><em>Generated 2026-08-29 15:03:51</em></p>
+<h2>What this projects</h2>
+<p>The book's 10,000 loans at their latest observed position, re-scored under each macro scenario through the Phase 3 <code>improved</code> models. Delinquency, default and prepayment, portfolio-wide and by segment, with the movement attributed to features.</p>
+<h2>Scope and limitations</h2>
+<p><strong>What these numbers are.</strong> For each scenario and projection month, the
+portfolio's features are stressed to that month's assumptions and re-scored
+through the Phase 3 models. A figure at horizon 24 is the <em>conditional forward
+rate as at that month</em>: given the book and the macro state two years out, the
+probability a loan defaults over the following twelve months.</p>
+<p><strong>What they are not.</strong> This is a stress-sensitivity projection, not a cash-flow
+run-off. The Phase 3 models predict a fixed forward window from a record's own
+month; they do not compound, and this pipeline does not pretend they do. The
+portfolio is held at its last observed position rather than amortised, loans
+that default or prepay are not removed as the horizon extends, and no balance is
+rolled forward. The question answered is "how much worse does this book look
+under that macro state" -- which is what a stress test is for. The question left
+open is "what are the cumulative losses", which needs the Phase 4 hazards and a
+run-off engine.</p>
+<p><strong>Scoring population.</strong> The latest observed record per loan: the book as it
+stands at the data cutoff. Scoring every historical month would weight the
+projection towards loans that happen to have long histories.</p>
+<h2>Scenario assumptions</h2>
+<p>Read directly from <code>data/macro_scenarios.csv</code>. Nothing here is a project assumption.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">projection_month</th>
+<th style="text-align: right;">mortgage_rate</th>
+<th style="text-align: right;">unemployment_rate</th>
+<th style="text-align: right;">hpi_index</th>
+<th style="text-align: right;">default_multiplier</th>
+<th style="text-align: right;">prepayment_multiplier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">6.6</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">6.4011</td>
+<td style="text-align: right;">3.9702</td>
+<td style="text-align: right;">102.747</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">2025-12</td>
+<td style="text-align: right;">6.184</td>
+<td style="text-align: right;">4.0468</td>
+<td style="text-align: right;">105.829</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2026-12</td>
+<td style="text-align: right;">5.967</td>
+<td style="text-align: right;">4.1234</td>
+<td style="text-align: right;">109.004</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">2027-12</td>
+<td style="text-align: right;">5.75</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">112.274</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">6.6</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">6.8574</td>
+<td style="text-align: right;">5.9319</td>
+<td style="text-align: right;">92.6415</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">0.8947</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">2025-12</td>
+<td style="text-align: right;">7.1383</td>
+<td style="text-align: right;">6.8381</td>
+<td style="text-align: right;">85.2302</td>
+<td style="text-align: right;">2.1193</td>
+<td style="text-align: right;">0.7798</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2026-12</td>
+<td style="text-align: right;">7.4191</td>
+<td style="text-align: right;">7.5244</td>
+<td style="text-align: right;">78.4118</td>
+<td style="text-align: right;">2.3807</td>
+<td style="text-align: right;">0.6649</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">2027-12</td>
+<td style="text-align: right;">7.7</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">72.1388</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">6.6</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">6.0383</td>
+<td style="text-align: right;">3.7947</td>
+<td style="text-align: right;">105.03</td>
+<td style="text-align: right;">0.9415</td>
+<td style="text-align: right;">1.4447</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">2025-12</td>
+<td style="text-align: right;">5.4255</td>
+<td style="text-align: right;">3.6798</td>
+<td style="text-align: right;">110.807</td>
+<td style="text-align: right;">0.8777</td>
+<td style="text-align: right;">1.9298</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2026-12</td>
+<td style="text-align: right;">4.8128</td>
+<td style="text-align: right;">3.5649</td>
+<td style="text-align: right;">116.901</td>
+<td style="text-align: right;">0.8138</td>
+<td style="text-align: right;">2.4149</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">2027-12</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">3.45</td>
+<td style="text-align: right;">123.331</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">2.9</td>
+</tr>
+</tbody>
+</table>
+<h2>Portfolio projection</h2>
+<p>Mean projected rate per scenario and horizon, with the change against the baseline scenario at the same horizon in percentage points.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">projection_month</th>
+<th style="text-align: right;">delinquency_3m</th>
+<th style="text-align: right;">default_12m</th>
+<th style="text-align: right;">prepayment_12m</th>
+<th style="text-align: right;">credit_score_shift</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">delinquency_3m_vs_baseline_pp</th>
+<th style="text-align: right;">default_12m_vs_baseline_pp</th>
+<th style="text-align: right;">prepayment_12m_vs_baseline_pp</th>
+<th style="text-align: right;">default_12m_stated</th>
+<th style="text-align: right;">prepayment_12m_stated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">0.187348</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: right;">0.0739691</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: right;">0.0739691</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">0.232126</td>
+<td style="text-align: right;">0.258286</td>
+<td style="text-align: right;">0.0638139</td>
+<td style="text-align: right;">-92.5</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">4.62678</td>
+<td style="text-align: right;">11.2752</td>
+<td style="text-align: right;">-1.01684</td>
+<td style="text-align: right;">0.258177</td>
+<td style="text-align: right;">0.0661919</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">2025-12</td>
+<td style="text-align: right;">0.248229</td>
+<td style="text-align: right;">0.293092</td>
+<td style="text-align: right;">0.0594882</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">6.38539</td>
+<td style="text-align: right;">14.9304</td>
+<td style="text-align: right;">-1.43762</td>
+<td style="text-align: right;">0.304729</td>
+<td style="text-align: right;">0.0575994</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2026-12</td>
+<td style="text-align: right;">0.251569</td>
+<td style="text-align: right;">0.293021</td>
+<td style="text-align: right;">0.0582301</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">6.87073</td>
+<td style="text-align: right;">15.0509</td>
+<td style="text-align: right;">-1.55482</td>
+<td style="text-align: right;">0.339277</td>
+<td style="text-align: right;">0.0490552</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">2027-12</td>
+<td style="text-align: right;">0.253732</td>
+<td style="text-align: right;">0.292502</td>
+<td style="text-align: right;">0.0569575</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">7.20648</td>
+<td style="text-align: right;">15.1278</td>
+<td style="text-align: right;">-1.66593</td>
+<td style="text-align: right;">0.367183</td>
+<td style="text-align: right;">0.0404892</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">0.187348</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: right;">0.0739691</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: right;">0.0739691</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">0.185858</td>
+<td style="text-align: right;">0.145534</td>
+<td style="text-align: right;">0.0739823</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.145534</td>
+<td style="text-align: right;">0.0739823</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">2025-12</td>
+<td style="text-align: right;">0.184375</td>
+<td style="text-align: right;">0.143788</td>
+<td style="text-align: right;">0.0738644</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.143788</td>
+<td style="text-align: right;">0.0738644</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2026-12</td>
+<td style="text-align: right;">0.182862</td>
+<td style="text-align: right;">0.142512</td>
+<td style="text-align: right;">0.0737784</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.142512</td>
+<td style="text-align: right;">0.0737784</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">2027-12</td>
+<td style="text-align: right;">0.181667</td>
+<td style="text-align: right;">0.141224</td>
+<td style="text-align: right;">0.0736168</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.141224</td>
+<td style="text-align: right;">0.0736168</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">0.187348</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: right;">0.0739691</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: right;">0.0739691</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">0.182317</td>
+<td style="text-align: right;">0.136935</td>
+<td style="text-align: right;">0.0751222</td>
+<td style="text-align: right;">7.00002</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">-0.354173</td>
+<td style="text-align: right;">-0.859906</td>
+<td style="text-align: right;">0.113995</td>
+<td style="text-align: right;">0.13702</td>
+<td style="text-align: right;">0.106882</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">2025-12</td>
+<td style="text-align: right;">0.176802</td>
+<td style="text-align: right;">0.126277</td>
+<td style="text-align: right;">0.0761378</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">-0.757333</td>
+<td style="text-align: right;">-1.75102</td>
+<td style="text-align: right;">0.227341</td>
+<td style="text-align: right;">0.126202</td>
+<td style="text-align: right;">0.142543</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2026-12</td>
+<td style="text-align: right;">0.171383</td>
+<td style="text-align: right;">0.116034</td>
+<td style="text-align: right;">0.0773279</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">-1.14783</td>
+<td style="text-align: right;">-2.6478</td>
+<td style="text-align: right;">0.354955</td>
+<td style="text-align: right;">0.115976</td>
+<td style="text-align: right;">0.178167</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">2027-12</td>
+<td style="text-align: right;">0.165682</td>
+<td style="text-align: right;">0.106172</td>
+<td style="text-align: right;">0.0782029</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">10000</td>
+<td style="text-align: right;">-1.59851</td>
+<td style="text-align: right;">-3.50524</td>
+<td style="text-align: right;">0.458608</td>
+<td style="text-align: right;">0.105918</td>
+<td style="text-align: right;">0.213489</td>
+</tr>
+</tbody>
+</table>
+<h2>Method</h2>
+<p><strong>The scenario file is the only source of stress assumptions.</strong> Nothing in this
+pipeline invents an unemployment path, a rate shock or an elasticity.
+<code>data/macro_scenarios.csv</code> supplies, per scenario and month, a mortgage rate, an
+unemployment rate, a house price index and the scenario's own stated default and
+prepayment multipliers. A missing column stops the run rather than falling back
+to a default.</p>
+<p><strong>Three transmission channels, in descending order of how much they assume.</strong></p>
+<p><em>House prices to loan-to-value</em> is mechanical. LTV is debt over value, so a
+house price index at 72 against a starting 100 raises current LTV by a factor of
+1.39. No elasticity, no fitted relationship -- arithmetic.</p>
+<p><em>Market rate to refinance incentive</em> is mechanical. <code>rate_spread</code> is the loan's
+note rate less the prevailing market rate, and the scenario states that rate. A
+borrower paying 7% in a 4.2% market has an incentive the Phase 3 model already
+knows how to read.</p>
+<p><em>Labour market to credit quality</em> is <em>calibrated, not assumed</em>. The file gives
+an unemployment path and a default multiplier but no elasticity connecting them
+to credit scores. Hard-coding one -- "40 points of FICO per point of
+unemployment" -- would make the projection a restatement of that invented
+number. Instead the shift is solved for: find the portfolio-wide credit-score
+move that makes the model reproduce the scenario's <em>own</em> stated default
+multiplier. The file stays authoritative, the model supplies the transmission,
+and the answer lands in a unit a credit officer recognises.</p>
+<p><strong>Bounds are enforced and banded columns are rebuilt.</strong> Every stressed feature is
+clipped to a plausible range, and <code>credit_score_band</code>, <code>ltv_band</code> and <code>dti_band</code>
+are recomputed from the shifted values underneath them. Moving <code>ltv</code> while
+leaving <code>ltv_band</code> at its original level hands the model a record that
+contradicts itself -- and the model will score it without complaint.</p>
+<p><strong>One credit shift per scenario-month, shared across all three targets.</strong> The
+shift describes a state of the world, not a per-model tuning knob. Letting each
+target solve its own would produce three mutually inconsistent portfolios and
+call them one scenario.</p>
+<h2>Where this projection runs out of road</h2>
+<p><strong>The credit channel saturates, and the projection says so.</strong> Beyond a point,
+no shift in credit score reproduces the default multiplier the scenario file
+states. Even moving the entire book to the floor of the observable score range
+(500) leaves the Adverse-Credit multiplier short at the longer horizons. Three
+readings, all worth stating:</p>
+<ol>
+<li>The Phase 3 model's sensitivity to credit score is bounded by the range it
+   was fitted on. A 2.6x default multiplier is outside what this book's credit
+   distribution can express, however hard it is pushed.</li>
+<li>The scenario's severity is therefore carried by channels the model does not
+   see. Unemployment at 8.1% is not a feature; it reaches the model only
+   through the calibrated shift, and the shift has run out of room.</li>
+<li>A naive calibration would clamp at its search bound, report a number and
+   move on -- and the projection would quietly under-state the scenario. The
+   saturation table names the shortfall in the file's own units instead.</li>
+</ol>
+<p>This is why both projection methods are reported. The <strong>feature-stress</strong> column
+is what the model says when its inputs are moved; the <strong>stated-multiplier</strong>
+column is the scenario file's own view applied directly to the baseline rate.
+Where they diverge, the feature-stress figure is a floor, not a forecast.</p>
+<p><strong>Prepayment barely responds to the rate path.</strong> The High-Prepayment scenario
+states a 2.9x prepayment multiplier by month 48; the feature-stress projection
+produces roughly 1.05x. That is consistent rather than anomalous: Task 2 found
+prepayment close to unpredictable in this pack (ROC-AUC 0.52) and Task 3 found
+a cause-specific Cox model barely beating a constant hazard on it (C = 0.558).
+A model with no prepayment signal cannot acquire one under stress. The
+stated-multiplier column is the usable projection for prepayment here.</p>
+<h2>Calibrated credit channel</h2>
+<p>The portfolio-wide credit-score shift that makes the model reproduce each scenario's stated default multiplier. <code>converged = False</code> marks a multiplier the model cannot reach by any shift in the search range -- reported as a number rather than silently clamped.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: right;">credit_score_shift</th>
+<th style="text-align: right;">baseline_rate</th>
+<th style="text-align: left;">converged</th>
+<th style="text-align: right;">residual</th>
+<th style="text-align: right;">target_multiplier</th>
+<th style="text-align: right;">target_rate</th>
+<th style="text-align: right;">attainable_low</th>
+<th style="text-align: right;">attainable_high</th>
+<th style="text-align: right;">attained_rate</th>
+<th style="text-align: right;">attainable_multiplier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">-92.5</td>
+<td style="text-align: right;">0.145534</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0.000109061</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">0.258177</td>
+<td style="text-align: right;">0.290942</td>
+<td style="text-align: right;">0.0686103</td>
+<td style="text-align: right;">0.258286</td>
+<td style="text-align: right;">1.774</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: right;">0.143788</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">-0.011637</td>
+<td style="text-align: right;">2.1193</td>
+<td style="text-align: right;">0.304729</td>
+<td style="text-align: right;">0.293092</td>
+<td style="text-align: right;">0.073383</td>
+<td style="text-align: right;">0.293092</td>
+<td style="text-align: right;">2.03837</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: right;">0.142512</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">-0.0462568</td>
+<td style="text-align: right;">2.3807</td>
+<td style="text-align: right;">0.339277</td>
+<td style="text-align: right;">0.293021</td>
+<td style="text-align: right;">0.0752846</td>
+<td style="text-align: right;">0.293021</td>
+<td style="text-align: right;">2.05612</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: right;">0.141224</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">-0.0746803</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">0.367183</td>
+<td style="text-align: right;">0.292502</td>
+<td style="text-align: right;">0.0758331</td>
+<td style="text-align: right;">0.292502</td>
+<td style="text-align: right;">2.07119</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.145534</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.143788</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.142512</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.141224</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.147149</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">7.00002</td>
+<td style="text-align: right;">0.145534</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">-8.53427e-05</td>
+<td style="text-align: right;">0.9415</td>
+<td style="text-align: right;">0.13702</td>
+<td style="text-align: right;">0.285713</td>
+<td style="text-align: right;">0.0589134</td>
+<td style="text-align: right;">0.136935</td>
+<td style="text-align: right;">0.9415</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">0.143788</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">7.50426e-05</td>
+<td style="text-align: right;">0.8777</td>
+<td style="text-align: right;">0.126202</td>
+<td style="text-align: right;">0.282919</td>
+<td style="text-align: right;">0.0550868</td>
+<td style="text-align: right;">0.126277</td>
+<td style="text-align: right;">0.8777</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: right;">0.142512</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">5.7621e-05</td>
+<td style="text-align: right;">0.8138</td>
+<td style="text-align: right;">0.115976</td>
+<td style="text-align: right;">0.27999</td>
+<td style="text-align: right;">0.052489</td>
+<td style="text-align: right;">0.116034</td>
+<td style="text-align: right;">0.8138</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">0.141224</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0.000253636</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.105918</td>
+<td style="text-align: right;">0.278005</td>
+<td style="text-align: right;">0.0515579</td>
+<td style="text-align: right;">0.106172</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+</tbody>
+</table>
+<h2>Credit channel saturation</h2>
+<p><code>reached = False</code> marks a stated multiplier the model cannot produce by any credit-score shift. <code>attainable_multiplier</code> is the ceiling it reaches at the floor of the observable score range, and <code>shortfall</code> is the gap the feature-stress projection therefore under-states by.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: right;">stated_multiplier</th>
+<th style="text-align: right;">attainable_multiplier</th>
+<th style="text-align: right;">credit_score_shift</th>
+<th style="text-align: left;">reached</th>
+<th style="text-align: right;">shortfall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">-92.5</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2.1193</td>
+<td style="text-align: right;">2.03837</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.0809317</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">2.3807</td>
+<td style="text-align: right;">2.05612</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.324582</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">2.07119</td>
+<td style="text-align: right;">-250</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.528807</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.9415</td>
+<td style="text-align: right;">0.9415</td>
+<td style="text-align: right;">7.00002</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0.8777</td>
+<td style="text-align: right;">0.8777</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0.8138</td>
+<td style="text-align: right;">0.8138</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<h2>Stated vs. modelled multipliers</h2>
+<p>Two independent views of the same scenario. Default agrees by construction -- the credit channel was calibrated to make it agree. <strong>Prepayment was not calibrated against anything</strong>, so its column is the model's own view of the refinance response, derived only from the rate path. Where it disagrees with the file, that gap is a finding about the model, not an error in the projection.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">measure</th>
+<th style="text-align: right;">stated_multiplier</th>
+<th style="text-align: right;">model_multiplier</th>
+<th style="text-align: right;">gap</th>
+<th style="text-align: left;">calibrated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">1.77475</td>
+<td style="text-align: right;">0.000749385</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">0.8947</td>
+<td style="text-align: right;">0.862556</td>
+<td style="text-align: right;">-0.0321439</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">2.1193</td>
+<td style="text-align: right;">2.03837</td>
+<td style="text-align: right;">-0.0809317</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">0.7798</td>
+<td style="text-align: right;">0.80537</td>
+<td style="text-align: right;">0.0255704</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">2.3807</td>
+<td style="text-align: right;">2.05612</td>
+<td style="text-align: right;">-0.324582</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">0.6649</td>
+<td style="text-align: right;">0.789257</td>
+<td style="text-align: right;">0.124357</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">2.07119</td>
+<td style="text-align: right;">-0.528807</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.773703</td>
+<td style="text-align: right;">0.223703</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">0.9415</td>
+<td style="text-align: right;">0.940914</td>
+<td style="text-align: right;">-0.000586412</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1.4447</td>
+<td style="text-align: right;">1.01541</td>
+<td style="text-align: right;">-0.429292</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">0.8777</td>
+<td style="text-align: right;">0.878222</td>
+<td style="text-align: right;">0.000521899</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">1.9298</td>
+<td style="text-align: right;">1.03078</td>
+<td style="text-align: right;">-0.899022</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">0.8138</td>
+<td style="text-align: right;">0.814204</td>
+<td style="text-align: right;">0.000404325</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">2.4149</td>
+<td style="text-align: right;">1.04811</td>
+<td style="text-align: right;">-1.36679</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.751796</td>
+<td style="text-align: right;">0.00179598</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: right;">2.9</td>
+<td style="text-align: right;">1.0623</td>
+<td style="text-align: right;">-1.8377</td>
+<td style="text-align: left;">False</td>
+</tr>
+</tbody>
+</table>
+<h3>Impact by vintage year</h3>
+<p>A portfolio-level move spread evenly is a different problem from the same move concentrated in one segment.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: right;">vintage_year</th>
+<th style="text-align: right;">delinquency_3m</th>
+<th style="text-align: right;">default_12m</th>
+<th style="text-align: right;">prepayment_12m</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">delinquency_3m_vs_baseline_pp</th>
+<th style="text-align: right;">default_12m_vs_baseline_pp</th>
+<th style="text-align: right;">prepayment_12m_vs_baseline_pp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.192632</td>
+<td style="text-align: right;">0.147366</td>
+<td style="text-align: right;">0.0711064</td>
+<td style="text-align: right;">1717</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0.204635</td>
+<td style="text-align: right;">0.158983</td>
+<td style="text-align: right;">0.0730412</td>
+<td style="text-align: right;">1675</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">0.200443</td>
+<td style="text-align: right;">0.163086</td>
+<td style="text-align: right;">0.0746924</td>
+<td style="text-align: right;">1650</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">0.175539</td>
+<td style="text-align: right;">0.145326</td>
+<td style="text-align: right;">0.0768797</td>
+<td style="text-align: right;">1658</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">0.182492</td>
+<td style="text-align: right;">0.138866</td>
+<td style="text-align: right;">0.073029</td>
+<td style="text-align: right;">1698</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">0.167491</td>
+<td style="text-align: right;">0.128795</td>
+<td style="text-align: right;">0.0752468</td>
+<td style="text-align: right;">1602</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.192632</td>
+<td style="text-align: right;">0.147366</td>
+<td style="text-align: right;">0.0711064</td>
+<td style="text-align: right;">1717</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0.204635</td>
+<td style="text-align: right;">0.158983</td>
+<td style="text-align: right;">0.0730412</td>
+<td style="text-align: right;">1675</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">0.200443</td>
+<td style="text-align: right;">0.163086</td>
+<td style="text-align: right;">0.0746924</td>
+<td style="text-align: right;">1650</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">0.175539</td>
+<td style="text-align: right;">0.145326</td>
+<td style="text-align: right;">0.0768797</td>
+<td style="text-align: right;">1658</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">0.182492</td>
+<td style="text-align: right;">0.138866</td>
+<td style="text-align: right;">0.073029</td>
+<td style="text-align: right;">1698</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">0.167491</td>
+<td style="text-align: right;">0.128795</td>
+<td style="text-align: right;">0.0752468</td>
+<td style="text-align: right;">1602</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.192632</td>
+<td style="text-align: right;">0.147366</td>
+<td style="text-align: right;">0.0711064</td>
+<td style="text-align: right;">1717</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0.204635</td>
+<td style="text-align: right;">0.158983</td>
+<td style="text-align: right;">0.0730412</td>
+<td style="text-align: right;">1675</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">0.200443</td>
+<td style="text-align: right;">0.163086</td>
+<td style="text-align: right;">0.0746924</td>
+<td style="text-align: right;">1650</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">0.175539</td>
+<td style="text-align: right;">0.145326</td>
+<td style="text-align: right;">0.0768797</td>
+<td style="text-align: right;">1658</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">0.182492</td>
+<td style="text-align: right;">0.138866</td>
+<td style="text-align: right;">0.073029</td>
+<td style="text-align: right;">1698</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">0.167491</td>
+<td style="text-align: right;">0.128795</td>
+<td style="text-align: right;">0.0752468</td>
+<td style="text-align: right;">1602</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.2354</td>
+<td style="text-align: right;">0.256516</td>
+<td style="text-align: right;">0.0591136</td>
+<td style="text-align: right;">1717</td>
+<td style="text-align: right;">4.44807</td>
+<td style="text-align: right;">11.0297</td>
+<td style="text-align: right;">-1.18733</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0.247053</td>
+<td style="text-align: right;">0.264838</td>
+<td style="text-align: right;">0.0629994</td>
+<td style="text-align: right;">1675</td>
+<td style="text-align: right;">4.44012</td>
+<td style="text-align: right;">10.731</td>
+<td style="text-align: right;">-0.998402</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">0.239211</td>
+<td style="text-align: right;">0.259779</td>
+<td style="text-align: right;">0.0658876</td>
+<td style="text-align: right;">1650</td>
+<td style="text-align: right;">4.04181</td>
+<td style="text-align: right;">9.7899</td>
+<td style="text-align: right;">-0.875783</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">0.215789</td>
+<td style="text-align: right;">0.249531</td>
+<td style="text-align: right;">0.0676545</td>
+<td style="text-align: right;">1658</td>
+<td style="text-align: right;">4.13472</td>
+<td style="text-align: right;">10.6715</td>
+<td style="text-align: right;">-0.919144</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">0.231188</td>
+<td style="text-align: right;">0.255393</td>
+<td style="text-align: right;">0.0631011</td>
+<td style="text-align: right;">1698</td>
+<td style="text-align: right;">5.05007</td>
+<td style="text-align: right;">11.801</td>
+<td style="text-align: right;">-1.01535</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">0.223615</td>
+<td style="text-align: right;">0.263921</td>
+<td style="text-align: right;">0.0643478</td>
+<td style="text-align: right;">1602</td>
+<td style="text-align: right;">5.67656</td>
+<td style="text-align: right;">13.7047</td>
+<td style="text-align: right;">-1.10137</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.190919</td>
+<td style="text-align: right;">0.146219</td>
+<td style="text-align: right;">0.0709869</td>
+<td style="text-align: right;">1717</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0.202652</td>
+<td style="text-align: right;">0.157528</td>
+<td style="text-align: right;">0.0729834</td>
+<td style="text-align: right;">1675</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">0.198793</td>
+<td style="text-align: right;">0.16188</td>
+<td style="text-align: right;">0.0746454</td>
+<td style="text-align: right;">1650</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">0.174442</td>
+<td style="text-align: right;">0.142816</td>
+<td style="text-align: right;">0.0768459</td>
+<td style="text-align: right;">1658</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">0.180687</td>
+<td style="text-align: right;">0.137383</td>
+<td style="text-align: right;">0.0732546</td>
+<td style="text-align: right;">1698</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">0.16685</td>
+<td style="text-align: right;">0.126874</td>
+<td style="text-align: right;">0.0753615</td>
+<td style="text-align: right;">1602</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 30 of 90 rows.</em></p>
+<h3>Impact by credit score band</h3>
+<p>A portfolio-level move spread evenly is a different problem from the same move concentrated in one segment.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">credit_score_band</th>
+<th style="text-align: right;">delinquency_3m</th>
+<th style="text-align: right;">default_12m</th>
+<th style="text-align: right;">prepayment_12m</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">delinquency_3m_vs_baseline_pp</th>
+<th style="text-align: right;">default_12m_vs_baseline_pp</th>
+<th style="text-align: right;">prepayment_12m_vs_baseline_pp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">620-659</td>
+<td style="text-align: right;">0.399536</td>
+<td style="text-align: right;">0.373184</td>
+<td style="text-align: right;">0.0496584</td>
+<td style="text-align: right;">1531</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">660-699</td>
+<td style="text-align: right;">0.215045</td>
+<td style="text-align: right;">0.177131</td>
+<td style="text-align: right;">0.074652</td>
+<td style="text-align: right;">2899</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">700-739</td>
+<td style="text-align: right;">0.0985639</td>
+<td style="text-align: right;">0.0420551</td>
+<td style="text-align: right;">0.0811088</td>
+<td style="text-align: right;">2838</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">740-799</td>
+<td style="text-align: right;">0.0491407</td>
+<td style="text-align: right;">0.0142427</td>
+<td style="text-align: right;">0.0893324</td>
+<td style="text-align: right;">1946</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">800+</td>
+<td style="text-align: right;">0.0278938</td>
+<td style="text-align: right;">0.00569515</td>
+<td style="text-align: right;">0.0838437</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">&lt;620</td>
+<td style="text-align: right;">0.475198</td>
+<td style="text-align: right;">0.44187</td>
+<td style="text-align: right;">0.0417649</td>
+<td style="text-align: right;">539</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">620-659</td>
+<td style="text-align: right;">0.399536</td>
+<td style="text-align: right;">0.373184</td>
+<td style="text-align: right;">0.0496584</td>
+<td style="text-align: right;">1531</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">660-699</td>
+<td style="text-align: right;">0.215045</td>
+<td style="text-align: right;">0.177131</td>
+<td style="text-align: right;">0.074652</td>
+<td style="text-align: right;">2899</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">700-739</td>
+<td style="text-align: right;">0.0985639</td>
+<td style="text-align: right;">0.0420551</td>
+<td style="text-align: right;">0.0811088</td>
+<td style="text-align: right;">2838</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">740-799</td>
+<td style="text-align: right;">0.0491407</td>
+<td style="text-align: right;">0.0142427</td>
+<td style="text-align: right;">0.0893324</td>
+<td style="text-align: right;">1946</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">800+</td>
+<td style="text-align: right;">0.0278938</td>
+<td style="text-align: right;">0.00569515</td>
+<td style="text-align: right;">0.0838437</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">&lt;620</td>
+<td style="text-align: right;">0.475198</td>
+<td style="text-align: right;">0.44187</td>
+<td style="text-align: right;">0.0417649</td>
+<td style="text-align: right;">539</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">620-659</td>
+<td style="text-align: right;">0.399536</td>
+<td style="text-align: right;">0.373184</td>
+<td style="text-align: right;">0.0496584</td>
+<td style="text-align: right;">1531</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">660-699</td>
+<td style="text-align: right;">0.215045</td>
+<td style="text-align: right;">0.177131</td>
+<td style="text-align: right;">0.074652</td>
+<td style="text-align: right;">2899</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">700-739</td>
+<td style="text-align: right;">0.0985639</td>
+<td style="text-align: right;">0.0420551</td>
+<td style="text-align: right;">0.0811088</td>
+<td style="text-align: right;">2838</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">740-799</td>
+<td style="text-align: right;">0.0491407</td>
+<td style="text-align: right;">0.0142427</td>
+<td style="text-align: right;">0.0893324</td>
+<td style="text-align: right;">1946</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">800+</td>
+<td style="text-align: right;">0.0278938</td>
+<td style="text-align: right;">0.00569515</td>
+<td style="text-align: right;">0.0838437</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">&lt;620</td>
+<td style="text-align: right;">0.475198</td>
+<td style="text-align: right;">0.44187</td>
+<td style="text-align: right;">0.0417649</td>
+<td style="text-align: right;">539</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">620-659</td>
+<td style="text-align: right;">0.41188</td>
+<td style="text-align: right;">0.395877</td>
+<td style="text-align: right;">0.0476132</td>
+<td style="text-align: right;">1531</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">660-699</td>
+<td style="text-align: right;">0.263986</td>
+<td style="text-align: right;">0.305199</td>
+<td style="text-align: right;">0.0606779</td>
+<td style="text-align: right;">2899</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">700-739</td>
+<td style="text-align: right;">0.166358</td>
+<td style="text-align: right;">0.230832</td>
+<td style="text-align: right;">0.0689897</td>
+<td style="text-align: right;">2838</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">740-799</td>
+<td style="text-align: right;">0.0934277</td>
+<td style="text-align: right;">0.0997607</td>
+<td style="text-align: right;">0.0776067</td>
+<td style="text-align: right;">1946</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">800+</td>
+<td style="text-align: right;">0.0479439</td>
+<td style="text-align: right;">0.0145844</td>
+<td style="text-align: right;">0.0815632</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">&lt;620</td>
+<td style="text-align: right;">0.481632</td>
+<td style="text-align: right;">0.44371</td>
+<td style="text-align: right;">0.0415137</td>
+<td style="text-align: right;">539</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">620-659</td>
+<td style="text-align: right;">0.396786</td>
+<td style="text-align: right;">0.370716</td>
+<td style="text-align: right;">0.0495619</td>
+<td style="text-align: right;">1531</td>
+<td style="text-align: right;">-1.50938</td>
+<td style="text-align: right;">-2.51606</td>
+<td style="text-align: right;">0.19487</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">660-699</td>
+<td style="text-align: right;">0.213095</td>
+<td style="text-align: right;">0.175439</td>
+<td style="text-align: right;">0.0746199</td>
+<td style="text-align: right;">2899</td>
+<td style="text-align: right;">-5.08907</td>
+<td style="text-align: right;">-12.976</td>
+<td style="text-align: right;">1.39419</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">700-739</td>
+<td style="text-align: right;">0.0976325</td>
+<td style="text-align: right;">0.0402311</td>
+<td style="text-align: right;">0.0814402</td>
+<td style="text-align: right;">2838</td>
+<td style="text-align: right;">-6.87258</td>
+<td style="text-align: right;">-19.0601</td>
+<td style="text-align: right;">1.24504</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">740-799</td>
+<td style="text-align: right;">0.0485964</td>
+<td style="text-align: right;">0.0133423</td>
+<td style="text-align: right;">0.089189</td>
+<td style="text-align: right;">1946</td>
+<td style="text-align: right;">-4.48313</td>
+<td style="text-align: right;">-8.64184</td>
+<td style="text-align: right;">1.15824</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">800+</td>
+<td style="text-align: right;">0.0275635</td>
+<td style="text-align: right;">0.00529527</td>
+<td style="text-align: right;">0.0842152</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">-2.03804</td>
+<td style="text-align: right;">-0.928909</td>
+<td style="text-align: right;">0.265205</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">&lt;620</td>
+<td style="text-align: right;">0.472881</td>
+<td style="text-align: right;">0.441048</td>
+<td style="text-align: right;">0.041058</td>
+<td style="text-align: right;">539</td>
+<td style="text-align: right;">-0.875188</td>
+<td style="text-align: right;">-0.266149</td>
+<td style="text-align: right;">-0.0455704</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 30 of 90 rows.</em></p>
+<h3>Impact by state</h3>
+<p>A portfolio-level move spread evenly is a different problem from the same move concentrated in one segment.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">state</th>
+<th style="text-align: right;">delinquency_3m</th>
+<th style="text-align: right;">default_12m</th>
+<th style="text-align: right;">prepayment_12m</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">delinquency_3m_vs_baseline_pp</th>
+<th style="text-align: right;">default_12m_vs_baseline_pp</th>
+<th style="text-align: right;">prepayment_12m_vs_baseline_pp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: right;">0.201551</td>
+<td style="text-align: right;">0.143299</td>
+<td style="text-align: right;">0.0683806</td>
+<td style="text-align: right;">143</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">AZ</td>
+<td style="text-align: right;">0.222273</td>
+<td style="text-align: right;">0.177237</td>
+<td style="text-align: right;">0.0780312</td>
+<td style="text-align: right;">266</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">CA</td>
+<td style="text-align: right;">0.1899</td>
+<td style="text-align: right;">0.154184</td>
+<td style="text-align: right;">0.0758357</td>
+<td style="text-align: right;">1290</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">CO</td>
+<td style="text-align: right;">0.194107</td>
+<td style="text-align: right;">0.154377</td>
+<td style="text-align: right;">0.0787529</td>
+<td style="text-align: right;">176</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">CT</td>
+<td style="text-align: right;">0.207069</td>
+<td style="text-align: right;">0.155208</td>
+<td style="text-align: right;">0.071358</td>
+<td style="text-align: right;">109</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FL</td>
+<td style="text-align: right;">0.179189</td>
+<td style="text-align: right;">0.146596</td>
+<td style="text-align: right;">0.0729413</td>
+<td style="text-align: right;">972</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">GA</td>
+<td style="text-align: right;">0.194337</td>
+<td style="text-align: right;">0.141261</td>
+<td style="text-align: right;">0.0697906</td>
+<td style="text-align: right;">383</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">IL</td>
+<td style="text-align: right;">0.180191</td>
+<td style="text-align: right;">0.134833</td>
+<td style="text-align: right;">0.0808948</td>
+<td style="text-align: right;">412</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">IN</td>
+<td style="text-align: right;">0.159166</td>
+<td style="text-align: right;">0.121603</td>
+<td style="text-align: right;">0.0753592</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">KY</td>
+<td style="text-align: right;">0.220393</td>
+<td style="text-align: right;">0.167309</td>
+<td style="text-align: right;">0.0713853</td>
+<td style="text-align: right;">152</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">LA</td>
+<td style="text-align: right;">0.207738</td>
+<td style="text-align: right;">0.160836</td>
+<td style="text-align: right;">0.0689377</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MA</td>
+<td style="text-align: right;">0.174972</td>
+<td style="text-align: right;">0.150385</td>
+<td style="text-align: right;">0.0686044</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MD</td>
+<td style="text-align: right;">0.182035</td>
+<td style="text-align: right;">0.134013</td>
+<td style="text-align: right;">0.0785765</td>
+<td style="text-align: right;">199</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MI</td>
+<td style="text-align: right;">0.204006</td>
+<td style="text-align: right;">0.16536</td>
+<td style="text-align: right;">0.0686508</td>
+<td style="text-align: right;">313</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MN</td>
+<td style="text-align: right;">0.159173</td>
+<td style="text-align: right;">0.123839</td>
+<td style="text-align: right;">0.0825324</td>
+<td style="text-align: right;">179</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MO</td>
+<td style="text-align: right;">0.189388</td>
+<td style="text-align: right;">0.152529</td>
+<td style="text-align: right;">0.0742057</td>
+<td style="text-align: right;">214</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NC</td>
+<td style="text-align: right;">0.201789</td>
+<td style="text-align: right;">0.149277</td>
+<td style="text-align: right;">0.0755355</td>
+<td style="text-align: right;">367</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NJ</td>
+<td style="text-align: right;">0.170451</td>
+<td style="text-align: right;">0.116252</td>
+<td style="text-align: right;">0.0732931</td>
+<td style="text-align: right;">288</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NY</td>
+<td style="text-align: right;">0.195361</td>
+<td style="text-align: right;">0.153118</td>
+<td style="text-align: right;">0.0733775</td>
+<td style="text-align: right;">589</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OH</td>
+<td style="text-align: right;">0.18486</td>
+<td style="text-align: right;">0.156615</td>
+<td style="text-align: right;">0.0727718</td>
+<td style="text-align: right;">419</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">0.148262</td>
+<td style="text-align: right;">0.107873</td>
+<td style="text-align: right;">0.0684418</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OR</td>
+<td style="text-align: right;">0.15366</td>
+<td style="text-align: right;">0.122698</td>
+<td style="text-align: right;">0.059587</td>
+<td style="text-align: right;">167</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">PA</td>
+<td style="text-align: right;">0.19831</td>
+<td style="text-align: right;">0.16448</td>
+<td style="text-align: right;">0.0724176</td>
+<td style="text-align: right;">419</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">SC</td>
+<td style="text-align: right;">0.206339</td>
+<td style="text-align: right;">0.152238</td>
+<td style="text-align: right;">0.0757205</td>
+<td style="text-align: right;">147</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">TN</td>
+<td style="text-align: right;">0.188633</td>
+<td style="text-align: right;">0.142854</td>
+<td style="text-align: right;">0.0732161</td>
+<td style="text-align: right;">242</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">TX</td>
+<td style="text-align: right;">0.187795</td>
+<td style="text-align: right;">0.146183</td>
+<td style="text-align: right;">0.0789925</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">UT</td>
+<td style="text-align: right;">0.194689</td>
+<td style="text-align: right;">0.151818</td>
+<td style="text-align: right;">0.0690294</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">VA</td>
+<td style="text-align: right;">0.158984</td>
+<td style="text-align: right;">0.120654</td>
+<td style="text-align: right;">0.0792874</td>
+<td style="text-align: right;">295</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">WA</td>
+<td style="text-align: right;">0.200319</td>
+<td style="text-align: right;">0.159612</td>
+<td style="text-align: right;">0.0600831</td>
+<td style="text-align: right;">279</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">WI</td>
+<td style="text-align: right;">0.153515</td>
+<td style="text-align: right;">0.125727</td>
+<td style="text-align: right;">0.0716634</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 30 of 450 rows.</em></p>
+<h3>Impact by servicer name</h3>
+<p>A portfolio-level move spread evenly is a different problem from the same move concentrated in one segment.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">servicer_name</th>
+<th style="text-align: right;">delinquency_3m</th>
+<th style="text-align: right;">default_12m</th>
+<th style="text-align: right;">prepayment_12m</th>
+<th style="text-align: right;">loans</th>
+<th style="text-align: right;">delinquency_3m_vs_baseline_pp</th>
+<th style="text-align: right;">default_12m_vs_baseline_pp</th>
+<th style="text-align: right;">prepayment_12m_vs_baseline_pp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Atlas Mortgage Services</td>
+<td style="text-align: right;">0.183023</td>
+<td style="text-align: right;">0.144813</td>
+<td style="text-align: right;">0.073567</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Beacon Home Loans</td>
+<td style="text-align: right;">0.189673</td>
+<td style="text-align: right;">0.149417</td>
+<td style="text-align: right;">0.0737138</td>
+<td style="text-align: right;">1964</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Cornerstone Loan Servicing</td>
+<td style="text-align: right;">0.198922</td>
+<td style="text-align: right;">0.157338</td>
+<td style="text-align: right;">0.0740321</td>
+<td style="text-align: right;">2049</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Meridian Residential Capital</td>
+<td style="text-align: right;">0.183788</td>
+<td style="text-align: right;">0.143239</td>
+<td style="text-align: right;">0.0746853</td>
+<td style="text-align: right;">2033</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Northgate Financial Servicing</td>
+<td style="text-align: right;">0.180985</td>
+<td style="text-align: right;">0.140604</td>
+<td style="text-align: right;">0.0738288</td>
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Atlas Mortgage Services</td>
+<td style="text-align: right;">0.183023</td>
+<td style="text-align: right;">0.144813</td>
+<td style="text-align: right;">0.073567</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Beacon Home Loans</td>
+<td style="text-align: right;">0.189673</td>
+<td style="text-align: right;">0.149417</td>
+<td style="text-align: right;">0.0737138</td>
+<td style="text-align: right;">1964</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Cornerstone Loan Servicing</td>
+<td style="text-align: right;">0.198922</td>
+<td style="text-align: right;">0.157338</td>
+<td style="text-align: right;">0.0740321</td>
+<td style="text-align: right;">2049</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Meridian Residential Capital</td>
+<td style="text-align: right;">0.183788</td>
+<td style="text-align: right;">0.143239</td>
+<td style="text-align: right;">0.0746853</td>
+<td style="text-align: right;">2033</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Northgate Financial Servicing</td>
+<td style="text-align: right;">0.180985</td>
+<td style="text-align: right;">0.140604</td>
+<td style="text-align: right;">0.0738288</td>
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Atlas Mortgage Services</td>
+<td style="text-align: right;">0.183023</td>
+<td style="text-align: right;">0.144813</td>
+<td style="text-align: right;">0.073567</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Beacon Home Loans</td>
+<td style="text-align: right;">0.189673</td>
+<td style="text-align: right;">0.149417</td>
+<td style="text-align: right;">0.0737138</td>
+<td style="text-align: right;">1964</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Cornerstone Loan Servicing</td>
+<td style="text-align: right;">0.198922</td>
+<td style="text-align: right;">0.157338</td>
+<td style="text-align: right;">0.0740321</td>
+<td style="text-align: right;">2049</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Meridian Residential Capital</td>
+<td style="text-align: right;">0.183788</td>
+<td style="text-align: right;">0.143239</td>
+<td style="text-align: right;">0.0746853</td>
+<td style="text-align: right;">2033</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Northgate Financial Servicing</td>
+<td style="text-align: right;">0.180985</td>
+<td style="text-align: right;">0.140604</td>
+<td style="text-align: right;">0.0738288</td>
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Atlas Mortgage Services</td>
+<td style="text-align: right;">0.228132</td>
+<td style="text-align: right;">0.260251</td>
+<td style="text-align: right;">0.0627123</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">4.67122</td>
+<td style="text-align: right;">11.7218</td>
+<td style="text-align: right;">-1.09165</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Beacon Home Loans</td>
+<td style="text-align: right;">0.235139</td>
+<td style="text-align: right;">0.267647</td>
+<td style="text-align: right;">0.0644097</td>
+<td style="text-align: right;">1964</td>
+<td style="text-align: right;">4.70057</td>
+<td style="text-align: right;">11.9526</td>
+<td style="text-align: right;">-0.928052</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Cornerstone Loan Servicing</td>
+<td style="text-align: right;">0.242566</td>
+<td style="text-align: right;">0.266229</td>
+<td style="text-align: right;">0.0645868</td>
+<td style="text-align: right;">2049</td>
+<td style="text-align: right;">4.49933</td>
+<td style="text-align: right;">11.0384</td>
+<td style="text-align: right;">-0.956097</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Meridian Residential Capital</td>
+<td style="text-align: right;">0.228043</td>
+<td style="text-align: right;">0.252074</td>
+<td style="text-align: right;">0.0632765</td>
+<td style="text-align: right;">2033</td>
+<td style="text-align: right;">4.58004</td>
+<td style="text-align: right;">11.0883</td>
+<td style="text-align: right;">-1.12118</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Northgate Financial Servicing</td>
+<td style="text-align: right;">0.226469</td>
+<td style="text-align: right;">0.244849</td>
+<td style="text-align: right;">0.0641046</td>
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">4.68956</td>
+<td style="text-align: right;">10.5688</td>
+<td style="text-align: right;">-0.98361</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Atlas Mortgage Services</td>
+<td style="text-align: right;">0.18142</td>
+<td style="text-align: right;">0.143032</td>
+<td style="text-align: right;">0.0736287</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Beacon Home Loans</td>
+<td style="text-align: right;">0.188134</td>
+<td style="text-align: right;">0.148121</td>
+<td style="text-align: right;">0.0736902</td>
+<td style="text-align: right;">1964</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Cornerstone Loan Servicing</td>
+<td style="text-align: right;">0.197573</td>
+<td style="text-align: right;">0.155845</td>
+<td style="text-align: right;">0.0741478</td>
+<td style="text-align: right;">2049</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Meridian Residential Capital</td>
+<td style="text-align: right;">0.182243</td>
+<td style="text-align: right;">0.141191</td>
+<td style="text-align: right;">0.0744883</td>
+<td style="text-align: right;">2033</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Northgate Financial Servicing</td>
+<td style="text-align: right;">0.179573</td>
+<td style="text-align: right;">0.13916</td>
+<td style="text-align: right;">0.0739407</td>
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Atlas Mortgage Services</td>
+<td style="text-align: right;">0.177849</td>
+<td style="text-align: right;">0.133862</td>
+<td style="text-align: right;">0.074741</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">-0.357056</td>
+<td style="text-align: right;">-0.91706</td>
+<td style="text-align: right;">0.111222</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Beacon Home Loans</td>
+<td style="text-align: right;">0.184407</td>
+<td style="text-align: right;">0.139793</td>
+<td style="text-align: right;">0.0746208</td>
+<td style="text-align: right;">1964</td>
+<td style="text-align: right;">-0.372666</td>
+<td style="text-align: right;">-0.832865</td>
+<td style="text-align: right;">0.0930596</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Cornerstone Loan Servicing</td>
+<td style="text-align: right;">0.193929</td>
+<td style="text-align: right;">0.147179</td>
+<td style="text-align: right;">0.0753569</td>
+<td style="text-align: right;">2049</td>
+<td style="text-align: right;">-0.364441</td>
+<td style="text-align: right;">-0.866609</td>
+<td style="text-align: right;">0.120912</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Meridian Residential Capital</td>
+<td style="text-align: right;">0.178563</td>
+<td style="text-align: right;">0.132452</td>
+<td style="text-align: right;">0.0758229</td>
+<td style="text-align: right;">2033</td>
+<td style="text-align: right;">-0.368004</td>
+<td style="text-align: right;">-0.873958</td>
+<td style="text-align: right;">0.133461</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Northgate Financial Servicing</td>
+<td style="text-align: right;">0.176504</td>
+<td style="text-align: right;">0.131102</td>
+<td style="text-align: right;">0.0750443</td>
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">-0.30699</td>
+<td style="text-align: right;">-0.805854</td>
+<td style="text-align: right;">0.110361</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 30 of 75 rows.</em></p>
+<h2>Scenario drivers</h2>
+<p>Generated from the model's own per-feature contributions: the change in each feature's mean contribution between the baseline and stressed portfolios is that feature's share of the change in the rate.</p>
+<h3>Adverse-Credit / delinquency_3m</h3>
+<p>The scenario raises the projected rate by 7.21 percentage points. Attribution over the portfolio:
+- <strong>credit score</strong> pushes it up, 45% of the total movement (700.61 -&gt; 504.26, -28.0%).
+- <strong>ltv</strong> pushes it up, 19% of the total movement (66.72 -&gt; 103.84, +55.6%).
+- <strong>credit score band</strong> pushes it up, 14% of the total movement.
+- <strong>rate spread</strong> pushes it down, 2% of the total movement (-0.76 -&gt; -2.71, +258.1%).
+- <strong>paydown 3m</strong> pushes it up, 2% of the total movement.</p>
+<h3>Adverse-Credit / default_12m</h3>
+<p>The scenario raises the projected rate by 15.13 percentage points. Attribution over the portfolio:
+- <strong>credit score</strong> pushes it up, 56% of the total movement (700.61 -&gt; 504.26, -28.0%).
+- <strong>credit score band</strong> pushes it up, 15% of the total movement.
+- <strong>ltv</strong> pushes it up, 11% of the total movement (66.72 -&gt; 103.84, +55.6%).
+- <strong>ltv band</strong> pushes it up, 5% of the total movement.
+- <strong>balance ratio</strong> pushes it down, 2% of the total movement.</p>
+<h3>Adverse-Credit / prepayment_12m</h3>
+<p>The scenario lowers the projected rate by 1.67 percentage points. Attribution over the portfolio:
+- <strong>credit score</strong> pushes it down, 58% of the total movement (700.61 -&gt; 504.26, -28.0%).
+- <strong>ltv</strong> pushes it down, 19% of the total movement (66.72 -&gt; 103.84, +55.6%).
+- <strong>balance gap abs</strong> pushes it up, 3% of the total movement.
+- <strong>balance ratio</strong> pushes it up, 3% of the total movement.
+- <strong>dpd mean 12m</strong> pushes it up, 2% of the total movement.</p>
+<h3>High-Prepayment / delinquency_3m</h3>
+<p>The scenario lowers the projected rate by 1.60 percentage points. Attribution over the portfolio:
+- <strong>credit score</strong> pushes it down, 39% of the total movement (700.61 -&gt; 732.01, +4.5%).
+- <strong>credit score band</strong> pushes it down, 18% of the total movement.
+- <strong>ltv</strong> pushes it down, 16% of the total movement (66.72 -&gt; 60.74, -9.0%).
+- <strong>rate spread</strong> pushes it up, 8% of the total movement (-0.76 -&gt; 0.79, -205.2%).
+- <strong>dpd mean 6m</strong> pushes it up, 4% of the total movement.</p>
+<h3>High-Prepayment / default_12m</h3>
+<p>The scenario lowers the projected rate by 3.51 percentage points. Attribution over the portfolio:
+- <strong>credit score</strong> pushes it down, 52% of the total movement (700.61 -&gt; 732.01, +4.5%).
+- <strong>credit score band</strong> pushes it down, 16% of the total movement.
+- <strong>ltv</strong> pushes it down, 6% of the total movement (66.72 -&gt; 60.74, -9.0%).
+- <strong>days past due</strong> pushes it up, 5% of the total movement.
+- <strong>ltv band</strong> pushes it down, 5% of the total movement.</p>
+<h3>High-Prepayment / prepayment_12m</h3>
+<p>The scenario raises the projected rate by 0.46 percentage points. Attribution over the portfolio:
+- <strong>credit score</strong> pushes it up, 51% of the total movement (700.61 -&gt; 732.01, +4.5%).
+- <strong>rate spread</strong> pushes it up, 11% of the total movement (-0.76 -&gt; 0.79, -205.2%).
+- <strong>ltv</strong> pushes it down, 9% of the total movement (66.72 -&gt; 60.74, -9.0%).
+- <strong>interest rate</strong> pushes it down, 5% of the total movement (4.99 -&gt; 4.99, +0.0%).
+- <strong>dpd mean 12m</strong> pushes it up, 3% of the total movement.</p>
+<h3>Driver attribution</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">measure</th>
+<th style="text-align: left;">feature</th>
+<th style="text-align: right;">baseline_contribution</th>
+<th style="text-align: right;">stressed_contribution</th>
+<th style="text-align: right;">delta_contribution</th>
+<th style="text-align: right;">share_of_movement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0220393</td>
+<td style="text-align: right;">-0.0220393</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">doc_status_changes_to_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">dpd_delta_3m</td>
+<td style="text-align: right;">-0.00437945</td>
+<td style="text-align: right;">-0.00437945</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">dpd_delta_6m</td>
+<td style="text-align: right;">-0.000515044</td>
+<td style="text-align: right;">-0.000515044</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">paydown_1m</td>
+<td style="text-align: right;">-0.0456533</td>
+<td style="text-align: right;">-0.0456533</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0360643</td>
+<td style="text-align: right;">-0.0360643</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">doc_status_changes_to_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">dpd_delta_3m</td>
+<td style="text-align: right;">0.0201097</td>
+<td style="text-align: right;">0.0201097</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">dpd_delta_6m</td>
+<td style="text-align: right;">-0.000450372</td>
+<td style="text-align: right;">-0.000450372</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">paydown_1m</td>
+<td style="text-align: right;">-0.0451075</td>
+<td style="text-align: right;">-0.0451075</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0357356</td>
+<td style="text-align: right;">-0.0357356</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">doc_status_changes_to_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">dpd_delta_3m</td>
+<td style="text-align: right;">-0.000328649</td>
+<td style="text-align: right;">-0.000328649</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">dpd_delta_6m</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">paydown_1m</td>
+<td style="text-align: right;">-0.00810009</td>
+<td style="text-align: right;">-0.00810009</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0216319</td>
+<td style="text-align: right;">0.542419</td>
+<td style="text-align: right;">0.564051</td>
+<td style="text-align: right;">0.54234</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">credit_score_band</td>
+<td style="text-align: right;">-0.0131262</td>
+<td style="text-align: right;">0.18559</td>
+<td style="text-align: right;">0.198716</td>
+<td style="text-align: right;">0.191067</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">-0.0141004</td>
+<td style="text-align: right;">0.0658577</td>
+<td style="text-align: right;">0.0799581</td>
+<td style="text-align: right;">0.0768805</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">paydown_3m</td>
+<td style="text-align: right;">-0.142105</td>
+<td style="text-align: right;">-0.119483</td>
+<td style="text-align: right;">0.0226214</td>
+<td style="text-align: right;">0.0217507</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">dpd_mean_6m</td>
+<td style="text-align: right;">-0.107162</td>
+<td style="text-align: right;">-0.129538</td>
+<td style="text-align: right;">-0.0223765</td>
+<td style="text-align: right;">0.0215153</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0321789</td>
+<td style="text-align: right;">1.68017</td>
+<td style="text-align: right;">1.71235</td>
+<td style="text-align: right;">0.641827</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">credit_score_band</td>
+<td style="text-align: right;">-0.0109064</td>
+<td style="text-align: right;">0.446236</td>
+<td style="text-align: right;">0.457142</td>
+<td style="text-align: right;">0.171348</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">-0.0474954</td>
+<td style="text-align: right;">0.0907508</td>
+<td style="text-align: right;">0.138246</td>
+<td style="text-align: right;">0.0518179</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">ltv_band</td>
+<td style="text-align: right;">-0.00768568</td>
+<td style="text-align: right;">0.0589366</td>
+<td style="text-align: right;">0.0666223</td>
+<td style="text-align: right;">0.0249716</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">days_past_due</td>
+<td style="text-align: right;">0.485951</td>
+<td style="text-align: right;">0.426995</td>
+<td style="text-align: right;">-0.0589563</td>
+<td style="text-align: right;">0.0220982</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0356469</td>
+<td style="text-align: right;">-0.421984</td>
+<td style="text-align: right;">-0.386337</td>
+<td style="text-align: right;">0.724813</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">-0.02835</td>
+<td style="text-align: right;">-0.00285965</td>
+<td style="text-align: right;">0.0254903</td>
+<td style="text-align: right;">0.0478227</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">balance_ratio</td>
+<td style="text-align: right;">0.00332102</td>
+<td style="text-align: right;">0.0196357</td>
+<td style="text-align: right;">0.0163147</td>
+<td style="text-align: right;">0.0306083</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">balance_gap_abs</td>
+<td style="text-align: right;">-0.100761</td>
+<td style="text-align: right;">-0.0847071</td>
+<td style="text-align: right;">0.0160542</td>
+<td style="text-align: right;">0.0301195</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">prepayment_12m</td>
+<td style="text-align: left;">dq_score</td>
+<td style="text-align: right;">0.010501</td>
+<td style="text-align: right;">0.0238094</td>
+<td style="text-align: right;">0.0133084</td>
+<td style="text-align: right;">0.024968</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0208848</td>
+<td style="text-align: right;">0.688257</td>
+<td style="text-align: right;">0.709142</td>
+<td style="text-align: right;">0.520095</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">credit_score_band</td>
+<td style="text-align: right;">-0.0131747</td>
+<td style="text-align: right;">0.208862</td>
+<td style="text-align: right;">0.222037</td>
+<td style="text-align: right;">0.162845</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">-0.0403207</td>
+<td style="text-align: right;">0.130261</td>
+<td style="text-align: right;">0.170581</td>
+<td style="text-align: right;">0.125107</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">paydown_3m</td>
+<td style="text-align: right;">-0.14124</td>
+<td style="text-align: right;">-0.112881</td>
+<td style="text-align: right;">0.0283596</td>
+<td style="text-align: right;">0.0207994</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">delinquency_3m</td>
+<td style="text-align: left;">dpd_mean_6m</td>
+<td style="text-align: right;">-0.107091</td>
+<td style="text-align: right;">-0.129083</td>
+<td style="text-align: right;">-0.0219915</td>
+<td style="text-align: right;">0.0161289</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">-0.0283799</td>
+<td style="text-align: right;">2.02295</td>
+<td style="text-align: right;">2.05133</td>
+<td style="text-align: right;">0.616565</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">credit_score_band</td>
+<td style="text-align: right;">-0.011945</td>
+<td style="text-align: right;">0.505734</td>
+<td style="text-align: right;">0.517679</td>
+<td style="text-align: right;">0.155598</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">-0.0944438</td>
+<td style="text-align: right;">0.178336</td>
+<td style="text-align: right;">0.272779</td>
+<td style="text-align: right;">0.0819891</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">ltv_band</td>
+<td style="text-align: right;">-0.0371349</td>
+<td style="text-align: right;">0.0884321</td>
+<td style="text-align: right;">0.125567</td>
+<td style="text-align: right;">0.0377416</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">default_12m</td>
+<td style="text-align: left;">balance_ratio</td>
+<td style="text-align: right;">-0.0720676</td>
+<td style="text-align: right;">-0.14031</td>
+<td style="text-align: right;">-0.0682427</td>
+<td style="text-align: right;">0.0205116</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 40 of 150 rows.</em></p>
+<h3>How far each stressed feature moved</h3>
+<p>The attribution says which feature mattered; this says what happened to it.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">horizon_month</th>
+<th style="text-align: left;">feature</th>
+<th style="text-align: right;">baseline_mean</th>
+<th style="text-align: right;">stressed_mean</th>
+<th style="text-align: right;">change</th>
+<th style="text-align: right;">pct_change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">74.9118</td>
+<td style="text-align: right;">74.9118</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-1.60551</td>
+<td style="text-align: right;">-1.60551</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">608.38</td>
+<td style="text-align: right;">-92.2319</td>
+<td style="text-align: right;">-0.131645</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">72.9093</td>
+<td style="text-align: right;">80.862</td>
+<td style="text-align: right;">7.95276</td>
+<td style="text-align: right;">0.109077</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-1.40661</td>
+<td style="text-align: right;">-1.86291</td>
+<td style="text-align: right;">-0.4563</td>
+<td style="text-align: right;">0.324396</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">504.265</td>
+<td style="text-align: right;">-196.348</td>
+<td style="text-align: right;">-0.280251</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">70.7857</td>
+<td style="text-align: right;">87.8935</td>
+<td style="text-align: right;">17.1078</td>
+<td style="text-align: right;">0.241684</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-1.18951</td>
+<td style="text-align: right;">-2.14381</td>
+<td style="text-align: right;">-0.9543</td>
+<td style="text-align: right;">0.802261</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">504.265</td>
+<td style="text-align: right;">-196.348</td>
+<td style="text-align: right;">-0.280251</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">68.724</td>
+<td style="text-align: right;">95.5364</td>
+<td style="text-align: right;">26.8124</td>
+<td style="text-align: right;">0.390147</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-0.972513</td>
+<td style="text-align: right;">-2.42461</td>
+<td style="text-align: right;">-1.4521</td>
+<td style="text-align: right;">1.49314</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">504.265</td>
+<td style="text-align: right;">-196.348</td>
+<td style="text-align: right;">-0.280251</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">66.7223</td>
+<td style="text-align: right;">103.844</td>
+<td style="text-align: right;">37.1217</td>
+<td style="text-align: right;">0.556361</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-0.755513</td>
+<td style="text-align: right;">-2.70551</td>
+<td style="text-align: right;">-1.95</td>
+<td style="text-align: right;">2.58103</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Adverse-Credit</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">74.9118</td>
+<td style="text-align: right;">74.9118</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-1.60551</td>
+<td style="text-align: right;">-1.60551</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">707.61</td>
+<td style="text-align: right;">6.99732</td>
+<td style="text-align: right;">0.00998743</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">72.9093</td>
+<td style="text-align: right;">71.324</td>
+<td style="text-align: right;">-1.58528</td>
+<td style="text-align: right;">-0.0217432</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-1.40661</td>
+<td style="text-align: right;">-1.04381</td>
+<td style="text-align: right;">0.3628</td>
+<td style="text-align: right;">-0.257924</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">credit_score</td>
+<td style="text-align: right;">700.612</td>
+<td style="text-align: right;">715.099</td>
+<td style="text-align: right;">14.4863</td>
+<td style="text-align: right;">0.0206766</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">70.7857</td>
+<td style="text-align: right;">67.6056</td>
+<td style="text-align: right;">-3.18004</td>
+<td style="text-align: right;">-0.044925</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">rate_spread</td>
+<td style="text-align: right;">-1.18951</td>
+<td style="text-align: right;">-0.431013</td>
+<td style="text-align: right;">0.7585</td>
+<td style="text-align: right;">-0.637656</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">dti</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">35.8055</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-Prepayment</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">interest_rate</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">4.99449</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 40 of 50 rows.</em></p>
+<h2>Figures</h2>
+<p><strong>Projected rates by scenario</strong></p>
+<p><img alt="Projected rates by scenario" src="scenario/projection_paths.png" /></p>
+<p><strong>Segment impact under stress</strong></p>
+<p><img alt="Segment impact under stress" src="scenario/segment_impact.png" /></p>
+<p><strong>What moves each scenario</strong></p>
+<p><img alt="What moves each scenario" src="scenario/scenario_drivers.png" /></p>
+</body>
+</html>

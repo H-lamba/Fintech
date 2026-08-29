@@ -1,0 +1,19 @@
+{
+  "n_records": 268125,
+  "batch_dq_score": 92.14,
+  "median_dq_score": 100.0,
+  "p05_dq_score": 67.03,
+  "pct_clean": 59.47,
+  "pct_critical": 0.32,
+  "pct_poor_or_worse": 5.44,
+  "n_with_rule_violation": 35238,
+  "n_with_date_violation": 1724,
+  "n_stale": 0,
+  "n_source_conflict": 15640,
+  "band_counts": {
+    "good": 211330,
+    "fair": 42219,
+    "poor": 13730,
+    "critical": 846
+  }
+}

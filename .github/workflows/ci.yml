@@ -1,0 +1,46 @@
+name: CI
+
+# The regression suite is the thing worth running on every push: it pins the
+# leakage controls (no random split, no label in a feature, no rolling window
+# reading forward) and the censoring logic. Those are the properties whose
+# silent failure would invalidate every number in the reports without raising.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install OpenMP runtime
+        # LightGBM and XGBoost link against libomp; without it they import-fail
+        # at load time rather than at fit time.
+        run: sudo apt-get update && sudo apt-get install -y libgomp1
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest tests/ -q
+
+      - name: Smoke-test the pipelines on a small sample
+        # Catches import errors, CLI regressions and schema surprises that unit
+        # tests on synthetic frames cannot see.
+        run: |
+          python scripts/generate_synthetic_suite.py --loans 400
+          python scripts/run_profiling.py --no-figures
+          python scripts/run_prediction.py --sample 400 --no-save-models
+          python scripts/run_survival.py --sample 400 --no-figures
+          python scripts/run_anomaly.py --sample 400 --no-figures
+          python scripts/run_scenario.py --sample 400 --no-figures --horizons 12 24

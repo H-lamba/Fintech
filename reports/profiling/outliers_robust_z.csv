@@ -1,0 +1,11 @@
+column,method,n_outliers,pct_outliers
+remaining_term_months,robust z (|z|>4.0),57419,21.415
+current_balance,robust z (|z|>4.0),2186,0.815
+original_balance,robust z (|z|>4.0),2178,0.812
+interest_rate,robust z (|z|>4.0),79,0.029
+credit_score,robust z (|z|>4.0),14,0.005
+month_index,robust z (|z|>4.0),0,0.0
+loan_age_months,robust z (|z|>4.0),0,0.0
+vintage_year,robust z (|z|>4.0),0,0.0
+ltv,robust z (|z|>4.0),0,0.0
+dti,robust z (|z|>4.0),0,0.0

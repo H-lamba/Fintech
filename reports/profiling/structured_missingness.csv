@@ -1,0 +1,11 @@
+column,segment,pct_missing,verdict
+loss_severity_band,current_status=30-DPD,100.0,"likely structural (by design), not a defect"
+exception_type,current_status=30-DPD,98.26,"likely structural (by design), not a defect"
+loss_severity_band,current_status=60-DPD,100.0,"likely structural (by design), not a defect"
+exception_type,current_status=60-DPD,98.55,"likely structural (by design), not a defect"
+loss_severity_band,current_status=90-DPD,100.0,"likely structural (by design), not a defect"
+loss_severity_band,current_status=Current,100.0,"likely structural (by design), not a defect"
+exception_type,current_status=Current,97.95,"likely structural (by design), not a defect"
+exception_type,current_status=Default,99.46,"likely structural (by design), not a defect"
+loss_severity_band,current_status=Prepaid,100.0,"likely structural (by design), not a defect"
+exception_type,current_status=Prepaid,99.13,"likely structural (by design), not a defect"
