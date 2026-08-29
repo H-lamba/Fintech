@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "standard": "FR Y-14M / CCAR-aligned loan-level edit checks",
+  "rules": [
+    {
+      "name": "LOAN_ID_PRESENT",
+      "column": "loan_id",
+      "not_null": true,
+      "severity": "high",
+      "description": "Every remittance record must carry a loan identifier."
+    },
+    {
+      "name": "REPORTING_MONTH_PRESENT",
+      "column": "reporting_month",
+      "not_null": true,
+      "severity": "high",
+      "description": "Every record must carry a reporting period."
+    },
+    {
+      "name": "BALANCE_SIGN",
+      "column": "current_balance",
+      "min": 0,
+      "severity": "high",
+      "description": "Unpaid principal balance may not be negative."
+    },
+    {
+      "name": "BALANCE_CEILING",
+      "expression": "current_balance <= original_balance * 1.001",
+      "severity": "high",
+      "description": "Balance may not exceed the original balance absent a capitalising modification."
+    },
+    {
+      "name": "DPD_RANGE",
+      "column": "days_past_due",
+      "min": 0,
+      "max": 1080,
+      "severity": "medium",
+      "description": "Days past due must fall within a plausible reporting range."
+    },
+    {
+      "name": "STATUS_DOMAIN",
+      "column": "current_status",
+      "allowed": [
+        "Current",
+        "30-DPD",
+        "60-DPD",
+        "90-DPD",
+        "Default",
+        "Prepaid"
+      ],
+      "severity": "high",
+      "description": "Performance status must be a recognised state."
+    },
+    {
+      "name": "SEQUENTIAL_DELINQUENCY",
+      "expression": "not (current_status == '90-DPD' and days_past_due < 90)",
+      "severity": "high",
+      "description": "Delinquency status and days past due must agree; buckets may not be skipped."
+    },
+    {
+      "name": "ABSORBING_STATE_FINALITY",
+      "expression": "not (prepayment_flag == 1 and current_balance > 1.0)",
+      "severity": "high",
+      "description": "A prepaid or defaulted loan is terminal and must carry a zero balance."
+    },
+    {
+      "name": "DEFAULT_DELINQUENCY_CONSISTENCY",
+      "expression": "not (default_flag == 1 and days_past_due < 90)",
+      "severity": "high",
+      "description": "A defaulted loan must be at least 90 days delinquent."
+    },
+    {
+      "name": "TEMPORAL_ORDERING",
+      "expression": "reporting_month >= origination_month",
+      "severity": "high",
+      "description": "A performance record may not predate origination."
+    },
+    {
+      "name": "RATE_RANGE",
+      "column": "interest_rate",
+      "min": 0,
+      "max": 25,
+      "severity": "medium",
+      "description": "Note rate must fall within a plausible range."
+    },
+    {
+      "name": "TERM_NON_NEGATIVE",
+      "column": "remaining_term_months",
+      "min": 0,
+      "severity": "medium",
+      "description": "Remaining term may not be negative."
+    },
+    {
+      "name": "MUTUALLY_EXCLUSIVE_TERMINATION",
+      "expression": "not (default_flag == 1 and prepayment_flag == 1)",
+      "severity": "high",
+      "description": "A loan cannot both default and prepay in the same period."
+    },
+    {
+      "name": "DOCUMENT_STATUS_DOMAIN",
+      "column": "document_status",
+      "allowed": [
+        "Complete",
+        "Pending",
+        "Missing"
+      ],
+      "severity": "low",
+      "description": "Document status must be a recognised value."
+    }
+  ]
+}
