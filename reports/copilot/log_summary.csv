@@ -1,0 +1,7 @@
+purpose,model,provider,status,calls,guardrails_passed,mean_latency_seconds,total_tokens
+adversarial_probe,grok-4,https://api.x.ai/v1,error,8,0,0.15862500000000002,0.0
+adversarial_probe,offline-stub,offline-stub,offline_stub,16,16,0.0,0.0
+adversarial_probe,openai/gpt-oss-120b,https://api.groq.com/openai/v1,ok,24,15,6.8401250000000005,34634.0
+reviewer_note,grok-4,https://api.x.ai/v1,error,12,0,0.2585,0.0
+reviewer_note,offline-stub,offline-stub,offline_stub,13,13,0.0,0.0
+reviewer_note,openai/gpt-oss-120b,https://api.groq.com/openai/v1,ok,26,22,2.7530384615384613,34293.0

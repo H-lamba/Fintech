@@ -1,0 +1,4 @@
+model,segment,checked,monotone_decreasing,first_group,first_rate,last_group,last_rate
+delinquency,credit_score_band,True,True,<620,0.17207647843485993,800+,0.012380416432189083
+default,credit_score_band,True,True,<620,0.5004633920296571,800+,0.0018796992481203006
+prepayment,credit_score_band,True,False,<620,0.14921223354958293,800+,0.5150375939849624

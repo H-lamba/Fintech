@@ -46,3 +46,6 @@ jobs:
           python scripts/run_survival.py --sample 400 --no-figures
           python scripts/run_anomaly.py --sample 400 --no-figures
           python scripts/run_scenario.py --sample 400 --no-figures --horizons 12 24
+          python scripts/run_explainability.py --sample 400 --no-figures
+          # Offline: CI must never call a third-party API or need a secret.
+          python scripts/run_copilot.py --offline --notes 2

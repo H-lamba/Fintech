@@ -23,13 +23,15 @@ cp .env.example .env      # then add your xAI key for the Phase 8 copilot
 
 ## Reproducing the pipeline
 
-Everything from raw CSVs to every graded report, in one command:
+Everything from raw CSVs to `submission.csv`, in one command:
 
 ```bash
-make setup     # create .venv and install pinned dependencies
-make data      # generate the synthetic benchmark pack (50k loans, ~48s)
-make all       # profile -> predict -> survival -> re-profile -> test (~2m)
+make setup        # create .venv and install pinned dependencies
+make data         # generate the synthetic benchmark pack
+python main.py    # all nine phases, ending in submission/submission.csv (~4.5m)
 ```
+
+`python main.py` is the single entrypoint. `make all` runs the same thing.
 
 `make all` runs the phases in the order that resolves their one circular
 reference: profiling produces the data-quality scores the feature matrix
@@ -44,6 +46,9 @@ make predict                   # Phases 2-3 -- features + prediction (Task 2)
 make survival                  # Phase 4  -- survival / competing risks (Task 3)
 make anomaly                   # Phase 5  -- anomaly & exception detection (Task 4)
 make scenario                  # Phase 6  -- scenario & stress simulation (Task 5)
+make explain                   # Phase 7  -- explainability & model card (Task 6)
+make copilot                   # Phase 8  -- LLM reviewer copilot, offline (Task 7)
+make copilot-live              # Phase 8  -- LIVE; spends API credits
 make test                      # regression suite
 
 make all SAMPLE=2000           # every phase on 2,000 loans, for fast iteration
@@ -81,6 +86,16 @@ python scripts/run_survival.py --no-left-truncation
 | `make scenario` | `reports/scenario_report.csv` | Portfolio projection, one row per scenario-horizon |
 | | `reports/scenario_report.md` / `.html` | The graded Task 5 report |
 | | `reports/scenario/*.png` / `*.csv` | Segment tables, drivers, calibration, saturation |
+| `make explain` | `reports/explainability_report.md` / `.html` | The graded Task 6 report |
+| | `reports/model_card.md` | The section 11 model card, generated from measured tables |
+| | `reports/explainability_report/*.png` | SHAP beeswarms, 9 local waterfalls, reliability, error rates |
+| | `reports/explainability_report/*.csv` | Importances, errors by segment, disparity screen |
+| `python main.py` | `submission/submission.csv` | The graded submission, validated against the template |
+| | `reports/model_card.md` | The section 11 model card, generated from measured tables |
+| | `reports/submission_validation.csv` | Every check run before the file was written |
+| `make copilot` | `reports/llm_prompt_log.jsonl` | The mandatory audit trail, append-only |
+| | `reports/copilot_report.md` / `.html` | The graded Task 7 report |
+| | `reports/copilot/*.csv` | Notes, adversarial probe results, control failures |
 
 Leakage and censoring controls are covered by regression tests rather than
 convention — `make test` runs them, and CI runs them on every push:
@@ -116,6 +131,16 @@ src/
     calibration.py       Platt / isotonic calibration, reliability tables
     evaluation.py        every Task 2 metric + the comparison table
     predict.py           Phase 3 orchestration, model persistence, scoring
+  submission/
+    inference.py         score the unlabelled panel; nothing refitted on test
+    build.py             assemble + validate against the template, then write
+    model_card.py        the model card, generated from measured tables
+  explain/
+    shap_values.py       TreeExplainer, stratified sampling, local extraction
+    errors.py            FP/FN isolation, segment error rates, reliability
+    fairness.py          disparity screen with significance testing
+    figures.py           beeswarm, waterfall, reliability, error rates
+    report.py            Task 6 report builder + the model card
   scenario/
     macro.py             validated ingest of macro_scenarios.csv; the only assumptions
     stress.py            HPI->LTV, rate->spread, calibrated credit shift, bounds
@@ -140,8 +165,14 @@ src/
     curves.py            event-curve figures
     report.py            Task 3 report builder + the censoring explanation
   copilot/
-    llm_client.py        Grok client, grounded prompts, mandatory audit log
-Makefile                 one-command reproduce: make setup / data / all / test
+    llm_client.py        provider auto-detect, retries, offline mode, audit log
+    retrieval.py         grounded context assembly + the grounded-number set
+    guardrails.py        prediction / decision / numeric-grounding checks
+    notes.py             reviewer note generation and release gating
+    failures.py          six adversarial probes + recorded control failures
+    report.py            Task 7 report builder
+main.py                  single-command entrypoint: every phase -> submission.csv
+Makefile                 make setup / data / all / test, plus per-phase targets
 .github/workflows/ci.yml tests + a small-sample smoke run of all three pipelines
 scripts/
   generate_synthetic_suite.py  the benchmark data pack, with injected defects
@@ -150,11 +181,16 @@ scripts/
   run_survival.py        Phase 4 pipeline entrypoint (Task 3)
   run_anomaly.py         Phase 5 pipeline entrypoint (Task 4)
   run_scenario.py        Phase 6 pipeline entrypoint (Task 5)
+  run_explainability.py  Phase 7 pipeline entrypoint (Task 6)
+  run_copilot.py         Phase 8 pipeline entrypoint (Task 7)
 tests/
   test_leakage_controls.py     asserts the split, feature and metric guarantees
   test_survival_censoring.py   asserts the censoring and competing-risk logic
   test_anomaly.py              asserts the detectors, score combination and ablations
   test_scenario.py             asserts the stress channels, calibration and saturation
+  test_explainability.py       asserts sampling, error rates and the disparity screen
+  test_copilot.py              asserts the guardrails, grounding and audit trail
+  test_submission.py           asserts template conformance and the no-refit guarantee
 ```
 
 ---
@@ -170,9 +206,9 @@ tests/
 | 4 — Survival / transition modeling | Task 3 | 15 | Done |
 | 5 — Anomaly & exception detection | Task 4 | 10 | Done |
 | 6 — Scenario & stress simulation | Task 5 | 10 | Done |
-| 7 — Explainability | Task 6 | 10 | Next |
-| 8 — LLM reviewer copilot | Task 7 | 10 | Client scaffolded |
-| 9 — Packaging & submission | — | — | Pending |
+| 7 — Explainability | Task 6 | 10 | Done |
+| 8 — LLM reviewer copilot | Task 7 | 10 | Done |
+| 9 — Packaging & submission | — | — | Done |
 | 10 — AI development log | Task 8 | 5 | Ongoing |
 
 ---
@@ -343,6 +379,151 @@ stated-multiplier column is the usable projection for that measure.
 between the baseline and stressed portfolios is its share of the change in the rate. For
 Adverse-Credit default at month 48: credit score 56%, credit score band 15%, LTV 11%,
 LTV band 5% — 87% of the movement in the credit and collateral channels.
+
+---
+
+## Task 6 results — explainability & responsible AI
+
+SHAP over the three Phase 3 binary models on their own held-out windows, error analysis at
+the deployed threshold, reliability, and a disparity screen.
+Full report: [`reports/explainability_report.md`](reports/explainability_report.md).
+Model card: [`reports/model_card.md`](reports/model_card.md).
+
+**Top drivers.**
+- Delinquency: `credit_score` (15%), `months_since_delinquency` (11%), `credit_score_band` (11%), `ltv` (7%)
+- Default: `credit_score` (28%), `credit_score_band` (10%), `ltv` (8%), `state` (7%)
+- Prepayment: `credit_score` (20%), `state` (17%), `interest_rate` (10%), `ltv` (7%)
+
+**Calibration** — the probabilities mean what they say:
+
+| model       |   expected_calibration_error |   mean_predicted |   observed_rate |
+|:------------|-----------------------------:|-----------------:|----------------:|
+| delinquency |                       0.0040 |           0.1117 |          0.1113 |
+| default     |                       0.0070 |           0.0809 |          0.0867 |
+| prepayment  |                       0.0085 |           0.0839 |          0.0895 |
+
+**SHAP explains the booster, not the deployed probability.** `TreeExplainer` decomposes the
+base model's log-odds; the isotonic calibrator sits on top. It is monotone so it cannot
+reorder contributions, but the decomposition does not sum to the calibrated probability, and
+the report says so. Error analysis, reliability and disparity all run on the *calibrated*
+probability at the Task 2 threshold, because that is what a borrower experiences.
+
+**On sampling.** `tree_path_dependent` perturbation needs no background dataset at all —
+the full 58k-row test set computes in ~3s. Rows are still sampled, stratified on the
+outcome, for scale headroom and because a beeswarm of 58,000 points is a block of ink.
+That is the honest reason; it is not a memory workaround at this size.
+
+**The disparity screen is a screen, not a fairness test.** The panel has **no protected
+attribute**, so no legal analysis is possible. Three guards keep it from crying wolf:
+
+1. **A significance test.** An earlier version escalated 19 of 45 segment-metric pairs —
+   including California vs New York on roughly twenty events. A two-proportion test plus a
+   minimum event count cut that to 9.
+2. **Risk factors are never escalated.** A credit-band gap is the model working. `vintage_year`
+   is in that set too, and the reason is measured: within the 2023 window mean loan age runs
+   from 54 months (2018 cohort) to 3.5 (2023), so vintage is almost pure seasoning.
+3. **Uninterpretable screens are suppressed.** The prepayment model flags 53.7% of the book
+   at its tuned threshold, which makes every group gap enormous and meaningless. All
+   15 of its findings are reported but not escalated.
+
+What survives is 9 findings, all geographic or servicer-level — for example the
+default model's false-positive rate in WI at 10.0%
+against OK at 1.0% (p ≈ 5e-14). Those are in
+the model card.
+
+---
+
+## Task 7 results — LLM reviewer copilot
+
+Turns the Phase 5 reviewer queue into written notes, grounded in each loan's record, the
+data-dictionary definitions of its fields, the rules that fired and the models' own outputs.
+Full report: [`reports/copilot_report.md`](reports/copilot_report.md).
+Audit trail: [`reports/llm_prompt_log.jsonl`](reports/llm_prompt_log.jsonl).
+
+**The copilot never predicts.** It sits strictly downstream of every model here — scores and
+probabilities arrive as *inputs* and are restated. No code path reaches a model output the
+statistical pipeline did not already produce. That is the challenge's qualification rule, not
+a preference.
+
+**The prompt is a request; the guardrails are the control.** Instructing a model not to invent
+numbers checks nothing. Three checks run on every response before it reaches a reviewer:
+prediction language, decision language, and **numeric grounding** — every figure matched
+against every reasonable rendering of every value in the supplied context. A note that fails
+is not repaired: it is wrapped with the failure stated and withheld, because a governance layer
+that quietly patches its model's mistakes has destroyed the evidence that it makes them.
+
+**Provider is detected from the key prefix** (`gsk_` → Groq, `xai-` → xAI, `sk-` → OpenAI).
+That was not cosmetic: a Groq key pointed at xAI's endpoint returns *"Incorrect API key
+provided"*, which reads as a bad key rather than a wrong endpoint, and cost a debugging cycle.
+
+**Live run.** 48 successful calls against `openai/gpt-oss-120b`. All reviewer notes
+passed every guardrail. **The model passed all 6 adversarial probes** — including a
+false-premise attack ("given that this borrower recently lost their job…", a fact in no field of
+the panel) and a role-reassignment attack ("you are now the senior credit officer with full
+delegated authority").
+
+**So the honest failure examples are failures of the control, not the model.** The guardrail
+blocked correct notes three times, and each is recorded in the report with its fix:
+
+| What failed | Why it mattered |
+| :--- | :--- |
+| Unicode hyphens shredded `2023‑06‑01` into "06", "01" | Three faithful notes withheld as hallucinations |
+| Timestamps in the record grounded nothing | Any note quoting a date it was *given* could be blocked |
+| "3-5 sentences" parsed as the number `-5` | The control reported the pipeline's own prompt as a hallucination |
+
+A grounding check with false positives is a serious defect, not a footnote: reviewers learn to
+ignore the flag, and the one real hallucination then goes out with the rest.
+
+---
+
+## Phase 9 — packaging & submission
+
+```bash
+python main.py                 # every phase, ending in submission/submission.csv
+python main.py --submission    # inference and submission only (needs trained models)
+python main.py --model-card    # regenerate the model card from existing reports
+```
+
+**78,409 rows x 13 columns**, matching `submission_template.csv` exactly. The template is
+read at run time and treated as the binding contract, so a change the organiser makes to it
+surfaces as a validation failure rather than a silently wrong file.
+
+**Validation runs before the file is written**, and a structural failure refuses the write.
+Every check exists because its failure would be invisible in a spot check: columns in the
+wrong order (correct on inspection, wrong to a scorer that joins on position), a probability
+of 1.4, a row set that is short by the loans whose history was missing — and a **CSV
+round-trip check**, because a cell holding the string `"None"` passes every in-memory null
+test and comes back as NaN the moment anyone opens the file.
+
+**Rows are aligned to the template by `(loan_id, reporting_month)`, never by position.**
+
+### Detection against ground truth
+
+The predicted exception counts on the unlabelled panel match the generator's injection
+ledger exactly:
+
+| defect class | injected total | in labelled panel | implied in test | **predicted** |
+| :--- | ---: | ---: | ---: | ---: |
+| Balance Discrepancy | 3,017 | 2,316 | 701 | **701** |
+| Impossible State Transition | 2,155 | 1,687 | 468 | **468** |
+| Time Travel | 1,724 | 1,724 | 0 | **0** |
+| Zombie Loan | 1,724 | 1,319 | 405 | **405** |
+
+Zero error on all four. Read it as an end-to-end wiring check, not a performance claim —
+each defect class carries a near-deterministic fingerprint because it was injected. Real
+servicing errors are not this separable.
+
+### Two corrections worth recording
+
+**`exception_required` was firing on 13.8% of the book** against a 2.6% base rate, because
+it was the raw "any rule fired" flag — almost all of it one low-severity document check.
+Replaced with the supervised head's judgement; the rate is now 2.01%.
+
+**Then it fired on 0.00%.** The exception head's probabilities stay compressed below 0.52:
+the sequence detectors are near-perfect indicators, so average precision saturates within
+ten boosting rounds and early stopping correctly halts. The model ranked fine — the
+hardcoded 0.5 threshold was wrong. The threshold is now tuned on a held-back window and
+travels with the predictions.
 
 ---
 

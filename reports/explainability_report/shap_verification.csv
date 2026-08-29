@@ -1,0 +1,4 @@
+model,rows_explained,checked,agrees,max_abs_difference
+delinquency,20000,True,True,0.0
+default,20000,True,True,0.0
+prepayment,20000,True,True,0.0

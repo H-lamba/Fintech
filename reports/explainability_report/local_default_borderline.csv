@@ -1,0 +1,13 @@
+feature,feature_value,shap_value,direction
+credit_score,646.0,1.626716930715629,raises risk
+days_past_due,50.0,1.5699467822690636,raises risk
+credit_score_band,620-659,0.46702455575849955,raises risk
+status_ordinal,2.0,0.44374599856689595,raises risk
+ltv,67.74,-0.19500962379096215,lowers risk
+is_delinquent,1.0,0.11675223789625332,raises risk
+dpd_delta_3m,50.0,0.08618544805509021,raises risk
+occupancy_type,Investment Property,-0.0831790158144665,lowers risk
+paydown_6m,-0.00580701619798607,-0.06532518805916017,lowers risk
+dti,42.23,0.06152502625429323,raises risk
+ltv_band,60-75%,-0.060107221391792795,lowers risk
+paydown_1m,-0.0009852800739298395,0.05763596447467784,raises risk

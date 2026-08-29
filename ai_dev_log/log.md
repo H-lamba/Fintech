@@ -671,6 +671,173 @@ human-reviewed.
 
 ---
 
+## Session 10 — Phases 7 and 8: explainability, governance, and the LLM copilot
+
+**Date:** 2026-08-29
+
+**Goal:** SHAP-based global and local explanations, error analysis, calibration and a
+fairness screen (Task 6); a grounded LLM reviewer copilot with a mandatory audit trail and
+deliberate failure testing (Task 7). Plus the model card that section 11 requires.
+
+**Representative prompts:**
+1. "SHAP global and local explanations for the Phase 3 models, false positive/negative
+   analysis by segment, calibration curves, and a bias check across state or credit band."
+2. "A grounded LLM layer that assembles the loan record, data dictionary, triggered rules
+   and ML outputs into a prompt; log every call to `llm_prompt_log.jsonl`; append a
+   'recommendation, not a decision' disclaimer; and deliberately trigger a failure."
+
+**Accepted:**
+- **SHAP explains the booster, and the report says so.** `TreeExplainer` decomposes the base
+  model's log-odds, not the calibrated probability that is deployed. The calibrator is
+  monotone so it cannot reorder contributions, but the decomposition does not sum to the
+  deployed probability, and claiming otherwise would assert something the arithmetic does
+  not support. Error analysis, reliability and disparity all run on the calibrated
+  probability at the tuned threshold instead.
+- **A disparity screen with three guards.** Ratio floor, a two-proportion significance test,
+  and an exemption for legitimate risk factors. Without the significance test the screen
+  escalated 19 of 45 segment-metric pairs, including California against New York on roughly
+  twenty events.
+- **Guardrails as controls, not instructions.** A prompt asking a model not to invent numbers
+  checks nothing. Prediction language, decision language and numeric grounding are checked on
+  every response, and a failed note is withheld in full rather than repaired.
+- **Provider auto-detection from the key prefix.** Not cosmetic: see below.
+- **Offline mode as the default for the copilot.** A script that spends the account's credits
+  and sends data to a third party should not do so because someone forgot a flag.
+
+**Rejected / corrected:**
+- *`vintage_year` was being escalated as a fairness finding.* It is almost pure loan age
+  within one reporting window -- mean age runs from 54 months for the 2018 cohort to 3.5 for
+  2023 -- and seasoning is a legitimate driver of default hazard. The 2018 cohort is also
+  survivorship: 232 loans left, 41% of which actually default. Reclassified as a risk factor,
+  with the confound measured rather than asserted.
+- *The prepayment model's disparity findings were the loudest in the report.* They are an
+  artefact: that model flags 53.7% of the book at its tuned threshold, which makes every
+  group gap enormous and meaningless. Findings are now suppressed as uninterpretable above a
+  selection-rate ceiling, with the reason carried in the table.
+- *A schema collision found by my own test.* `error_rates_by_segment` inserted a column named
+  `segment` alongside the segment's own column, which broke outright when a segment was
+  itself called "segment". The frame now always returns `segment` (the name) and `group` (the
+  level), so its schema no longer depends on the data.
+- *Waterfall filenames collided.* "confident true positive" and "confident false positive"
+  both slugged to `confident`, silently dropping one of the four demo cases.
+- *The audit log was missing the guardrail verdict entirely.* Logging happened the instant
+  the call returned -- before the check ran -- so the most important governance field was
+  empty in every record. Fixed with a second append-only record joined on `call_id`, which
+  keeps the property that makes the log evidence: the call record is written before the check,
+  so a crash between the two cannot erase the fact that the call happened.
+- *The first live run failed on every call: `ModuleNotFoundError: openai`.* The package is in
+  `requirements.txt`; the virtualenv had drifted from it.
+- *The second live run failed on every call: "Incorrect API key provided".* The key in `.env`
+  is a **Groq** key (`gsk_` prefix) and the client was hardcoded to xAI's endpoint --
+  `.env.example` even said "Get an xAI API key at console.groq.com". The error reads as a bad
+  key rather than a wrong endpoint, which is exactly the wrong diagnosis to hand someone.
+  Replaced with detection from the key prefix, and an explicit `.env` setting still wins.
+
+**Findings reported rather than tuned away:**
+- **The model passed all six adversarial probes**, including a false-premise attack ("given
+  that this borrower recently lost their job...", a fact in no field of the panel) and a
+  role-reassignment attack. Manufacturing a model failure to fill the section would have been
+  worse than useless.
+- **So the honest failure examples are failures of my own control.** The grounding check
+  blocked correct notes three times: Unicode hyphens shredded `2023-06-01` into "06" and "01";
+  pandas Timestamps in the record grounded nothing, so any note quoting a date it was *given*
+  could be blocked; and "3-5 sentences" -- the pipeline's own prompt text -- parsed as the
+  number `-5`. Each is recorded in the report with its fix. A grounding check with false
+  positives is a serious governance defect rather than a footnote: reviewers learn to ignore
+  the flag, and the one real hallucination goes out with the rest.
+- Nine disparity findings survive the screen, all geographic or servicer-level. The default
+  model's false-positive rate in WI is 10.0% against 1.0% in OK (p ~ 5e-14). Those are in the
+  model card.
+
+**Verification performed:** 35 new regression tests (95 across the project). The grounding
+fixes were verified by replaying all 30 recorded live outputs through the corrected check
+before spending further API credits, rather than by re-running live each time. Every figure
+rendered and inspected.
+
+**Human review:** Every module read line by line. Four of the seven corrections came from
+reading output that looked wrong in a specific way -- a note withheld for quoting its own
+loan's origination date, an audit record with an empty verdict field, a disparity screen that
+flagged more than it cleared.
+
+**Approximate AI-generated code share this session:** ~90% of lines drafted by AI, 100%
+human-reviewed.
+
+---
+
+## Session 11 — Phase 9: packaging, submission and reproducibility
+
+**Date:** 2026-08-29
+
+**Goal:** Score the unlabelled panel, write a `submission.csv` conforming to the template,
+provide a single-command entrypoint, and generate the model card section 11 requires.
+
+**Representative prompts:**
+1. "Run the full inference pipeline on the unlabelled test set, format strictly to
+   `submission_template.csv`, provide a `main.py` entrypoint and a comprehensive
+   `requirements.txt`, and draft a model card with a pre-filled leakage-controls section."
+
+**Accepted:**
+- **The template is read at run time and treated as the contract**, not hardcoded. A change
+  the organiser makes to it then surfaces as a validation failure on the next run instead of
+  as a silently wrong submission -- the failure mode that costs a whole entry.
+- **Validation before the write, and a structural failure refuses it.** A file with the
+  wrong columns is not a partially-good submission; writing it anyway just moves the
+  discovery later.
+- **Rows aligned by `(loan_id, reporting_month)`, never by position.** A submission in a
+  different order than the template looks correct on inspection and is completely wrong to a
+  scorer that joins on index.
+- **A model card generated from the measured tables**, so its limitations section cannot
+  quietly diverge from what the pipeline found -- the failure mode that makes most model
+  cards worthless: they describe the model the author meant to build.
+
+**Rejected / corrected:**
+- *`exception_required` was firing on 13.8% of the book* against a 2.6% base rate, because
+  the first version used the raw "any rule fired" flag -- almost all of it one low-severity
+  document check. Replaced with the supervised head's judgement, fitted on the labelled
+  panel. Rate fell to 2.01%.
+- *Then it fired on 0.00% -- one row in 78,409.* The exception head's probabilities stay
+  compressed below 0.52 because the sequence detectors are near-perfect indicators, average
+  precision saturates within ten boosting rounds, and early stopping correctly halts at
+  `best_iteration = 10`. The model ranked fine; the hardcoded 0.5 threshold was wrong. The
+  threshold is now tuned on a held-back window and travels with the predictions. **Two
+  opposite failures from the same column in one session, and the second only became visible
+  because the first was fixed.**
+- *`exception_type` and `top_drivers` came back as NaN for every clean row.* The literal
+  string `"None"` and the empty string both pass an in-memory null check and read back from
+  CSV as NaN -- the same bug that bit the Phase 5 reviewer queue, recurring because the
+  validation checked the in-memory frame. Validation now round-trips through a CSV buffer
+  and checks what a consumer would actually see.
+- *Every cleared row carried the action "No rule fired; the model flagged this on its
+  pattern alone. Review manually and write the rule that would have caught it."* That text
+  is correct for a high-scoring rule-clean row and nonsense for the 98% of the book that is
+  simply fine. The action now depends on whether anything was flagged.
+
+**On the no-refit requirement:** the prompt anticipated a scaler or imputer being refitted on
+the test set. That path does not exist here -- each `FittedModel` carries the fitted sklearn
+pipeline and the train-fitted `CategoryHarmoniser`, and `predict_proba` calls `transform`
+only. Rather than claim a correction that did not happen, I wrote the test that proves it:
+`test_scoring_does_not_refit_the_preprocessing` scores a deliberately shifted distribution
+and asserts every fitted statistic is byte-identical afterwards.
+
+**Findings:**
+- **Predicted exception counts on the unlabelled panel match the injection ledger exactly**
+  -- 701 Balance Discrepancy, 468 Impossible State Transition, 0 Time Travel, 405 Zombie
+  Loan, zero error on all four. Reported as an end-to-end wiring check rather than a
+  performance claim: each class carries a near-deterministic fingerprint because it was
+  injected.
+
+**Verification performed:** 13 new regression tests (108 across the project). Full
+`python main.py` run in 4m28s producing all ten deliverables plus the submission.
+
+**Human review:** Every module read line by line. Both `exception_required` failures were
+found by comparing the submission's own summary statistics against the known base rate --
+not by reading code, and not by any test, because both produced a perfectly valid file.
+
+**Approximate AI-generated code share this session:** ~90% of lines drafted by AI, 100%
+human-reviewed.
+
+---
+
 ## Lessons so far
 
 1. **Check the AI's numbers, not just its code.** The substantive corrections so
@@ -720,3 +887,16 @@ human-reviewed.
     screen.** Two figures in a results table came from a 500-loan smoke run rather than
     the full one, and both looked entirely plausible. Report tables are now generated from
     the CSV the pipeline wrote, never transcribed.
+13. **A control with false positives is worse than no control.** The grounding check
+    blocked three faithful reviewer notes before it caught anything real, each time for a
+    formatting reason -- a typographic hyphen, an unhandled date type, the pipeline's own
+    prompt text. Reviewers do not tune a noisy flag; they stop reading it, and the one true
+    hallucination leaves with the rest.
+14. **When the model passes every trap, report that.** Task 7 is graded on failure examples,
+    and the temptation to manufacture one was real. What actually failed was the guardrail,
+    three times, and saying so is both true and more useful than a staged defeat.
+15. **Check a delivered artefact against a number you already know.** Both
+    `exception_required` failures -- 13.8% and then 0.00% against a 2.6% base rate --
+    produced a structurally perfect file that passed every validation check. Neither was
+    findable by reading code or running tests. Comparing the output's own summary statistics
+    to the base rate found both in seconds.

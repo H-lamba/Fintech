@@ -1,0 +1,34 @@
+check,passed,detail
+"columns match the template exactly, in order",True,"expected ['loan_id', 'reporting_month', 'prob_next_3m_delinquency', 'prob_next_6m_delinquency', 'prob_next_12m_default', 'prob_next_12m_prepayment', 'next_state', 'exception_required', 'exception_type', 'anomaly_score', 'top_drivers', 'action', 'confidence'], got ['loan_id', 'reporting_month', 'prob_next_3m_delinquency', 'prob_next_6m_delinquency', 'prob_next_12m_default', 'prob_next_12m_prepayment', 'next_state', 'exception_required', 'exception_type', 'anomaly_score', 'top_drivers', 'action', 'confidence']"
+row count matches the template,True,"template 78,409, submission 78,409"
+"no duplicate (loan_id, reporting_month) rows",True,0 duplicates
+row set matches the template's,True,"0 missing, 0 unexpected"
+"`prob_next_3m_delinquency` within [0, 1]",True,0 values outside
+"`prob_next_6m_delinquency` within [0, 1]",True,0 values outside
+"`prob_next_12m_default` within [0, 1]",True,0 values outside
+"`prob_next_12m_prepayment` within [0, 1]",True,0 values outside
+"`anomaly_score` within [0, 1]",True,0 values outside
+"`confidence` within [0, 1]",True,0 values outside
+`prob_next_3m_delinquency` fully populated,True,0 missing (0.0%)
+`prob_next_6m_delinquency` fully populated,True,0 missing (0.0%)
+`prob_next_12m_default` fully populated,True,0 missing (0.0%)
+`prob_next_12m_prepayment` fully populated,True,0 missing (0.0%)
+`next_state` fully populated,True,0 missing (0.0%)
+`exception_required` fully populated,True,0 missing (0.0%)
+`exception_type` fully populated,True,0 missing (0.0%)
+`anomaly_score` fully populated,True,0 missing (0.0%)
+`top_drivers` fully populated,True,0 missing (0.0%)
+`action` fully populated,True,0 missing (0.0%)
+`confidence` fully populated,True,0 missing (0.0%)
+`prob_next_3m_delinquency` survives a CSV round trip,True,0 cells read back as NaN
+`prob_next_6m_delinquency` survives a CSV round trip,True,0 cells read back as NaN
+`prob_next_12m_default` survives a CSV round trip,True,0 cells read back as NaN
+`prob_next_12m_prepayment` survives a CSV round trip,True,0 cells read back as NaN
+`next_state` survives a CSV round trip,True,0 cells read back as NaN
+`exception_required` survives a CSV round trip,True,0 cells read back as NaN
+`exception_type` survives a CSV round trip,True,0 cells read back as NaN
+`anomaly_score` survives a CSV round trip,True,0 cells read back as NaN
+`top_drivers` survives a CSV round trip,True,0 cells read back as NaN
+`action` survives a CSV round trip,True,0 cells read back as NaN
+`confidence` survives a CSV round trip,True,0 cells read back as NaN
+`next_state` values are valid performance states,True,unexpected: []

@@ -12,7 +12,7 @@ PY := .venv/bin/python
 LOANS ?= 10000
 SAMPLE ?=
 
-.PHONY: all setup data profile predict survival anomaly scenario test clean-reports help
+.PHONY: all setup data profile predict survival anomaly scenario explain copilot copilot-live submission model-card test clean-reports help
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -41,6 +41,21 @@ anomaly: ## Phase 5 -- anomaly & exception detection (Task 4)
 scenario: ## Phase 6 -- scenario & stress simulation (Task 5); needs `make predict` first
 	$(PY) scripts/run_scenario.py $(if $(SAMPLE),--sample $(SAMPLE),)
 
+explain: ## Phase 7 -- explainability, fairness & model card (Task 6); needs `make predict` first
+	$(PY) scripts/run_explainability.py $(if $(SAMPLE),--sample $(SAMPLE),)
+
+copilot: ## Phase 8 -- LLM reviewer copilot (Task 7), OFFLINE; needs `make anomaly` first
+	$(PY) scripts/run_copilot.py --offline
+
+copilot-live: ## Phase 8 LIVE -- makes real API calls and spends account credits
+	$(PY) scripts/run_copilot.py --live
+
+submission: ## Phase 9 -- score the unlabelled panel and write submission/submission.csv
+	$(PY) main.py --submission
+
+model-card: ## Regenerate reports/model_card.md from the existing reports
+	$(PY) main.py --model-card
+
 test: ## Run the regression suite
 	$(PY) -m pytest tests/ -q
 
@@ -48,15 +63,23 @@ test: ## Run the regression suite
 # is folded into the Data Intelligence Report. The first pass is what produces
 # the data-quality scores the feature matrix consumes -- the two reports are
 # mutually referential by design, and this is the order that resolves it.
-all: profile predict survival anomaly scenario profile test ## Run every phase end to end
+# `python main.py` is the single-command entrypoint the challenge asks for and
+# runs the same sequence; this target exists so `make all` still works.
+all: ## Run every phase end to end, finishing with submission.csv
+	$(PY) main.py
 	@echo ""
 	@echo "Pipeline complete. Deliverables:"
+	@echo "  submission/submission.csv             (graded submission)"
 	@echo "  reports/data_intelligence_report.md   (Task 1)"
 	@echo "  reports/task2_model_results.md        (Task 2)"
 	@echo "  reports/survival_report.md            (Task 3)"
 	@echo "  reports/anomaly_report.md             (Task 4)"
 	@echo "  reports/anomaly_examples.csv          (Task 4, reviewer queue)"
 	@echo "  reports/scenario_report.md            (Task 5)"
+	@echo "  reports/explainability_report.md      (Task 6)"
+	@echo "  reports/model_card.md                 (section 11 requirement)"
+	@echo "  reports/copilot_report.md             (Task 7, offline -- see copilot-live)"
+	@echo "  reports/llm_prompt_log.jsonl          (Task 7, mandatory audit trail)"
 	@echo "  reports/feature_dictionary.md"
 
 clean-reports: ## Delete every generated report (data/ is untouched)

@@ -265,3 +265,63 @@ SCENARIO_SEGMENTS = ["vintage_year", "credit_score_band", "state", "servicer_nam
 
 # Projection months reported in the summary tables (months from the scenario start).
 SCENARIO_HORIZONS = (1, 12, 24, 36, 48)
+
+
+# --------------------------------------------------------------------------
+# Phase 7: explainability and responsible AI (Task 6)
+# --------------------------------------------------------------------------
+EXPLAINABILITY_DIR = REPORTS_DIR / "explainability_report"
+
+# Models explained in Phase 7, and the name each carries in the report.
+EXPLAIN_TARGETS = {
+    "next_3m_delinquency_flag": "delinquency",
+    "next_12m_default_flag": "default",
+    "next_12m_prepayment_flag": "prepayment",
+}
+
+# Rows sampled for SHAP. Not a memory workaround at this data size -- the full
+# 58k-row test set computes in ~3s with tree_path_dependent perturbation, which
+# needs no background dataset at all. It is a guard for the organiser's real
+# pack (potentially 10x larger, and 6x again for the multiclass head) and a
+# legibility limit: a beeswarm of 58,000 points is a solid block of ink.
+SHAP_SAMPLE_ROWS = 20000
+SHAP_PLOT_ROWS = 4000
+
+# Segments the error and disparity analysis is cut by.
+EXPLAIN_SEGMENTS = ["credit_score_band", "ltv_band", "vintage_year", "state", "servicer_name"]
+
+# A group smaller than this is not reported as a disparity finding: a false
+# positive rate computed on nine loans is noise with a decimal point.
+MIN_GROUP_SIZE = 200
+
+# Conventional adverse-impact threshold. A selection-rate ratio below this
+# between the most and least selected group is the flag used in US employment
+# law (the "four-fifths rule"); it is borrowed here as a *screening* device,
+# not as a legal test. See src/explain/fairness.py.
+DISPARITY_RATIO_FLOOR = 0.80
+
+
+# --------------------------------------------------------------------------
+# Phase 9: packaging and submission
+# --------------------------------------------------------------------------
+SUBMISSION_PATH = SUBMISSION_DIR / "submission.csv"
+
+# The template is the binding contract for the submission's shape. It is read
+# at run time rather than hardcoded, so a change the organiser makes to the
+# template surfaces as a validation failure instead of a silently wrong file.
+SUBMISSION_PROBABILITY_COLUMNS = {
+    "next_3m_delinquency_flag": "prob_next_3m_delinquency",
+    "next_6m_delinquency_flag": "prob_next_6m_delinquency",
+    "next_12m_default_flag": "prob_next_12m_default",
+    "next_12m_prepayment_flag": "prob_next_12m_prepayment",
+}
+
+# Columns that must be a probability in [0, 1] if present.
+SUBMISSION_UNIT_INTERVAL_COLUMNS = [
+    *SUBMISSION_PROBABILITY_COLUMNS.values(),
+    "anomaly_score",
+    "confidence",
+]
+
+# How many driver names go into the submission's `top_drivers` cell.
+SUBMISSION_TOP_DRIVERS = 3

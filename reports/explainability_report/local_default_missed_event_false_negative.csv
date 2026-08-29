@@ -1,0 +1,13 @@
+feature,feature_value,shap_value,direction
+credit_score,707.0,-0.8889206154206514,lowers risk
+state,AL,-0.6601155913376864,lowers risk
+credit_score_band,700-739,-0.30900357139159973,lowers risk
+ltv,69.63,-0.20192158777544836,lowers risk
+ltv_band,60-75%,-0.18388321329531535,lowers risk
+days_past_due,0.0,-0.14091030790498132,lowers risk
+rate_spread,2.6125,0.11139530989864188,raises risk
+interest_rate,7.172,-0.09778210893812697,lowers risk
+dti,32.51,-0.06909527865220823,lowers risk
+status_ordinal,1.0,-0.03560516581227395,lowers risk
+balance_ratio,0.9992077205882353,0.029551381346861937,raises risk
+loan_age_months,1.0,-0.026632513748831375,lowers risk

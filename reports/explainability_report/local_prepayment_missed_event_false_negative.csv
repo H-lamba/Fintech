@@ -1,0 +1,13 @@
+feature,feature_value,shap_value,direction
+credit_score,644.0,-0.92412262599041,lowers risk
+dpd_max_12m,116.0,-0.31406179490801794,lowers risk
+interest_rate,6.736,-0.17332971538057695,lowers risk
+dpd_mean_12m,9.666666666666666,-0.09172352545288665,lowers risk
+dpd_max_6m,116.0,-0.09020530894680116,lowers risk
+days_past_due,116.0,-0.05551698995492847,lowers risk
+dti,31.24,0.05234393841098327,raises risk
+original_balance,452000.0,0.03171817532555403,raises risk
+loan_purpose,Rate/Term Refinance,0.027635358401744737,raises risk
+dpd_mean_6m,19.333333333333332,-0.023890881955795286,lowers risk
+paydown_3m,-0.002815663513674127,0.02325797116751474,raises risk
+paydown_1m,-0.0009455946870864373,0.01672012148319006,raises risk

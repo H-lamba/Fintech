@@ -1,0 +1,13 @@
+feature,feature_value,shap_value,direction
+days_past_due,116.0,2.41594385518566,raises risk
+credit_score,635.0,1.2456139950050304,raises risk
+status_ordinal,4.0,0.5069939798932132,raises risk
+credit_score_band,620-659,0.34928271729455784,raises risk
+ltv,86.09,0.16325055533720612,raises risk
+dpd_lag_1m,115.0,0.13259911747074193,raises risk
+is_delinquent,1.0,0.11379772941728648,raises risk
+dpd_delta_1m,1.0,0.10910726337784482,raises risk
+balance_ratio,0.8351985852713177,-0.10404952004430451,lowers risk
+loan_age_months,47.0,0.09838026810620061,raises risk
+ltv_band,80-90%,0.08994225245818026,raises risk
+state,WA,0.08703480212316744,raises risk
