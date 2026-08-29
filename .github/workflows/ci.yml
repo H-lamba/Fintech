@@ -40,7 +40,9 @@ jobs:
         run: |
           python scripts/generate_synthetic_suite.py --loans 400
           python scripts/run_profiling.py --no-figures
-          python scripts/run_prediction.py --sample 400 --no-save-models
+          # No --no-save-models here: Phase 6 loads the persisted models
+          # rather than refitting them, so suppressing the write breaks it.
+          python scripts/run_prediction.py --sample 400
           python scripts/run_survival.py --sample 400 --no-figures
           python scripts/run_anomaly.py --sample 400 --no-figures
           python scripts/run_scenario.py --sample 400 --no-figures --horizons 12 24
