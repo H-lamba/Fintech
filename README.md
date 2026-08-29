@@ -33,6 +33,12 @@ python main.py    # all nine phases, ending in submission/submission.csv (~4.5m)
 
 `python main.py` is the single entrypoint. `make all` runs the same thing.
 
+Then explore it interactively:
+
+```bash
+streamlit run app.py      # or: make ui
+```
+
 `make all` runs the phases in the order that resolves their one circular
 reference: profiling produces the data-quality scores the feature matrix
 consumes, and the prediction run emits the feature dictionary that the Data
@@ -131,6 +137,10 @@ src/
     calibration.py       Platt / isotonic calibration, reliability tables
     evaluation.py        every Task 2 metric + the comparison table
     predict.py           Phase 3 orchestration, model persistence, scoring
+  dashboard/
+    data.py              cached loaders over the pipeline's own outputs
+    theme.py             the figures' palette, applied to the page
+    pages.py             twelve pages, ordered to match the demo flow
   submission/
     inference.py         score the unlabelled panel; nothing refitted on test
     build.py             assemble + validate against the template, then write
@@ -171,6 +181,7 @@ src/
     notes.py             reviewer note generation and release gating
     failures.py          six adversarial probes + recorded control failures
     report.py            Task 7 report builder
+app.py                   interactive dashboard (streamlit run app.py)
 main.py                  single-command entrypoint: every phase -> submission.csv
 Makefile                 make setup / data / all / test, plus per-phase targets
 .github/workflows/ci.yml tests + a small-sample smoke run of all three pipelines
@@ -191,6 +202,7 @@ tests/
   test_explainability.py       asserts sampling, error rates and the disparity screen
   test_copilot.py              asserts the guardrails, grounding and audit trail
   test_submission.py           asserts template conformance and the no-refit guarantee
+  test_dashboard.py            renders every page through Streamlit's test harness
 ```
 
 ---
@@ -524,6 +536,46 @@ the sequence detectors are near-perfect indicators, so average precision saturat
 ten boosting rounds and early stopping correctly halts. The model ranked fine — the
 hardcoded 0.5 threshold was wrong. The threshold is now tuned on a held-back window and
 travels with the predictions.
+
+---
+
+## The dashboard
+
+```bash
+streamlit run app.py
+```
+
+Twelve pages, **ordered to match the demo flow in section 14** — dataset and targets,
+profiling, features and the time-aware split, baseline then improved model, survival output,
+anomaly examples, scenario output, a local explanation, an LLM note and a rejected one, the
+submission, and the development log. It can be walked top to bottom on camera without
+deciding what comes next.
+
+**Nothing is recomputed in the app.** Every number is read from a file the pipeline wrote.
+A dashboard that recalculates its own figures can disagree with the report beside it, and
+the version a viewer trusts is whichever they saw last. A phase that has not run shows the
+command to run, not an empty panel.
+
+**What is actually interactive**, rather than a report with tabs:
+
+- **Loan explorer** — pick any of the 78,409 scored rows by anomaly rank, reviewer queue
+  membership or ID search, filtered by month and predicted state. Shows the observed status,
+  all four probabilities, the anomaly score, drivers, recommended action and the LLM
+  reviewer note where one exists.
+- **Scenarios** — choose a measure and a projection month; the tiles and the chart update,
+  with the stated-multiplier line overlaid where the credit channel saturates.
+- **Anomalies** — filter the reviewer queue by predicted type and a hybrid-score floor.
+- **Explainability** — switch model, then step through the four local waterfall cases.
+- **Copilot** — inspect any adversarial probe: the trap, the model's actual response, the
+  guardrail verdict and the human correction.
+
+The page uses the **same validated palette as the figures** it embeds, and a test asserts
+that — a page in a different colour language than the charts inside it reads as two products
+stapled together.
+
+Seventeen tests render every page through Streamlit's own harness. Nothing else in the suite
+imports these modules, so without them the app could break silently on a Streamlit upgrade
+and nobody would find out until the demo.
 
 ---
 

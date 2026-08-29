@@ -49,3 +49,7 @@ jobs:
           python scripts/run_explainability.py --sample 400 --no-figures
           # Offline: CI must never call a third-party API or need a secret.
           python scripts/run_copilot.py --offline --notes 2
+          python main.py --submission
+          # The dashboard renders from the files above; a page that raises is a
+          # broken deliverable even though no test imports it.
+          python -m pytest tests/test_dashboard.py -q

@@ -44,6 +44,9 @@ tenacity>=8.2              # verified 9.1.4   -- backoff on rate limits and 5xx
 # --- Charts ---
 matplotlib>=3.8            # verified 3.10.0
 
+# --- Interactive dashboard (streamlit run app.py) ---
+streamlit>=1.40            # verified 1.62.0
+
 # --- Dev / quality ---
 pytest>=8.0                # verified 9.1.1
 

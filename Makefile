@@ -12,7 +12,7 @@ PY := .venv/bin/python
 LOANS ?= 10000
 SAMPLE ?=
 
-.PHONY: all setup data profile predict survival anomaly scenario explain copilot copilot-live submission model-card test clean-reports help
+.PHONY: all setup data profile predict survival anomaly scenario explain copilot copilot-live submission model-card ui test clean-reports help
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -55,6 +55,9 @@ submission: ## Phase 9 -- score the unlabelled panel and write submission/submis
 
 model-card: ## Regenerate reports/model_card.md from the existing reports
 	$(PY) main.py --model-card
+
+ui: ## Launch the interactive dashboard (reads what the pipeline wrote)
+	$(PY) -m streamlit run app.py
 
 test: ## Run the regression suite
 	$(PY) -m pytest tests/ -q

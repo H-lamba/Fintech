@@ -838,6 +838,55 @@ human-reviewed.
 
 ---
 
+## Session 12 — interactive dashboard
+
+**Date:** 2026-08-30
+
+**Goal:** A UI for the demo. Asked for a static page first, then redirected to Streamlit
+mid-build.
+
+**Accepted:**
+- **Navigation that *is* the demo flow.** Section 14 specifies the order a demo should
+  follow; the sidebar is that order, so the app can be walked top to bottom on camera
+  without deciding what comes next. A test pins the ordering so a reshuffle is deliberate.
+- **Nothing recomputed in the app.** Every number is read from a file the pipeline wrote. A
+  dashboard that recalculates its own figures can disagree with the report beside it, and
+  the version a viewer trusts is whichever they saw last.
+- **A missing phase names the command to run.** An empty panel with no explanation sends the
+  user to read the code.
+- **The figures' own palette, applied to the page**, with a test asserting they match. The
+  app embeds those PNGs directly; a page in a different colour language reads as two
+  products stapled together.
+
+**Rejected / corrected:**
+- *Two Streamlit 1.62 API breaks, both in shared helpers.* `height=None` is now rejected
+  outright, and `use_container_width` is deprecated in favour of `width="stretch"`. Ten of
+  twelve pages raised. Found by running every page through `streamlit.testing.v1.AppTest`
+  rather than by clicking through the browser -- the app served HTTP 200 the whole time,
+  because a Streamlit page renders its exception as a red box in the body.
+- *The explorer showed `12-month default: 0.0%` on already-defaulted loans* with no
+  explanation. That zero is a deterministic override -- a loan in Default cannot newly
+  default -- not a confident prediction, and 565 of the 1,520 rows predicted to move to
+  Default are in that state. A reviewer reading it as a model output would draw the opposite
+  conclusion. The tile now names the override and the observed status sits beside it.
+- *`AppTest.from_file("app.py")` resolves against the test file's directory*, not the
+  working directory, so every dashboard test failed with FileNotFoundError until the path
+  was made absolute.
+- *The navigation test asserted on raw page names* while the widget reports its formatted
+  labels, because the sidebar uses a `format_func`.
+
+**Verification performed:** 17 new tests (125 across the project), every page rendered
+through Streamlit's harness and inspected in a real browser at 1600x1000.
+
+**Human review:** The override-display problem was found by looking at the rendered page and
+noticing that two numbers on the same card told contradictory stories -- not by any test,
+and not from the code, which was behaving exactly as designed.
+
+**Approximate AI-generated code share this session:** ~90% of lines drafted by AI, 100%
+human-reviewed.
+
+---
+
 ## Lessons so far
 
 1. **Check the AI's numbers, not just its code.** The substantive corrections so
@@ -900,3 +949,7 @@ human-reviewed.
     produced a structurally perfect file that passed every validation check. Neither was
     findable by reading code or running tests. Comparing the output's own summary statistics
     to the base rate found both in seconds.
+16. **HTTP 200 is not "the page works."** The app served fine while ten of its twelve
+    pages raised, because Streamlit renders an exception as a red box inside a successful
+    response. Rendering every page through the framework's own test harness found in one
+    command what clicking around would have found slowly and incompletely.
