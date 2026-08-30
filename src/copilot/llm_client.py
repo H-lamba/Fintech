@@ -142,7 +142,7 @@ def log_call(response: LLMResponse, path: Path | str = LOG_PATH) -> None:
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "a") as handle:
+    with open(path, "a", encoding="utf-8") as handle:
         handle.write(json.dumps(response.to_dict(), default=str) + "\n")
 
 
@@ -185,7 +185,7 @@ def load_prompt_log(path: Path | str = LOG_PATH) -> list[dict[str, Any]]:
     if not path.exists():
         return []
     records = []
-    with open(path) as handle:
+    with open(path, encoding="utf-8") as handle:
         for line in handle:
             line = line.strip()
             if not line:
@@ -276,18 +276,35 @@ def _invoke_offline(prompt: str, purpose: str) -> tuple[str, dict]:
             month = line.split(":", 1)[1].strip()
 
     rules_fired = "None." not in prompt.split("## Validation rules that fired")[-1][:40]
-
-    body = (
-        f"[OFFLINE STUB -- not a model response] Loan {loan}, reporting month {month}. "
-        + (
-            "One or more validation rules fired on this record; see the rule table above "
-            "for the specific checks and their severities. "
-            if rules_fired
-            else "No validation rules fired on this record. "
-        )
-        + "The model outputs supplied above are restated without alteration. A reviewer "
-        "should verify the flagged fields against the servicer's source file."
+    rule_clause = (
+        "One or more validation rules fired on this record; see the rule table above "
+        "for the specific checks and their severities. "
+        if rules_fired
+        else "No validation rules fired on this record. "
     )
+
+    if purpose == "verification_steps":
+        # The stub answers the question it was actually asked. A stub that
+        # returns a summary where the caller requested a checklist would make
+        # offline mode look like a broken feature rather than an absent one.
+        body = (
+            f"[OFFLINE STUB -- not a model response] Verification steps for loan {loan}, "
+            f"reporting month {month}.\n"
+            f"- {rule_clause.strip()} Confirm each triggered rule against the servicer's "
+            "source file.\n"
+            "- Check the balance fields in the record above against the origination "
+            "balance and any recorded modification.\n"
+            "- Confirm the reported status and days past due agree with the prior "
+            "month's file.\n"
+            "- Verify the document status field against the loan's document package."
+        )
+    else:
+        body = (
+            f"[OFFLINE STUB -- not a model response] Loan {loan}, reporting month {month}. "
+            + rule_clause
+            + "The model outputs supplied above are restated without alteration. A reviewer "
+            "should verify the flagged fields against the servicer's source file."
+        )
     return body, {"prompt_tokens": len(prompt) // 4, "completion_tokens": len(body) // 4}
 
 

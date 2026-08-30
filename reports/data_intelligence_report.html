@@ -27,7 +27,7 @@
 </head>
 <body>
 <h1>Data Intelligence Report - Loan Performance Intelligence Engine</h1>
-<p><em>Generated 2026-08-29 23:53:49</em></p>
+<p><em>Generated 2026-08-30 14:39:25</em></p>
 <h2>Scope</h2>
 <p>Profiling of the loan-level monthly panel prior to any model training. Covers distributions, missingness, outliers and invalid date relationships, cross-column relationship breaks, field dependencies, train/test drift, source reconciliation, and record- and batch-level data-quality scoring.</p>
 <p>Every finding below is reproduced by <code>python scripts/run_profiling.py</code>.</p>
@@ -121,7 +121,7 @@
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">10000</td>
-<td style="text-align: left;">7QQM1UJV6V2F=62 (0.0%); XFVSFD44QQD5=62 (0.0%); BV2N8A1RB1FU=61 (0.0%); 7S7HZCN11GEB=60 (0.0%); 2RJGGDRTOEN3=60 (0.0%)</td>
+<td style="text-align: left;">7QQM1UJV6V2F=62 (0.0%); XFVSFD44QQD5=62 (0.0%); BV2N8A1RB1FU=61 (0.0%); Y0LBUKYQYFQC=60 (0.0%); LK4LE2STYIT9=60 (0.0%)</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">nan</td>
 <td style="text-align: right;">nan</td>
@@ -1085,31 +1085,31 @@
 </tr>
 <tr>
 <td style="text-align: left;">next_6m_delinquency_flag</td>
-<td style="text-align: left;">next_12m_default_flag</td>
+<td style="text-align: left;">next_12m_prepayment_flag</td>
 <td style="text-align: right;">0.6368</td>
 </tr>
 <tr>
 <td style="text-align: left;">next_6m_delinquency_flag</td>
-<td style="text-align: left;">next_12m_prepayment_flag</td>
+<td style="text-align: left;">next_12m_default_flag</td>
 <td style="text-align: right;">0.6368</td>
 </tr>
 <tr>
 <td style="text-align: left;">next_3m_delinquency_flag</td>
-<td style="text-align: left;">next_12m_default_flag</td>
+<td style="text-align: left;">next_12m_prepayment_flag</td>
 <td style="text-align: right;">0.4269</td>
 </tr>
 <tr>
 <td style="text-align: left;">next_3m_delinquency_flag</td>
-<td style="text-align: left;">next_12m_prepayment_flag</td>
+<td style="text-align: left;">next_12m_default_flag</td>
 <td style="text-align: right;">0.4269</td>
 </tr>
 <tr>
-<td style="text-align: left;">next_12m_default_flag</td>
+<td style="text-align: left;">next_12m_prepayment_flag</td>
 <td style="text-align: left;">exception_type</td>
 <td style="text-align: right;">-0.02</td>
 </tr>
 <tr>
-<td style="text-align: left;">next_12m_prepayment_flag</td>
+<td style="text-align: left;">next_12m_default_flag</td>
 <td style="text-align: left;">exception_type</td>
 <td style="text-align: right;">-0.02</td>
 </tr>
@@ -1359,6 +1359,14 @@
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
+<td style="text-align: left;">month_index</td>
+<td style="text-align: left;">IQR (k=1.5)</td>
+<td style="text-align: right;">-26</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td style="text-align: left;">vintage_year</td>
 <td style="text-align: left;">IQR (k=1.5)</td>
 <td style="text-align: right;">2013.5</td>
@@ -1371,14 +1379,6 @@
 <td style="text-align: left;">IQR (k=1.5)</td>
 <td style="text-align: right;">14.33</td>
 <td style="text-align: right;">56.41</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr>
-<td style="text-align: left;">month_index</td>
-<td style="text-align: left;">IQR (k=1.5)</td>
-<td style="text-align: right;">-26</td>
-<td style="text-align: right;">62</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 </tr>
@@ -1890,11 +1890,6 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">vintage_quarter</td>
-<td style="text-align: left;">vintage_year</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr>
 <td style="text-align: left;">current_status</td>
 <td style="text-align: left;">prepayment_flag</td>
 <td style="text-align: right;">1</td>
@@ -1902,6 +1897,11 @@
 <tr>
 <td style="text-align: left;">current_status</td>
 <td style="text-align: left;">default_flag</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">vintage_quarter</td>
+<td style="text-align: left;">vintage_year</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr>
@@ -2342,24 +2342,6 @@
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;">original_term_months</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: right;">0.0001</td>
-<td style="text-align: left;">stable</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0036</td>
-<td style="text-align: right;">0.4238</td>
-<td style="text-align: right;">326.526</td>
-<td style="text-align: right;">327.135</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: left;">nan</td>
-</tr>
-<tr>
 <td style="text-align: left;">document_status</td>
 <td style="text-align: left;">categorical</td>
 <td style="text-align: left;">nan</td>
@@ -2376,6 +2358,24 @@
 <td style="text-align: right;">nan</td>
 <td style="text-align: right;"></td>
 <td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">original_term_months</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: left;">stable</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0.4238</td>
+<td style="text-align: right;">326.526</td>
+<td style="text-align: right;">327.135</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: left;">nan</td>
 </tr>
 <tr>
 <td style="text-align: left;">loan_purpose</td>
@@ -2396,8 +2396,8 @@
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;">property_type</td>
-<td style="text-align: left;">categorical</td>
+<td style="text-align: left;">default_flag</td>
+<td style="text-align: left;">numeric</td>
 <td style="text-align: left;">nan</td>
 <td style="text-align: left;">nan</td>
 <td style="text-align: left;">nan</td>
@@ -2406,12 +2406,12 @@
 <td style="text-align: left;">stable</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0069</td>
+<td style="text-align: right;">0.0072</td>
 <td style="text-align: right;">nan</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;"></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">nan</td>
 </tr>
 <tr>
 <td style="text-align: left;">prepayment_flag</td>
@@ -2450,8 +2450,8 @@
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;">default_flag</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">property_type</td>
+<td style="text-align: left;">categorical</td>
 <td style="text-align: left;">nan</td>
 <td style="text-align: left;">nan</td>
 <td style="text-align: left;">nan</td>
@@ -2460,12 +2460,12 @@
 <td style="text-align: left;">stable</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0003</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.0069</td>
-<td style="text-align: right;">0.0072</td>
 <td style="text-align: right;">nan</td>
-<td style="text-align: left;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;">reporting_month</td>
@@ -2563,19 +2563,7 @@
 </tr>
 <tr>
 <td style="text-align: left;">2017-02</td>
-<td style="text-align: left;">ltv</td>
-<td style="text-align: right;">25.146</td>
-<td style="text-align: left;">MAJOR shift</td>
-</tr>
-<tr>
-<td style="text-align: left;">2017-02</td>
-<td style="text-align: left;">original_balance</td>
-<td style="text-align: right;">25.146</td>
-<td style="text-align: left;">MAJOR shift</td>
-</tr>
-<tr>
-<td style="text-align: left;">2017-02</td>
-<td style="text-align: left;">current_balance</td>
+<td style="text-align: left;">dti</td>
 <td style="text-align: right;">25.146</td>
 <td style="text-align: left;">MAJOR shift</td>
 </tr>
@@ -2587,7 +2575,19 @@
 </tr>
 <tr>
 <td style="text-align: left;">2017-02</td>
-<td style="text-align: left;">dti</td>
+<td style="text-align: left;">ltv</td>
+<td style="text-align: right;">25.146</td>
+<td style="text-align: left;">MAJOR shift</td>
+</tr>
+<tr>
+<td style="text-align: left;">2017-02</td>
+<td style="text-align: left;">current_balance</td>
+<td style="text-align: right;">25.146</td>
+<td style="text-align: left;">MAJOR shift</td>
+</tr>
+<tr>
+<td style="text-align: left;">2017-02</td>
+<td style="text-align: left;">original_balance</td>
 <td style="text-align: right;">25.146</td>
 <td style="text-align: left;">MAJOR shift</td>
 </tr>
@@ -2653,7 +2653,7 @@
 </tr>
 <tr>
 <td style="text-align: left;">2017-03</td>
-<td style="text-align: left;">current_balance</td>
+<td style="text-align: left;">interest_rate</td>
 <td style="text-align: right;">24.5864</td>
 <td style="text-align: left;">MAJOR shift</td>
 </tr>
@@ -2665,7 +2665,7 @@
 </tr>
 <tr>
 <td style="text-align: left;">2017-03</td>
-<td style="text-align: left;">interest_rate</td>
+<td style="text-align: left;">credit_score</td>
 <td style="text-align: right;">24.5864</td>
 <td style="text-align: left;">MAJOR shift</td>
 </tr>

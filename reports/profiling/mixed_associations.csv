@@ -1,7 +1,7 @@
 categorical,numeric,eta
-vintage_quarter,vintage_year,1.0
 current_status,prepayment_flag,1.0
 current_status,default_flag,1.0
+vintage_quarter,vintage_year,1.0
 current_status,days_past_due,0.9904
 credit_score_band,credit_score,0.9639
 exception_type,days_past_due,0.9534

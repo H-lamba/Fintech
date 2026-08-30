@@ -390,5 +390,5 @@ def build(reports_dir: Path | None = None) -> str:
 def write(path: Path | str | None = None, reports_dir: Path | None = None) -> Path:
     path = Path(path or config.REPORTS_DIR / "model_card.md")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(build(reports_dir))
+    path.write_text(build(reports_dir), encoding="utf-8")
     return path

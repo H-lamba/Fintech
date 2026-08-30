@@ -1,6 +1,6 @@
 # Data Intelligence Report - Loan Performance Intelligence Engine
 
-_Generated 2026-08-29 23:53:49_
+_Generated 2026-08-30 14:39:25_
 
 ## Scope
 
@@ -41,7 +41,7 @@ One row per column: dtype, cardinality, missingness, and the distribution summar
 
 | column                   | dtype          |   n_missing |   pct_missing |   n_unique | top_values                                                                                                                                                                                                |   is_constant |        mean |         std | min                 |        p01 |        p25 |        p50 |        p75 |        p99 | max                 |     skew |   n_zero |   n_negative |   n_true |   pct_true |
 |:-------------------------|:---------------|------------:|--------------:|-----------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------:|------------:|------------:|:--------------------|-----------:|-----------:|-----------:|-----------:|-----------:|:--------------------|---------:|---------:|-------------:|---------:|-----------:|
-| loan_id                  | object         |           0 |         0     |      10000 | 7QQM1UJV6V2F=62 (0.0%); XFVSFD44QQD5=62 (0.0%); BV2N8A1RB1FU=61 (0.0%); 7S7HZCN11GEB=60 (0.0%); 2RJGGDRTOEN3=60 (0.0%)                                                                                    |             0 |    nan      |    nan      | nan                 |    nan     |    nan     |    nan     |    nan     |    nan     | nan                 | nan      |      nan |          nan |      nan |    nan     |
+| loan_id                  | object         |           0 |         0     |      10000 | 7QQM1UJV6V2F=62 (0.0%); XFVSFD44QQD5=62 (0.0%); BV2N8A1RB1FU=61 (0.0%); Y0LBUKYQYFQC=60 (0.0%); LK4LE2STYIT9=60 (0.0%)                                                                                    |             0 |    nan      |    nan      | nan                 |    nan     |    nan     |    nan     |    nan     |    nan     | nan                 | nan      |      nan |          nan |      nan |    nan     |
 | month_index              | int64          |           0 |         0     |         62 | nan                                                                                                                                                                                                       |           nan |     18.8734 |     14.7273 | 0.0                 |      0     |      7     |     16     |     29     |     56     | 61.0                |   0.737  |    10000 |            0 |      nan |    nan     |
 | reporting_month          | datetime64[ns] |           0 |         0     |         84 | nan                                                                                                                                                                                                       |           nan |    nan      |    nan      | 2017-01-01 00:00:00 |    nan     |    nan     |    nan     |    nan     |    nan     | 2023-12-01 00:00:00 | nan      |      nan |          nan |      nan |    nan     |
 | origination_month        | datetime64[ns] |           0 |         0     |         72 | nan                                                                                                                                                                                                       |           nan |    nan      |    nan      | 2018-01-01 00:00:00 |    nan     |    nan     |    nan     |    nan     |    nan     | 2023-12-01 00:00:00 | nan      |      nan |          nan |      nan |    nan     |
@@ -105,12 +105,12 @@ Columns whose missing-indicators correlate: a high value means the fields go mis
 |:-------------------------|:-------------------------|---------------:|
 | next_12m_default_flag    | next_12m_prepayment_flag |         1      |
 | next_3m_delinquency_flag | next_6m_delinquency_flag |         0.6705 |
-| next_6m_delinquency_flag | next_12m_default_flag    |         0.6368 |
 | next_6m_delinquency_flag | next_12m_prepayment_flag |         0.6368 |
-| next_3m_delinquency_flag | next_12m_default_flag    |         0.4269 |
+| next_6m_delinquency_flag | next_12m_default_flag    |         0.6368 |
 | next_3m_delinquency_flag | next_12m_prepayment_flag |         0.4269 |
-| next_12m_default_flag    | exception_type           |        -0.02   |
+| next_3m_delinquency_flag | next_12m_default_flag    |         0.4269 |
 | next_12m_prepayment_flag | exception_type           |        -0.02   |
+| next_12m_default_flag    | exception_type           |        -0.02   |
 | loss_severity_band       | next_12m_default_flag    |         0.0187 |
 | loss_severity_band       | next_12m_prepayment_flag |         0.0187 |
 | next_6m_delinquency_flag | exception_type           |        -0.0147 |
@@ -159,9 +159,9 @@ Numeric columns ranked by the share of rows outside 1.5x IQR.
 | default_flag             | IQR (k=1.5) |        0      |        0      |         1848 |          0.689 |
 | ltv                      | IQR (k=1.5) |       48.725  |       99.645  |         1237 |          0.461 |
 | loan_age_months          | IQR (k=1.5) |      -26      |       62      |            0 |          0     |
+| month_index              | IQR (k=1.5) |      -26      |       62      |            0 |          0     |
 | vintage_year             | IQR (k=1.5) |     2013.5    |     2025.5    |            0 |          0     |
 | dti                      | IQR (k=1.5) |       14.33   |       56.41   |            0 |          0     |
-| month_index              | IQR (k=1.5) |      -26      |       62      |            0 |          0     |
 
 
 ### Outliers (robust z-score)
@@ -279,9 +279,9 @@ Correlation ratio (eta): the share of a numeric field's variance explained by a 
 
 | categorical       | numeric                  |    eta |
 |:------------------|:-------------------------|-------:|
-| vintage_quarter   | vintage_year             | 1      |
 | current_status    | prepayment_flag          | 1      |
 | current_status    | default_flag             | 1      |
+| vintage_quarter   | vintage_year             | 1      |
 | current_status    | days_past_due            | 0.9904 |
 | credit_score_band | credit_score             | 0.9639 |
 | exception_type    | days_past_due            | 0.9534 |
@@ -330,13 +330,13 @@ Population Stability Index per shared column, with a KS test (numeric) or catego
 | servicer_name         | categorical | nan                 | nan                 | nan                 | nan                 |   0.0008 | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
 | source_system         | categorical | nan                 | nan                 | nan                 | nan                 |   0.0004 | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
 | occupancy_type        | categorical | nan                 | nan                 | nan                 | nan                 |   0.0003 | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
-| original_term_months  | numeric     | nan                 | nan                 | nan                 | nan                 |   0.0001 | stable       |               0     |              0     |         0.0036 |   0.4238    |     326.526  |    327.135  |              nan | nan                            |
 | document_status       | categorical | nan                 | nan                 | nan                 | nan                 |   0.0001 | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
+| original_term_months  | numeric     | nan                 | nan                 | nan                 | nan                 |   0.0001 | stable       |               0     |              0     |         0.0036 |   0.4238    |     326.526  |    327.135  |              nan | nan                            |
 | loan_purpose          | categorical | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
-| property_type         | categorical | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
+| default_flag          | numeric     | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |         0.0003 |   1         |       0.0069 |      0.0072 |              nan | nan                            |
 | prepayment_flag       | numeric     | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |         0.0005 |   1         |       0.0073 |      0.0078 |              nan | nan                            |
 | current_status        | categorical | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
-| default_flag          | numeric     | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |         0.0003 |   1         |       0.0069 |      0.0072 |              nan | nan                            |
+| property_type         | categorical | nan                 | nan                 | nan                 | nan                 |   0      | stable       |               0     |              0     |       nan      | nan         |     nan      |    nan      |                  |                                |
 | reporting_month       | datetime    | 2017-01-01 00:00:00 | 2023-12-01 00:00:00 | 2024-01-01 00:00:00 | 2025-08-01 00:00:00 | nan      | n/a          |               0     |              0     |       nan      | nan         |     nan      |    nan      |              nan | nan                            |
 | origination_month     | datetime    | 2018-01-01 00:00:00 | 2023-12-01 00:00:00 | 2019-01-01 00:00:00 | 2023-12-01 00:00:00 | nan      | n/a          |               0     |              0     |       nan      | nan         |     nan      |    nan      |              nan | nan                            |
 | days_past_due         | numeric     | nan                 | nan                 | nan                 | nan                 | nan      | n/a          |               0     |              0     |         0.001  |   1         |       5.2354 |      5.3054 |              nan | nan                            |
@@ -355,11 +355,11 @@ Each reporting period measured against the first. This is the check that tells y
 | period   | column                |   psi_vs_first_period | drift_band   |
 |:---------|:----------------------|----------------------:|:-------------|
 | 2023-12  | vintage_year          |               26.0522 | MAJOR shift  |
-| 2017-02  | ltv                   |               25.146  | MAJOR shift  |
-| 2017-02  | original_balance      |               25.146  | MAJOR shift  |
-| 2017-02  | current_balance       |               25.146  | MAJOR shift  |
-| 2017-02  | interest_rate         |               25.146  | MAJOR shift  |
 | 2017-02  | dti                   |               25.146  | MAJOR shift  |
+| 2017-02  | interest_rate         |               25.146  | MAJOR shift  |
+| 2017-02  | ltv                   |               25.146  | MAJOR shift  |
+| 2017-02  | current_balance       |               25.146  | MAJOR shift  |
+| 2017-02  | original_balance      |               25.146  | MAJOR shift  |
 | 2017-03  | month_index           |               25.0485 | MAJOR shift  |
 | 2017-03  | loan_age_months       |               25.0485 | MAJOR shift  |
 | 2017-04  | month_index           |               24.8304 | MAJOR shift  |
@@ -370,9 +370,9 @@ Each reporting period measured against the first. This is the check that tells y
 | 2017-06  | month_index           |               24.5965 | MAJOR shift  |
 | 2017-06  | loan_age_months       |               24.5965 | MAJOR shift  |
 | 2017-03  | remaining_term_months |               24.5864 | MAJOR shift  |
-| 2017-03  | current_balance       |               24.5864 | MAJOR shift  |
-| 2017-03  | dti                   |               24.5864 | MAJOR shift  |
 | 2017-03  | interest_rate         |               24.5864 | MAJOR shift  |
+| 2017-03  | dti                   |               24.5864 | MAJOR shift  |
+| 2017-03  | credit_score          |               24.5864 | MAJOR shift  |
 | 2017-03  | ltv                   |               24.5864 | MAJOR shift  |
 
 

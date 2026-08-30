@@ -91,6 +91,155 @@ def test_missing_output_returns_an_empty_frame_not_an_error():
     assert data.read_jsonl("reports/does_not_exist.jsonl") == []
 
 
+def test_report_viewer_inlines_every_figure(tmp_path, monkeypatch):
+    """
+    The in-app report viewer must not depend on relative asset paths.
+
+    Streamlit serves the app from its own origin and never exposes the working
+    directory over HTTP, so a report rendered into an iframe with a relative
+    `<img src="charts/x.png">` shows a broken image -- which is exactly what the
+    old "the report is at reports/x.html" caption led to. Every referenced
+    figure has to survive as a data URI.
+    """
+    reports = tmp_path / "reports"
+    (reports / "charts").mkdir(parents=True)
+    # A one-pixel PNG is enough; what is under test is the rewriting, not the image.
+    (reports / "charts" / "fig.png").write_bytes(
+        bytes.fromhex(
+            "89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4"
+            "890000000a49444154789c63000100000500010d0a2db40000000049454e44ae426082"
+        )
+    )
+    (reports / "r.html").write_text(
+        '<html><body><img alt="f" src="charts/fig.png"></body></html>', encoding="utf-8"
+    )
+    monkeypatch.setattr(data, "ROOT", tmp_path)
+    data._CACHE.clear()
+
+    html = data.report_html("reports/r.html")
+
+    assert "data:image/png;base64," in html
+    assert 'src="charts/fig.png"' not in html
+
+
+def test_report_viewer_is_silent_when_the_phase_has_not_run():
+    assert data.report_html("reports/does_not_exist.html") == ""
+    assert data.read_bytes("reports/does_not_exist.html") == b""
+    assert data.publish_report("reports/does_not_exist.html") == ""
+
+
+def test_a_published_report_is_self_contained_at_its_own_url(tmp_path, monkeypatch):
+    """
+    "Open as a page" has to yield a document that stands on its own.
+
+    It is served out of Streamlit's static directory with no asset folder
+    beside it, so a report still carrying relative image paths would open as a
+    wall of broken figures -- and would stay broken if the tab were bookmarked
+    or forwarded.
+    """
+    reports = tmp_path / "reports"
+    (reports / "charts").mkdir(parents=True)
+    (reports / "charts" / "fig.png").write_bytes(
+        bytes.fromhex(
+            "89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4"
+            "890000000a49444154789c63000100000500010d0a2db40000000049454e44ae426082"
+        )
+    )
+    (reports / "r.html").write_text(
+        '<html><body><img alt="f" src="charts/fig.png"></body></html>', encoding="utf-8"
+    )
+    monkeypatch.setattr(data, "ROOT", tmp_path)
+    monkeypatch.setattr(data, "STATIC_DIR", tmp_path / "static")
+    data._CACHE.clear()
+
+    url = data.publish_report("reports/r.html")
+
+    assert url == "app/static/reports/r.html"
+    published = (tmp_path / "static" / "reports" / "r.html").read_text(encoding="utf-8")
+    assert "data:image/png;base64," in published
+    assert 'src="charts/fig.png"' not in published
+
+
+def test_generated_notes_render_as_content_not_as_a_file():
+    """
+    Stored notes carry the disclaimer top *and* bottom so the label survives a
+    copy-paste into a case file. On screen that prints one long sentence twice
+    around three of content, so the display strips the wrapper and states the
+    label once -- and the markdown has to survive, or the reader sees asterisks
+    where the emphasis should be.
+    """
+    from src.copilot.guardrails import GuardrailVerdict, wrap
+    from src.dashboard import pages
+
+    note = wrap("Loan **X** is Current.\n\n- step one\n- step two",
+                GuardrailVerdict(passed=True))
+    body, banner = pages._unwrap_note(note)
+
+    assert "RECOMMENDATION, NOT A DECISION" not in body
+    assert banner == ""
+    assert body.startswith("Loan **X**")
+
+    rendered = pages._markdown_body(body)
+    assert "<strong>X</strong>" in rendered
+    assert "<li>" in rendered
+
+
+def test_a_withheld_note_surfaces_its_guardrail_banner():
+    """The reason a note was withheld must not be stripped along with the wrapper."""
+    from src.copilot.guardrails import GuardrailVerdict, wrap
+    from src.dashboard import pages
+
+    note = wrap("Some output.", GuardrailVerdict(passed=False, ungrounded_numbers=["42"]))
+    body, banner = pages._unwrap_note(note)
+
+    assert "GUARDRAIL FAILED" in banner
+    assert "42" in banner
+    assert body == "Some output."
+
+
+def test_the_offline_stubs_own_bracketed_opener_is_not_stripped():
+    """
+    The stub announces itself as `[OFFLINE STUB -- not a model response] Loan...`.
+    That is content, not a wrapper, and removing it would present a stub as a
+    real model generation -- the one thing offline mode exists to prevent.
+    """
+    from src.copilot.guardrails import GuardrailVerdict, wrap
+    from src.dashboard import pages
+
+    note = wrap("[OFFLINE STUB -- not a model response] Loan Z.", GuardrailVerdict(passed=True))
+    body, _ = pages._unwrap_note(note)
+
+    assert body.startswith("[OFFLINE STUB")
+
+
+def test_the_deliverables_checklist_mirrors_section_11():
+    """
+    The checklist has to name what is *missing*, not just what was produced.
+    Section 11 lists ten deliverables; all ten are tracked whether or not the
+    file exists, so the landing page can say what is still outstanding.
+    """
+    frame = data.deliverables()
+    required = frame[frame.Task == "Section 11"]
+
+    assert len(required) == 10
+    for name in ("submission.csv", "Model card", "AI Development Log",
+                 "Five-minute demo video"):
+        assert name in set(required.Deliverable), f"{name} is not tracked"
+
+
+def test_copilot_status_never_leaks_key_material():
+    """
+    The explorer shows whether the copilot is live. It must report *state*, not
+    the credential -- an app that renders a key into the page has published it.
+    """
+    live, model = data.copilot_status()
+
+    assert isinstance(live, bool)
+    assert isinstance(model, str)
+    for prefix in ("gsk_", "xai-", "sk-"):
+        assert not model.startswith(prefix)
+
+
 def test_the_dashboard_shares_the_figures_palette():
     """
     The app embeds the matplotlib figures directly. A page in a different

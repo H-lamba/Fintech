@@ -7,5 +7,17 @@ mlruns/
 *.egg-info/
 .DS_Store
 
-# Phase 3 -- fitted models are reproducible artifacts, not source
-/models/
+# Phase 3 -- fitted models are reproducible artifacts, not source.
+# The contents are ignored rather than the directory: git does not descend into
+# an ignored directory, so `/models/` would swallow the README that explains
+# what the directory is for.
+/models/*
+!/models/README.md
+
+# Dashboard publishing target: self-contained copies of reports/*.html, served
+# by Streamlit so each report has its own URL. Regenerated on demand from
+# reports/, so it is output rather than source.
+/static/
+
+# Local preview/launch configuration for the coding agent, not part of the app.
+/.claude/

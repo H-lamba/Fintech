@@ -16,9 +16,11 @@ beside the number rather than in a footnote.
 
 from __future__ import annotations
 
+import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 from . import data, theme
 
@@ -28,6 +30,51 @@ from . import data, theme
 # --------------------------------------------------------------------------
 def _missing(phase: str, command: str) -> None:
     st.info(f"**{phase} has not been run yet.** Run `{command}` and reload this page.")
+
+
+def _report_viewer(html_relative: str, label: str, height: int = 720) -> None:
+    """
+    Three ways to reach a generated report: its own page, inline, or the file.
+
+    Streamlit serves the app from its own origin and does not expose the working
+    directory over HTTP, so neither a relative `<a href>` nor a `file://` link
+    can reach `reports/*.html` -- a browser blocks the second outright. Two
+    routes are therefore built rather than linked. The report is published as a
+    self-contained page into Streamlit's served `static/` directory, which gives
+    it a real URL that opens in a new tab; and the same document is rendered
+    into a sandboxed iframe for reading without leaving the page.
+    """
+    html = data.report_html(html_relative)
+    if not html:
+        st.caption(f"`{html_relative}` has not been generated yet.")
+        return
+
+    st.markdown(f"#### {label}")
+
+    url = data.publish_report(html_relative)
+    open_col, download_col, note_col = st.columns([1, 1, 2.4])
+    with open_col:
+        if url:
+            st.link_button("Open as a page", url, width="stretch", type="primary")
+        else:
+            st.button("Open as a page", width="stretch", disabled=True)
+    with download_col:
+        st.download_button(
+            "Download",
+            data=data.read_bytes(html_relative),
+            file_name=html_relative.rsplit("/", 1)[-1],
+            mime="text/html",
+            width="stretch",
+        )
+    with note_col:
+        st.caption(
+            f"Generated at `{html_relative}`. **Open as a page** loads it in a new tab as "
+            "a standalone document; **Read inline** keeps you here. Every figure is "
+            "embedded either way, so the page works on its own."
+        )
+
+    with st.expander("Read inline", expanded=False):
+        components.html(html, height=height, scrolling=True)
 
 
 def _table(frame: pd.DataFrame, height: int | None = None, **kwargs) -> None:
@@ -45,9 +92,10 @@ def _table(frame: pd.DataFrame, height: int | None = None, **kwargs) -> None:
 
 
 def _tiles(items: list) -> None:
+    """A row of stat tiles, entering in sequence so the eye lands on the first."""
     columns = st.columns(len(items))
-    for column, item in zip(columns, items):
-        column.markdown(theme.tile(**item), unsafe_allow_html=True)
+    for position, (column, item) in enumerate(zip(columns, items)):
+        column.markdown(theme.tile(**item, delay=position), unsafe_allow_html=True)
 
 
 def _gallery(figures: list, columns: int = 1) -> None:
@@ -60,13 +108,82 @@ def _gallery(figures: list, columns: int = 1) -> None:
 
 
 # --------------------------------------------------------------------------
+# Charts
+# --------------------------------------------------------------------------
+# Built with Altair rather than st.bar_chart so the palette is the *same* one
+# `src/viz.py` gives the matplotlib figures these pages embed beside them. Two
+# colour languages on one page reads as two products stapled together.
+_AXIS_LABEL = alt.Axis(labelColor=theme.INK_SECONDARY, titleColor=theme.INK_SECONDARY,
+                       gridColor=theme.GRID, domainColor=theme.AXIS, tickColor=theme.AXIS)
+
+
+def _chart_base(frame: pd.DataFrame) -> alt.Chart:
+    return (
+        alt.Chart(frame)
+        .configure_view(strokeWidth=0)
+        .configure_axis(labelFontSize=11, titleFontSize=11)
+        .configure_legend(labelFontSize=11, titleFontSize=11, labelColor=theme.INK_SECONDARY,
+                          titleColor=theme.INK_SECONDARY)
+    )
+
+
+def _grouped_bars(frame: pd.DataFrame, x: str, y: str, color: str, title: str = "",
+                  domain: list | None = None, height: int = 300) -> None:
+    """Two series side by side -- the baseline-vs-improved shape, reused."""
+    if frame.empty:
+        return
+    scale = alt.Scale(range=[theme.INK_MUTED, theme.BLUE])
+    if domain:
+        scale = alt.Scale(domain=domain, range=[theme.INK_MUTED, theme.BLUE])
+    chart = (
+        alt.Chart(frame)
+        .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3)
+        .encode(
+            x=alt.X(f"{x}:N", title=None, axis=_AXIS_LABEL,
+                    sort=list(dict.fromkeys(frame[x]))),
+            y=alt.Y(f"{y}:Q", title=title or y, axis=_AXIS_LABEL),
+            color=alt.Color(f"{color}:N", title=None, scale=scale),
+            xOffset=f"{color}:N",
+            tooltip=list(frame.columns),
+        )
+        .properties(height=height)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+
+def _ranked_bars(frame: pd.DataFrame, label: str, value: str, title: str = "",
+                 color: str | None = None, height: int = 320) -> None:
+    """A horizontal ranking -- importances, coverage, error rates."""
+    if frame.empty:
+        return
+    chart = (
+        alt.Chart(frame)
+        .mark_bar(cornerRadiusTopRight=3, cornerRadiusBottomRight=3,
+                  color=color or theme.BLUE)
+        .encode(
+            x=alt.X(f"{value}:Q", title=title or value, axis=_AXIS_LABEL),
+            y=alt.Y(f"{label}:N", title=None, sort="-x", axis=_AXIS_LABEL),
+            tooltip=list(frame.columns),
+        )
+        .properties(height=height)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+
+# --------------------------------------------------------------------------
 # 1. Overview
 # --------------------------------------------------------------------------
 def overview() -> None:
-    st.title("Loan Performance Intelligence Engine")
-    st.caption(
-        "Intain Campus FinTech Challenge -- AI Track. Every figure on this page is read "
-        "from a file the pipeline wrote; nothing is recomputed in the app."
+    st.markdown(
+        theme.hero(
+            theme.PRODUCT_CONTEXT,
+            f"{theme.PRODUCT_NAME} — {theme.PRODUCT_TAGLINE}",
+            "Profiling, multi-outcome prediction, competing-risk survival, anomaly "
+            "detection, macro scenarios, explainability and a governed LLM copilot. "
+            "Every figure on this page is read from a file the pipeline wrote; nothing "
+            "is recomputed in the app.",
+        ),
+        unsafe_allow_html=True,
     )
 
     quality = data.read_csv("reports/dq_scores_train.csv")
@@ -136,6 +253,29 @@ def overview() -> None:
     with left:
         st.subheader("Required deliverables")
         frame = data.deliverables()
+        required = frame[frame.Task == "Section 11"]
+        present = int(required.Present.sum())
+        st.markdown(
+            theme.meter(
+                "Section 11 deliverables present", present,
+                display=f"{present} / {len(required)}",
+                color=(theme.STATUS["good"] if present == len(required)
+                       else theme.STATUS["warning"]),
+                scale=len(required),
+            ),
+            unsafe_allow_html=True,
+        )
+        missing = required[~required.Present]
+        if not missing.empty:
+            st.markdown(
+                theme.caveat(
+                    "<b>Outstanding: "
+                    + ", ".join(missing.Deliverable)
+                    + ".</b> Listed here rather than omitted -- a checklist that shows "
+                    "only what was produced cannot tell anyone what is still to do."
+                ),
+                unsafe_allow_html=True,
+            )
         _table(
             frame.assign(Present=frame.Present.map({True: "yes", False: "MISSING"})),
             height=390,
@@ -146,7 +286,7 @@ def overview() -> None:
             "make setup        # venv + pinned dependencies\n"
             "make data         # generate the synthetic pack\n"
             "python main.py    # all nine phases -> submission.csv\n"
-            "make test         # 108 regression tests\n\n"
+            "make test         # the regression suite\n\n"
             "streamlit run app.py   # this dashboard",
             language="bash",
         )
@@ -164,8 +304,17 @@ def overview() -> None:
 # 2. Data intelligence (Task 1)
 # --------------------------------------------------------------------------
 def data_intelligence() -> None:
-    st.title("Data intelligence")
-    st.caption("Task 1 -- profiling, missingness, outliers, drift and record-level quality scoring.")
+    st.markdown(
+        theme.hero(
+            "Task 1 · 15 points",
+            "Data intelligence",
+            "Column distributions, missingness patterns, outliers and invalid dates, "
+            "cross-column relationship breaks, train-versus-test drift, servicer-feed "
+            "reconciliation, and a record-level data-quality score that feeds both the "
+            "feature matrix and the anomaly layer.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     scores = data.read_csv("reports/dq_scores_train.csv")
     if scores.empty:
@@ -184,14 +333,25 @@ def data_intelligence() -> None:
     st.subheader("Figures")
     _gallery(data.figures("reports/profiling/charts"))
 
+    drift = data.read_csv("reports/profiling/train_test_drift.csv")
+    if not drift.empty and {"column", "psi"}.issubset(drift.columns):
+        st.subheader("Where train and test diverge")
+        st.caption(
+            "Population stability index per feature. Conventional bands: below 0.10 stable, "
+            "0.10-0.25 moderate, above 0.25 material. Hover for the underlying test."
+        )
+        top_drift = drift.dropna(subset=["psi"]).nlargest(15, "psi")
+        _ranked_bars(top_drift, "column", "psi", title="PSI (train vs test)",
+                     color=theme.ORANGE)
+
     st.subheader("Worst-scoring records")
     worst = data.read_csv("reports/profiling/worst_records.csv")
     _table(worst.head(15))
 
-    st.subheader("Full report")
-    st.markdown(
-        "The complete Data Intelligence Report -- 10 sections, 20 tables -- is at "
-        "`reports/data_intelligence_report.html`."
+    st.markdown("---")
+    _report_viewer(
+        "reports/data_intelligence_report.html",
+        "The complete Data Intelligence Report -- 10 sections, 20 tables",
     )
 
 
@@ -199,8 +359,16 @@ def data_intelligence() -> None:
 # 3. Features and the time-aware split
 # --------------------------------------------------------------------------
 def features() -> None:
-    st.title("Features & the time-aware split")
-    st.caption("Phase 2 -- what the models see, and the guarantee that none of it reads forward.")
+    st.markdown(
+        theme.hero(
+            "Phase 2 · feeds Task 2",
+            "Features & the time-aware split",
+            "What the models see, and the guarantee that none of it reads forward. "
+            "Every feature carries an information window, and the split is purged by "
+            "each target's own forward horizon.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     dictionary = data.read_csv("reports/feature_dictionary.csv")
     split = data.read_csv("reports/task2_split_audit.csv")
@@ -247,8 +415,17 @@ def features() -> None:
 # 4. Prediction (Task 2)
 # --------------------------------------------------------------------------
 def prediction() -> None:
-    st.title("Loan performance prediction")
-    st.caption("Task 2 -- baseline versus improved, five targets, on a strictly later test window.")
+    st.markdown(
+        theme.hero(
+            "Task 2 · 20 points",
+            "Loan performance prediction",
+            "Baseline versus improved across five targets -- 3- and 6-month delinquency, "
+            "12-month default, 12-month prepayment and next state -- scored on a window "
+            "strictly later than anything either model saw, with isotonic calibration "
+            "and tuned, frozen thresholds.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     results = data.read_csv("reports/task2_model_results.csv")
     if results.empty:
@@ -261,6 +438,21 @@ def prediction() -> None:
     available = [c for c in metric_columns if c in results.columns]
 
     st.subheader("Baseline vs improved")
+    metric_choice = st.selectbox(
+        "Compare on",
+        [c for c in ["pr_auc", "roc_auc", "f1", "recall_at_precision_0.5",
+                     "brier_calibrated", "macro_f1"] if c in results.columns],
+    )
+    chart_frame = results[["target", "model", metric_choice]].dropna()
+    _grouped_bars(
+        chart_frame, "target", metric_choice, "model",
+        title=metric_choice, domain=["baseline", "improved"],
+    )
+    st.caption(
+        "PR-AUC is the honest default on these base rates: ROC-AUC is dominated by the "
+        "majority class nobody will action. Brier is lower-is-better -- the one metric "
+        "here where a shorter bar is the good outcome."
+    )
     _table(results[available].round(4))
 
     st.markdown(
@@ -297,8 +489,16 @@ def prediction() -> None:
 # 5. Survival (Task 3)
 # --------------------------------------------------------------------------
 def survival() -> None:
-    st.title("Time to event")
-    st.caption("Task 3 -- default and prepayment as competing risks, on a months-on-book clock.")
+    st.markdown(
+        theme.hero(
+            "Task 3 · 15 points",
+            "Time to event",
+            "Default and prepayment as competing risks on a months-on-book clock. "
+            "Cause-specific Cox against a constant-hazard and a Kaplan-Meier baseline, "
+            "with censoring treated explicitly rather than dropped.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     comparison = data.read_csv("reports/survival/model_comparison.csv")
     censoring = data.read_csv("reports/survival/censoring_summary.csv")
@@ -336,13 +536,25 @@ def survival() -> None:
     st.subheader("Event curves")
     _gallery(data.figures("reports/survival"))
 
+    st.markdown("---")
+    _report_viewer("reports/survival_report.html",
+                   "The complete Task 3 report, including the censoring treatment")
+
 
 # --------------------------------------------------------------------------
 # 6. Anomalies (Task 4) -- with the live threshold control
 # --------------------------------------------------------------------------
 def anomalies() -> None:
-    st.title("Anomaly & exception detection")
-    st.caption("Task 4 -- deterministic rules, sequence-aware detectors and unsupervised ML.")
+    st.markdown(
+        theme.hero(
+            "Task 4 · 10 points",
+            "Anomaly & exception detection",
+            "Deterministic rules for what is wrong, sequence-aware detectors for what a "
+            "single row cannot see, and an Isolation Forest for what is merely unusual -- "
+            "combined as a noisy-OR so a confident model cannot argue away a hard violation.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     ablation = data.read_csv("reports/anomaly/detector_ablation.csv")
     coverage = data.read_csv("reports/anomaly/signal_coverage.csv")
@@ -362,6 +574,18 @@ def anomalies() -> None:
     )
 
     st.subheader("What each detector layer buys")
+    if {"detector", "precision", "recall"}.issubset(ablation.columns):
+        long = ablation.melt(
+            id_vars="detector", value_vars=["precision", "recall"],
+            var_name="metric", value_name="score",
+        )
+        _grouped_bars(long, "detector", "score", "metric",
+                      title="score", domain=["precision", "recall"], height=320)
+        st.caption(
+            "Read the pair together. Rules alone are precise-ish and miss half the "
+            "exceptions; adding sequence detectors takes recall to ~1.0 and leaves a large "
+            "queue; the supervised head keeps the recall and cuts the queue six-fold."
+        )
     _table(ablation.round(4))
     st.caption(
         "Row-level rules catch every Balance Discrepancy and Time Travel defect and roughly "
@@ -404,13 +628,24 @@ def anomalies() -> None:
     st.subheader("Figures")
     _gallery(data.figures("reports/anomaly"))
 
+    st.markdown("---")
+    _report_viewer("reports/anomaly_report.html", "The complete Task 4 report")
+
 
 # --------------------------------------------------------------------------
 # 7. Scenarios (Task 5) -- interactive
 # --------------------------------------------------------------------------
 def scenarios() -> None:
-    st.title("Scenario & stress simulation")
-    st.caption("Task 5 -- the Phase 3 models re-scored under each macro scenario.")
+    st.markdown(
+        theme.hero(
+            "Task 5 · 10 points",
+            "Scenario & stress simulation",
+            "The Phase 3 models re-scored under base, adverse-credit and high-prepayment "
+            "macro states. Two mechanical channels plus a credit channel that is solved "
+            "for rather than assumed -- and reported where it saturates.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     projection = data.read_csv("reports/scenario_report.csv")
     saturation = data.read_csv("reports/scenario/credit_saturation.csv")
@@ -493,13 +728,24 @@ def scenarios() -> None:
     st.subheader("Figures")
     _gallery(data.figures("reports/scenario"))
 
+    st.markdown("---")
+    _report_viewer("reports/scenario_report.html", "The complete Task 5 report")
+
 
 # --------------------------------------------------------------------------
 # 8. Explainability (Task 6)
 # --------------------------------------------------------------------------
 def explainability() -> None:
-    st.title("Explainability & responsible AI")
-    st.caption("Task 6 -- what drives the models, where they are wrong, and on whom.")
+    st.markdown(
+        theme.hero(
+            "Task 6 · 10 points",
+            "Explainability & responsible AI",
+            "What drives the models, where they are wrong, and on whom. SHAP globals and "
+            "locals, false positives and false negatives characterised rather than "
+            "counted, calibration, and a disparity screen with a significance test.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     importance = data.read_csv("reports/explainability_report/global_importance.csv")
     calibration = data.read_csv("reports/explainability_report/calibration_summary.csv")
@@ -523,6 +769,7 @@ def explainability() -> None:
     with left:
         st.subheader("Top drivers")
         top = importance[importance.model == model].head(12)
+        _ranked_bars(top, "feature", "share", title="share of |SHAP|", height=340)
         _table(top[["feature", "mean_abs_shap", "share"]].round(4))
     with right:
         st.subheader("Beeswarm")
@@ -581,15 +828,30 @@ def explainability() -> None:
         st.subheader("Error rates by segment")
         segment = st.selectbox("Segment", sorted(errors.segment.unique()), key="err_seg")
         view = errors[(errors.segment == segment) & (errors.model == model)]
+        if not view.empty and {"group", "false_positive_rate"}.issubset(view.columns):
+            _ranked_bars(view.nlargest(15, "false_positive_rate"), "group",
+                         "false_positive_rate", title="false positive rate",
+                         color=theme.ORANGE, height=300)
         _table(view.round(4), height=300)
+
+    st.markdown("---")
+    _report_viewer("reports/explainability_report.html", "The complete Task 6 report")
 
 
 # --------------------------------------------------------------------------
 # 9. Copilot (Task 7)
 # --------------------------------------------------------------------------
 def copilot() -> None:
-    st.title("LLM reviewer copilot")
-    st.caption("Task 7 -- grounded summarisation, guardrails, and a mandatory audit trail.")
+    st.markdown(
+        theme.hero(
+            "Task 7 · 10 points",
+            "LLM reviewer copilot",
+            "Grounded summarisation, three classes of guardrail, six adversarial probes "
+            "and a mandatory append-only audit trail. The copilot restates what the "
+            "models produced; it never produces a prediction of its own.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     notes = data.read_csv("reports/copilot/reviewer_notes.csv")
     probes = data.read_csv("reports/copilot/adversarial_probes.csv")
@@ -628,14 +890,14 @@ def copilot() -> None:
             "Loan", notes.loan_id + "  ·  " + notes.reporting_month.astype(str)
         )
         row = notes.iloc[list(notes.loan_id + "  ·  " + notes.reporting_month.astype(str)).index(choice)]
-        st.markdown(
-            theme.pill("released" if row.released_to_reviewer else "WITHHELD",
-                       "ok" if row.released_to_reviewer else "bad")
-            + theme.pill(f"guardrails: {row.guardrail_detail}", "info")
-            + theme.pill(row.model, "info"),
-            unsafe_allow_html=True,
+        _render_generated_text(
+            row.note,
+            heading=f"{row.loan_id} · {row.reporting_month}",
+            subtitle="Generated by the Phase 8 batch run.",
+            released=bool(row.released_to_reviewer),
+            verdict=str(row.guardrail_detail),
+            model=str(row.model),
         )
-        st.markdown(f'<div class="note-box">{row.note}</div>', unsafe_allow_html=True)
 
     st.subheader("Deliberate failure testing")
     st.markdown(
@@ -649,9 +911,8 @@ def copilot() -> None:
         probe = st.selectbox("Inspect a probe", probes.probe.tolist())
         row = probes[probes.probe == probe].iloc[0]
         st.markdown(f"**The trap.** {row.why_it_is_a_trap}")
-        st.markdown(f"**What the model returned.**")
-        st.markdown(f'<div class="note-box">{str(row.llm_output)[:1800]}</div>',
-                    unsafe_allow_html=True)
+        st.markdown("**What the model returned.**")
+        _render_generated_text(str(row.llm_output))
         st.markdown(f"**Outcome.** {row.outcome}")
         st.markdown(f"**Human correction.** {row.human_correction}")
 
@@ -689,15 +950,32 @@ def copilot() -> None:
         ])
         _table(recent, height=300)
 
+        mix = (
+            pd.DataFrame([{"model": r.get("model"), "status": r.get("status")} for r in calls])
+            .value_counts()
+            .reset_index(name="calls")
+        )
+        st.caption("Every call ever made, by model and outcome -- including the failures.")
+        _ranked_bars(mix.assign(label=mix.model + "  ·  " + mix.status),
+                     "label", "calls", title="logged calls", height=220)
+
+    st.markdown("---")
+    _report_viewer("reports/copilot_report.html", "The complete Task 7 report")
+
 
 # --------------------------------------------------------------------------
 # 10. Loan explorer -- the interactive centrepiece
 # --------------------------------------------------------------------------
 def explorer() -> None:
-    st.title("Loan explorer")
-    st.caption(
-        "Everything the pipeline concluded about one loan-month, from the submission it "
-        "actually wrote."
+    st.markdown(
+        theme.hero(
+            "Demo · the interactive centrepiece",
+            "Loan explorer",
+            "Everything the pipeline concluded about one loan-month, read from the "
+            "submission it actually wrote -- and, on demand, a grounded LLM reviewer "
+            "note and verification checklist generated live against that same record.",
+        ),
+        unsafe_allow_html=True,
     )
 
     submission = data.read_csv("submission/submission.csv")
@@ -784,39 +1062,408 @@ def explorer() -> None:
          "tone": "critical" if row.exception_required else "good"},
     ])
 
+    st.markdown("**Probabilities at a glance**")
+    st.markdown(
+        theme.meter("3-month delinquency", row.prob_next_3m_delinquency,
+                    display=f"{row.prob_next_3m_delinquency:.1%}", color=theme.AQUA)
+        + theme.meter("6-month delinquency", row.prob_next_6m_delinquency,
+                      display=f"{row.prob_next_6m_delinquency:.1%}", color=theme.AQUA)
+        + theme.meter("12-month default", row.prob_next_12m_default,
+                      display=f"{row.prob_next_12m_default:.1%}", color=theme.BLUE)
+        + theme.meter("12-month prepayment", row.prob_next_12m_prepayment,
+                      display=f"{row.prob_next_12m_prepayment:.1%}", color=theme.ORANGE)
+        + theme.meter("Anomaly score", row.anomaly_score,
+                      display=f"{row.anomaly_score:.3f}", color=theme.MAGENTA),
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "Bars are on a common 0-1 scale, so their lengths are comparable to each other "
+        "rather than each being stretched to its own maximum."
+    )
+
     left, right = st.columns([1, 1])
     with left:
         st.markdown("**Top drivers**")
         st.markdown(f'<div class="note-box">{row.top_drivers}</div>', unsafe_allow_html=True)
     with right:
-        st.markdown("**Recommended action**")
+        st.markdown("**Recommended action** · deterministic, from the rule layer")
         st.markdown(f'<div class="note-box">{row.action}</div>', unsafe_allow_html=True)
 
     if not queue.empty and loan_id in set(queue.loan_id):
         st.markdown("**This loan is in the curated reviewer queue**")
         _table(queue[queue.loan_id == loan_id])
 
-    notes = data.read_csv("reports/copilot/reviewer_notes.csv")
-    if not notes.empty and loan_id in set(notes.loan_id):
-        st.markdown("**LLM reviewer note**")
-        note = notes[notes.loan_id == loan_id].iloc[0]
-        st.markdown(
-            theme.pill("released" if note.released_to_reviewer else "WITHHELD",
-                       "ok" if note.released_to_reviewer else "bad"),
-            unsafe_allow_html=True,
-        )
-        st.markdown(f'<div class="note-box">{note.note}</div>', unsafe_allow_html=True)
+    _copilot_panel(row, loan_id, month, queue)
 
     with st.expander("Full submission row"):
         st.json({k: (None if pd.isna(v) else v) for k, v in row.to_dict().items()})
 
 
 # --------------------------------------------------------------------------
+# The explorer's copilot panel
+# --------------------------------------------------------------------------
+def _copilot_panel(row: pd.Series, loan_id: str, month: str, queue: pd.DataFrame) -> None:
+    """
+    Analyse this loan with the LLM, on demand.
+
+    Two asks, one grounded context: a **reviewer note** that restates the
+    record, and a **verification checklist** naming what a human should confirm.
+    Both run the same guardrails as the batch pipeline and both land in the same
+    append-only audit trail -- an interactive call that skipped either would be
+    a governance hole opened for the sake of a demo button.
+
+    The copilot stays strictly downstream: it is handed the probabilities, the
+    anomaly score and the triggered rules as *inputs*. It is never asked what
+    the loan will do.
+    """
+    st.markdown("---")
+    live_available, _ = data.copilot_status()
+
+    # The status sits on the description line rather than opposite the heading.
+    # Floated to the right of a short title it read as a stray tag with nothing
+    # balancing it; inline with the sentence it qualifies, it is read as part of
+    # that sentence.
+    st.subheader("Analyse with AI")
+    st.markdown(
+        theme.status_line(
+            theme.live_badge(live_available),
+            "The copilot summarises what the models already produced. It never predicts, "
+            "never decides, and every response is checked for prediction language, "
+            "decision language and numeric grounding before it is shown.",
+        ),
+        unsafe_allow_html=True,
+    )
+
+    definitions, rule_specs = data.grounding_sources()
+    panel_record = data.panel_row(loan_id, month)
+
+    if panel_record is None:
+        st.info(
+            "The loan's own record was not found in `data/loan_monthly_performance_test.csv`, "
+            "so there is nothing to ground a note in. Run `make data` and `python main.py`."
+        )
+        return
+
+    triggered = ""
+    anomaly_extra: dict = {}
+    if not queue.empty and loan_id in set(queue.loan_id):
+        item = queue[queue.loan_id == loan_id].iloc[0]
+        # `pd.isna` rather than a truthiness test: a queue row with no triggered
+        # rules reads back from CSV as float NaN, which is *truthy*, so `or ""`
+        # lets it through and `str()` turns it into a rule literally named "nan".
+        # The model then faithfully reports that a rule called nan fired -- a
+        # fabricated finding produced by correct, grounded behaviour.
+        raw = item.get("triggered_rules")
+        triggered = "" if pd.isna(raw) else str(raw)
+        anomaly_extra = {"suggested_action_from_rules": item.get("suggested_action")}
+
+    # The pipeline's own outputs, handed over as facts to restate.
+    model_outputs = {
+        "prob_next_3m_delinquency": row.prob_next_3m_delinquency,
+        "prob_next_6m_delinquency": row.prob_next_6m_delinquency,
+        "prob_next_12m_default": row.prob_next_12m_default,
+        "prob_next_12m_prepayment": row.prob_next_12m_prepayment,
+        "predicted_next_state": row.next_state,
+        "confidence": row.confidence,
+    }
+    anomaly = {
+        "anomaly_score": row.anomaly_score,
+        "exception_required": row.exception_required,
+        "exception_type": row.exception_type,
+        "top_drivers": row.top_drivers,
+        "suggested_action_from_rules": row.action,
+        **anomaly_extra,
+    }
+
+    if not live_available:
+        st.markdown(
+            theme.caveat(
+                "<b>No API key is configured, so these buttons will return a deterministic "
+                "offline stub</b> marked as such, not a model response. Add a key to "
+                "<code>.env</code> and reload to run this live. The guardrails, grounding and "
+                "audit logging all execute either way."
+            ),
+            unsafe_allow_html=True,
+        )
+
+    batch = data.read_csv("reports/copilot/reviewer_notes.csv")
+    if not batch.empty and loan_id in set(batch.loan_id):
+        prior = batch[batch.loan_id == loan_id].iloc[0]
+        with st.expander("The note Phase 8 already generated for this loan", expanded=False):
+            _render_generated_text(
+                prior.note,
+                heading="Reviewer note",
+                subtitle="From the batch pipeline, not this page.",
+                released=bool(prior.released_to_reviewer),
+                verdict=str(prior.get("guardrail_detail", "")),
+            )
+            st.caption(
+                "Regenerating below makes a fresh call and appends a fresh record to the "
+                "audit trail."
+            )
+
+    note_col, action_col, clear_col = st.columns([1, 1, 1])
+    with note_col:
+        want_note = st.button("Analyse with AI", width="stretch", type="primary")
+    with action_col:
+        want_action = st.button("Recommend action", width="stretch")
+    with clear_col:
+        if st.button("Clear", width="stretch"):
+            for key in ("copilot_note", "copilot_action"):
+                st.session_state.pop(key, None)
+
+    key = f"{loan_id}·{month}"
+
+    def _run(kind: str, generator, spinner: str) -> None:
+        from src.copilot import notes as notes_module
+
+        with st.spinner(spinner):
+            try:
+                result = generator(
+                    notes_module, panel_record, definitions, rule_specs,
+                    triggered, model_outputs, anomaly, not live_available,
+                )
+            except Exception as exc:  # noqa: BLE001 -- surfaced, never swallowed
+                st.session_state[kind] = {"key": key, "error": f"{type(exc).__name__}: {exc}"}
+                return
+        st.session_state[kind] = {
+            "key": key,
+            # The model's own text, kept separate from the wrapped form. The
+            # disclaimer is deliberately repeated top and bottom by
+            # `guardrails.wrap` so it survives a copy-paste into a case file --
+            # correct for a text artefact, but rendered on screen it is the
+            # same sentence twice around three sentences of content. The UI
+            # shows the body and states the disclaimer once, in its own right.
+            "body": result.raw_output,
+            "note": result.note,
+            "released": bool(result.released),
+            "verdict": result.verdict.summary(),
+            "model": result.response.model,
+            "status": result.response.status,
+            "latency": result.response.latency_seconds,
+            "call_id": result.response.call_id,
+            "prompt": result.response.prompt,
+        }
+
+    if want_note:
+        _run(
+            "copilot_note",
+            lambda m, r, d, s, t, mo, an, off: m.generate_note(
+                r, d, s, triggered=t, model_outputs=mo, anomaly=an, offline=off
+            ),
+            "Assembling grounded context and calling the model...",
+        )
+    if want_action:
+        _run(
+            "copilot_action",
+            lambda m, r, d, s, t, mo, an, off: m.generate_action(
+                r, d, s, triggered=t, model_outputs=mo, anomaly=an, offline=off
+            ),
+            "Drafting verification steps from the same grounded context...",
+        )
+
+    _render_copilot_result(
+        st.session_state.get("copilot_note"), key,
+        "Reviewer note", "A plain-language summary of this record.",
+    )
+    _render_copilot_result(
+        st.session_state.get("copilot_action"), key,
+        "Suggested verification steps", "What to confirm before acting, and against what.",
+    )
+
+
+def _render_copilot_result(payload: dict | None, key: str, heading: str,
+                           subtitle: str = "") -> None:
+    """
+    One generated response, as a card a reviewer can actually read.
+
+    The body is rendered as markdown rather than dropped into a monospace
+    block: the model answers in prose or in bullets, and a checklist displayed
+    as preformatted text is a checklist nobody works through. The governance
+    metadata -- verdict, disclaimer, call id, the prompt itself -- sits below
+    the content in its own register, present and inspectable without competing
+    with the thing the reviewer opened the panel to read.
+    """
+    if not payload or payload.get("key") != key:
+        return
+
+    with st.container(border=True):
+        if payload.get("error"):
+            st.markdown(f"**{heading}**")
+            st.error(f"The call failed: {payload['error']}")
+            st.caption(
+                "The failure is in `reports/llm_prompt_log.jsonl` too -- a call that "
+                "errored is exactly the one a reviewer will ask about."
+            )
+            return
+
+        released = payload["released"]
+        title, status = st.columns([2.2, 1])
+        with title:
+            st.markdown(f"**{heading}**")
+            if subtitle:
+                st.caption(subtitle)
+        with status:
+            # The model identifier is recorded against this call_id in the audit
+            # trail and shown on the Task 7 page; it is not repeated here.
+            st.markdown(
+                theme.pill("released" if released else "WITHHELD BY GUARDRAILS",
+                           "ok" if released else "bad")
+                + theme.pill(f"{payload['latency']}s", "info"),
+                unsafe_allow_html=True,
+            )
+
+        if not released:
+            st.markdown(
+                theme.caveat(
+                    "<b>This response was withheld, and is shown below in full on "
+                    "purpose.</b> A governance layer that quietly rewrote its model's "
+                    "output would destroy the evidence that the model produces output "
+                    "like this."
+                ),
+                unsafe_allow_html=True,
+            )
+
+        st.markdown(
+            f'<div class="ai-body">{_markdown_body(payload["body"])}</div>',
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            theme.disclaimer_note(
+                "Recommendation, not a decision.",
+                "Generated by an LLM from model output and loan data supplied to it. It "
+                "contains no independent prediction and no credit decision. A human "
+                f"reviewer is responsible for any action taken. Guardrails: "
+                f"<b>{payload['verdict']}</b>.",
+            ),
+            unsafe_allow_html=True,
+        )
+
+        with st.expander("Show the grounded prompt and audit record"):
+            st.caption(f"call_id `{payload['call_id']}` · appended to "
+                       "`reports/llm_prompt_log.jsonl`")
+            st.code(payload["prompt"], language="markdown")
+
+
+def _unwrap_note(text: str) -> tuple[str, str]:
+    """
+    Split a stored note into its body and any guardrail banner.
+
+    `guardrails.wrap` brackets the disclaimer above *and* below the note so it
+    survives a copy-paste into a case file. Correct for the artefact; on screen
+    it prints one long sentence twice around three sentences of content. Only
+    lines that are wholly a bracketed wrapper are stripped -- the offline
+    stub's own "[OFFLINE STUB -- not a model response] Loan ..." opener is
+    content and stays.
+    """
+    def is_wrapper(line: str) -> bool:
+        stripped = line.strip()
+        return (
+            stripped.startswith("[") and stripped.endswith("]")
+            and ("RECOMMENDATION, NOT A DECISION" in stripped
+                 or "GUARDRAIL FAILED" in stripped)
+        )
+
+    lines = (text or "").strip().splitlines()
+    banner = ""
+    while lines and (is_wrapper(lines[0]) or not lines[0].strip()):
+        line = lines.pop(0).strip()
+        if "GUARDRAIL FAILED" in line:
+            banner = line.strip("[]")
+    while lines and (is_wrapper(lines[-1]) or not lines[-1].strip()):
+        lines.pop()
+    return "\n".join(lines).strip(), banner
+
+
+def _render_generated_text(text: str, heading: str = "", subtitle: str = "",
+                           released: bool | None = None, verdict: str = "",
+                           model: str = "") -> None:
+    """
+    Any stored LLM output, rendered as content rather than as a file.
+
+    The models answer in markdown -- bold labels, bulleted checklists -- and
+    dropping that into a monospace block shows the reader the asterisks instead
+    of the emphasis. One renderer for every place generated text is displayed,
+    so a note reads the same on the copilot page as in the explorer.
+    """
+    body, banner = _unwrap_note(text)
+    if not body:
+        st.caption("No output recorded.")
+        return
+
+    with st.container(border=True):
+        if heading:
+            title, status = st.columns([2.2, 1])
+            with title:
+                st.markdown(f"**{heading}**")
+                if subtitle:
+                    st.caption(subtitle)
+            with status:
+                pills = ""
+                if released is not None:
+                    pills += theme.pill("released" if released else "WITHHELD",
+                                        "ok" if released else "bad")
+                if model:
+                    pills += theme.pill(model, "info")
+                if pills:
+                    st.markdown(pills, unsafe_allow_html=True)
+
+        if banner:
+            st.markdown(theme.caveat(f"<b>{banner}</b>"), unsafe_allow_html=True)
+
+        st.markdown(
+            f'<div class="ai-body">{_markdown_body(body)}</div>', unsafe_allow_html=True
+        )
+
+        if released is not None:
+            st.markdown(
+                theme.disclaimer_note(
+                    "Recommendation, not a decision.",
+                    "Generated by an LLM from model output and loan data supplied to it. "
+                    "It contains no independent prediction and no credit decision. A human "
+                    "reviewer is responsible for any action taken."
+                    + (f" Guardrails: <b>{verdict}</b>." if verdict else ""),
+                ),
+                unsafe_allow_html=True,
+            )
+
+
+def _markdown_body(text: str) -> str:
+    """
+    Render the model's markdown to HTML for the styled card.
+
+    Streamlit's own `st.markdown` cannot be used here: it writes its own
+    element, so it cannot sit inside a styled wrapper. The same `markdown`
+    library the reports already depend on does the conversion, and falls back
+    to escaped preformatted text if it is unavailable, because a reviewer note
+    that renders as raw asterisks is still readable and a stack trace is not.
+    """
+    body = (text or "").strip()
+    try:
+        import markdown as md_lib
+
+        return md_lib.markdown(body, extensions=["tables", "sane_lists"])
+    except Exception:
+        escaped = body.replace("&", "&amp;").replace("<", "&lt;")
+        return f"<pre>{escaped}</pre>"
+
+
+# --------------------------------------------------------------------------
 # 11. Submission & reproducibility
 # --------------------------------------------------------------------------
 def submission_page() -> None:
-    st.title("Submission & reproducibility")
-    st.caption("Phase 9 -- the graded file, and the checks run before it was written.")
+    st.markdown(
+        theme.hero(
+            "Phase 9 · ML engineering",
+            "Submission & reproducibility",
+            "The graded file, and the checks run before it was written. The template is "
+            "read at run time and treated as the binding contract, so a change the "
+            "organiser makes surfaces as a validation failure rather than a silently "
+            "wrong file.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     submission = data.read_csv("submission/submission.csv")
     validation = data.read_csv("reports/submission_validation.csv")
@@ -864,7 +1511,7 @@ def submission_page() -> None:
         "make setup        # venv + pinned dependencies\n"
         "make data         # generate the synthetic benchmark pack\n"
         "python main.py    # all nine phases -> submission/submission.csv\n"
-        "make test         # 108 regression tests",
+        "make test         # the regression suite",
         language="bash",
     )
     st.caption(
@@ -877,18 +1524,136 @@ def submission_page() -> None:
 # 12. Model card & development log
 # --------------------------------------------------------------------------
 def documents() -> None:
-    st.title("Model card & development log")
+    st.markdown(
+        theme.hero(
+            "Task 8 · 5 points · section 11",
+            "Model card & development log",
+            "The model card generated from measured tables, and the AI development log "
+            "kept per session rather than reconstructed at the end.",
+        ),
+        unsafe_allow_html=True,
+    )
 
     tab_card, tab_log = st.tabs(["Model card", "AI development log"])
     with tab_card:
         card = data.read_text("reports/model_card.md")
-        if card:
-            st.markdown(card)
-        else:
+        if not card:
             _missing("The model card", "python main.py --model-card")
+        else:
+            # The card's tables are the record; the charts beside them are the
+            # same numbers read from the same CSVs the card was generated from,
+            # so the two cannot disagree. A calibration table is precise and
+            # slow to read -- three bars answer "are these probabilities honest"
+            # at a glance, and the table is still there for the exact figure.
+            document, charts = st.columns([1.45, 1], gap="large")
+            with document:
+                st.markdown(card)
+            with charts:
+                _model_card_charts()
     with tab_log:
         log = data.read_text("ai_dev_log/log.md")
-        if log:
-            st.markdown(log)
-        else:
+        if not log:
             st.info("No development log found at `ai_dev_log/log.md`.")
+        else:
+            document, charts = st.columns([1.45, 1], gap="large")
+            with document:
+                st.markdown(log)
+            with charts:
+                _dev_log_charts(log)
+
+
+def _model_card_charts() -> None:
+    """The card's own tables, drawn -- read from the CSVs that generated it."""
+    st.markdown("#### Results at a glance")
+    st.caption(
+        "The same numbers as the tables beside this, read from the same files. "
+        "Charts for comparison; the tables for the exact figure."
+    )
+
+    calibration = data.read_csv("reports/explainability_report/calibration_summary.csv")
+    if not calibration.empty and {"mean_predicted", "observed_rate"}.issubset(calibration.columns):
+        st.markdown("**Calibration — do the probabilities mean what they say?**")
+        long = calibration.melt(
+            id_vars="model", value_vars=["mean_predicted", "observed_rate"],
+            var_name="series", value_name="rate",
+        )
+        _grouped_bars(long, "model", "rate", "series",
+                      title="rate", domain=["mean_predicted", "observed_rate"], height=230)
+        st.caption(
+            "Equal pairs mean a calibrated model: the average probability it assigns "
+            "matches how often the event actually happened."
+        )
+
+    results = data.read_csv("reports/task2_model_results.csv")
+    if not results.empty:
+        st.markdown("**Baseline vs improved**")
+        options = [c for c in ["pr_auc", "roc_auc", "f1", "brier_calibrated", "macro_f1"]
+                   if c in results.columns]
+        metric = st.selectbox("Metric", options, key="card_metric")
+        _grouped_bars(results[["target", "model", metric]].dropna(), "target", metric,
+                      "model", title=metric, domain=["baseline", "improved"], height=260)
+        if metric == "brier_calibrated":
+            st.caption("Brier is lower-is-better — the one metric here where a shorter "
+                       "bar is the good outcome.")
+
+    importance = data.read_csv("reports/explainability_report/global_importance.csv")
+    if not importance.empty:
+        st.markdown("**Top drivers**")
+        model = st.selectbox("Model", sorted(importance.model.unique()), key="card_driver")
+        _ranked_bars(importance[importance.model == model].head(8), "feature", "share",
+                     title="share of |SHAP|", height=230)
+
+
+def _dev_log_charts(log: str) -> None:
+    """
+    Task 8 asks for the AI-generated code share. The log states it per session;
+    plotted, the trend is legible in a glance rather than by scrolling twelve
+    sessions and holding the numbers in your head.
+
+    Parsed rather than maintained separately, so the chart cannot drift away
+    from the prose. A session whose line is phrased differently is skipped
+    rather than guessed at.
+    """
+    import re
+
+    sessions = re.findall(r"^##\s+Session\s+(\d+)\s+[—-]\s*(.+)$", log, flags=re.M)
+    shares = re.findall(
+        r"Approximate AI-generated code share this session:\*\*\s*~?(\d+)%", log
+    )
+
+    st.markdown("#### The log, in numbers")
+    st.caption(
+        "Read from `ai_dev_log/log.md` itself, so these cannot drift away from the "
+        "prose beside them."
+    )
+
+    _tiles([
+        {"label": "Sessions logged", "value": f"{len(sessions)}",
+         "note": "kept per session, not reconstructed"},
+        {"label": "Median AI share", "value":
+            f"{int(np.median([int(s) for s in shares]))}%" if shares else "—",
+         "note": "of lines drafted, 100% human-reviewed", "tone": "good"},
+    ])
+
+    if shares:
+        frame = pd.DataFrame({
+            "session": [f"S{i + 1}" for i in range(len(shares))],
+            "ai_share": [int(s) for s in shares],
+        })
+        st.markdown("**AI-generated share by session**")
+        chart = (
+            alt.Chart(frame)
+            .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3, color=theme.BLUE)
+            .encode(
+                x=alt.X("session:N", title=None, sort=list(frame.session), axis=_AXIS_LABEL),
+                y=alt.Y("ai_share:Q", title="% of lines drafted by AI",
+                        scale=alt.Scale(domain=[0, 100]), axis=_AXIS_LABEL),
+                tooltip=["session", "ai_share"],
+            )
+            .properties(height=240)
+        )
+        st.altair_chart(chart, use_container_width=True)
+        st.caption(
+            "Every session also records 100% human review, the outputs that were "
+            "rejected, and why — the share alone is not the evidence."
+        )

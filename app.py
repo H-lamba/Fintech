@@ -33,14 +33,16 @@ sys.path.insert(0, str(ROOT))
 from src.dashboard import data, pages, theme  # noqa: E402
 
 st.set_page_config(
-    page_title="Loan Performance Intelligence Engine",
-    page_icon="▤",
+    page_title=f"{theme.PRODUCT_NAME} · {theme.PRODUCT_TAGLINE}",
+    page_icon="◈",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 st.markdown(theme.CSS, unsafe_allow_html=True)
 
-# Ordered to match the demo flow, with the task each page answers.
+# Ordered to match the demo flow, with the task each page answers. The task tag
+# is the one piece of scaffolding worth keeping in the navigation: it is how a
+# judge maps a page to the criterion it is scored under.
 PAGES = {
     "Overview": (pages.overview, ""),
     "Data intelligence": (pages.data_intelligence, "Task 1"),
@@ -51,7 +53,7 @@ PAGES = {
     "Scenarios": (pages.scenarios, "Task 5"),
     "Explainability": (pages.explainability, "Task 6"),
     "LLM copilot": (pages.copilot, "Task 7"),
-    "Loan explorer": (pages.explorer, "demo"),
+    "Loan explorer": (pages.explorer, ""),
     "Submission": (pages.submission_page, "Phase 9"),
     "Model card & log": (pages.documents, "Task 8"),
 }
@@ -59,8 +61,7 @@ PAGES = {
 
 def main() -> None:
     with st.sidebar:
-        st.markdown("### Loan Performance\n### Intelligence Engine")
-        st.caption("Intain Campus FinTech Challenge · AI Track")
+        st.markdown(theme.brand(), unsafe_allow_html=True)
 
         choice = st.radio(
             "Section",
@@ -77,7 +78,7 @@ def main() -> None:
                 "Not yet run: " + ", ".join(missing) + "\n\nRun `python main.py` to populate."
             )
         else:
-            st.success("All nine phases have output on disk.")
+            st.success(f"All {len(state)} phases have output on disk.")
 
         st.caption(
             "Every number is read from a file the pipeline wrote. Nothing is recomputed in "

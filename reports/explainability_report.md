@@ -1,6 +1,6 @@
 # Explainability & Responsible AI Report (Task 6)
 
-_Generated 2026-08-29 23:53:46_
+_Generated 2026-08-30 14:38:16_
 
 ## What this covers
 
@@ -46,53 +46,53 @@ and a uniform sample of a rare class explains mostly non-events.
 
 Mean absolute SHAP per feature. `mean_signed_shap` carries direction: a feature can be important and directionless.
 
-| model       | feature                  |   mean_abs_shap |   mean_signed_shap |   max_abs_shap |     share |
-|:------------|:-------------------------|----------------:|-------------------:|---------------:|----------:|
-| delinquency | credit_score             |       0.262414  |       -0.0381042   |       1.00289  | 0.148436  |
-| delinquency | months_since_delinquency |       0.199246  |        0.00460414  |       2.25201  | 0.112704  |
-| delinquency | credit_score_band        |       0.188334  |       -0.0119804   |       0.4114   | 0.106532  |
-| delinquency | ltv                      |       0.123288  |        0.00489735  |       0.690251 | 0.0697383 |
-| delinquency | state                    |       0.106132  |        0.00347861  |       0.500949 | 0.0600338 |
-| delinquency | days_past_due            |       0.102194  |        0.00276873  |       1.39274  | 0.0578063 |
-| delinquency | interest_rate            |       0.0541601 |        0.0107315   |       0.284914 | 0.0306359 |
-| delinquency | rate_spread              |       0.0505995 |        0.0258525   |       0.321862 | 0.0286218 |
-| delinquency | paydown_6m               |       0.0445347 |       -0.0158675   |       0.32645  | 0.0251912 |
-| delinquency | paydown_3m               |       0.0375085 |       -0.024185    |       0.558705 | 0.0212168 |
-| delinquency | status_changes_to_date   |       0.0363332 |       -0.0221019   |       0.430344 | 0.020552  |
-| delinquency | status_ordinal           |       0.0316422 |       -0.00286717  |       0.378447 | 0.0178985 |
-| delinquency | dti                      |       0.0294187 |        0.00434508  |       0.279265 | 0.0166408 |
-| delinquency | balance_vs_expected      |       0.0273664 |       -0.0111517   |       0.326554 | 0.0154799 |
-| delinquency | loan_age_months          |       0.0268336 |       -0.0114617   |       0.223718 | 0.0151785 |
-| default     | credit_score             |       0.972418  |       -0.116705    |       2.95629  | 0.284084  |
-| default     | credit_score_band        |       0.358275  |       -0.034082    |       0.757762 | 0.104667  |
-| default     | ltv                      |       0.286363  |       -0.0108484   |       1.20918  | 0.0836589 |
-| default     | state                    |       0.254019  |        0.02077     |       1.43105  | 0.0742099 |
-| default     | days_past_due            |       0.250935  |        0.00203123  |       3.69729  | 0.0733087 |
-| default     | ltv_band                 |       0.199809  |        0.0208146   |       0.795301 | 0.0583726 |
-| default     | interest_rate            |       0.130122  |       -0.0369003   |       0.736508 | 0.0380141 |
-| default     | loan_age_months          |       0.0949037 |        0.0664322   |       0.329413 | 0.0277254 |
-| default     | dti                      |       0.0902938 |        0.0191931   |       0.657799 | 0.0263786 |
-| default     | rate_spread              |       0.0659378 |        0.0246394   |       0.352302 | 0.0192632 |
-| default     | status_ordinal           |       0.064636  |        0.000576814 |       0.878386 | 0.0188829 |
-| default     | current_balance          |       0.0498132 |        0.00335243  |       0.446044 | 0.0145526 |
-| default     | original_balance         |       0.0438766 |        0.0106702   |       0.723514 | 0.0128182 |
-| default     | paydown_6m               |       0.0392627 |       -0.018716    |       0.29021  | 0.0114703 |
-| default     | paydown_3m               |       0.0392305 |       -0.0275669   |       0.228961 | 0.0114609 |
-| prepayment  | credit_score             |       0.211817  |        0.00419017  |       1.10453  | 0.197623  |
-| prepayment  | state                    |       0.177615  |       -0.00334689  |       0.890867 | 0.165713  |
-| prepayment  | interest_rate            |       0.104217  |       -0.0499974   |       0.498481 | 0.0972329 |
-| prepayment  | ltv                      |       0.0754389 |        0.0101757   |       0.666483 | 0.0703837 |
-| prepayment  | dti                      |       0.0566959 |        0.000173256 |       0.612406 | 0.0528967 |
-| prepayment  | original_balance         |       0.0536411 |        0.00641684  |       0.425983 | 0.0500465 |
-| prepayment  | rate_spread              |       0.0382602 |       -0.00569389  |       0.308566 | 0.0356964 |
-| prepayment  | dpd_max_12m              |       0.0376696 |       -0.00143952  |       0.489973 | 0.0351453 |
-| prepayment  | current_balance          |       0.0322702 |       -0.00228229  |       0.491707 | 0.0301078 |
-| prepayment  | balance_pctile_in_month  |       0.0248507 |        0.00312653  |       0.184336 | 0.0231854 |
-| prepayment  | dpd_mean_12m             |       0.0222676 |        0.00173497  |       0.445084 | 0.0207755 |
-| prepayment  | loan_purpose             |       0.0218957 |        0.00121147  |       0.175934 | 0.0204284 |
-| prepayment  | paydown_6m               |       0.0197798 |       -0.00774239  |       0.225606 | 0.0184544 |
-| prepayment  | servicer_name            |       0.0186219 |       -0.000302394 |       0.120957 | 0.017374  |
-| prepayment  | property_type            |       0.0176111 |        0.000729934 |       0.324183 | 0.016431  |
+| model       | feature                  |   mean_abs_shap |   mean_signed_shap |   max_abs_shap |      share |
+|:------------|:-------------------------|----------------:|-------------------:|---------------:|-----------:|
+| delinquency | credit_score             |       0.261831  |       -0.0371765   |       1.0129   | 0.150367   |
+| delinquency | months_since_delinquency |       0.19881   |        0.00425483  |       2.23804  | 0.114175   |
+| delinquency | credit_score_band        |       0.192148  |       -0.0126956   |       0.436958 | 0.110349   |
+| delinquency | ltv                      |       0.124331  |        0.00481164  |       0.649523 | 0.0714023  |
+| delinquency | state                    |       0.104798  |        0.00334655  |       0.513182 | 0.0601847  |
+| delinquency | days_past_due            |       0.10244   |        0.00301615  |       1.36508  | 0.0588307  |
+| delinquency | interest_rate            |       0.0523732 |        0.0149828   |       0.300945 | 0.0300775  |
+| delinquency | rate_spread              |       0.0467605 |        0.0172318   |       0.33263  | 0.0268542  |
+| delinquency | paydown_6m               |       0.0435744 |       -0.0172271   |       0.321473 | 0.0250244  |
+| delinquency | paydown_3m               |       0.0359894 |       -0.0212244   |       0.540418 | 0.0206684  |
+| delinquency | balance_vs_expected      |       0.0336978 |       -0.0113472   |       0.32494  | 0.0193524  |
+| delinquency | status_ordinal           |       0.0328398 |       -0.00220856  |       0.407635 | 0.0188597  |
+| delinquency | dti                      |       0.0291384 |        0.00468483  |       0.252283 | 0.016734   |
+| delinquency | status_changes_to_date   |       0.0246533 |       -0.0123508   |       0.312543 | 0.0141582  |
+| delinquency | paydown_1m               |       0.0237417 |       -0.00287259  |       0.20173  | 0.0136347  |
+| default     | credit_score             |       0.994727  |       -0.117112    |       3.13012  | 0.282578   |
+| default     | credit_score_band        |       0.355831  |       -0.0334042   |       0.754554 | 0.101083   |
+| default     | ltv                      |       0.304477  |       -0.0108322   |       1.15297  | 0.0864944  |
+| default     | state                    |       0.258049  |        0.0197637   |       1.41024  | 0.0733054  |
+| default     | days_past_due            |       0.252107  |        0.0028738   |       3.77149  | 0.0716174  |
+| default     | ltv_band                 |       0.211241  |        0.0188715   |       0.818437 | 0.0600084  |
+| default     | interest_rate            |       0.132073  |       -0.0458953   |       0.748477 | 0.0375188  |
+| default     | loan_age_months          |       0.115808  |        0.0776809   |       0.389903 | 0.0328981  |
+| default     | dti                      |       0.0938003 |        0.0229448   |       0.665044 | 0.0266464  |
+| default     | rate_spread              |       0.0687858 |        0.0401955   |       0.395147 | 0.0195404  |
+| default     | status_ordinal           |       0.0645453 |        0.000598767 |       0.875162 | 0.0183357  |
+| default     | current_balance          |       0.0539266 |        0.00310558  |       0.503197 | 0.0153192  |
+| default     | original_balance         |       0.0444782 |        0.00871413  |       0.731696 | 0.0126352  |
+| default     | paydown_3m               |       0.0425445 |       -0.0286169   |       0.269124 | 0.0120859  |
+| default     | paydown_6m               |       0.0340397 |       -0.0163023   |       0.231235 | 0.00966984 |
+| prepayment  | credit_score             |       0.209594  |        0.00635883  |       1.08457  | 0.191998   |
+| prepayment  | state                    |       0.175027  |       -0.00389735  |       0.94612  | 0.160333   |
+| prepayment  | interest_rate            |       0.110878  |       -0.0721465   |       0.552104 | 0.101569   |
+| prepayment  | ltv                      |       0.0738733 |        0.00865332  |       0.777751 | 0.0676713  |
+| prepayment  | dti                      |       0.0624214 |       -0.000388146 |       0.558417 | 0.0571808  |
+| prepayment  | original_balance         |       0.0532678 |        0.00407071  |       0.465757 | 0.0487958  |
+| prepayment  | dpd_max_12m              |       0.0399607 |       -0.00175381  |       0.476806 | 0.0366058  |
+| prepayment  | rate_spread              |       0.0323703 |       -0.00474202  |       0.304977 | 0.0296527  |
+| prepayment  | current_balance          |       0.0313384 |       -0.00309711  |       0.533851 | 0.0287073  |
+| prepayment  | loan_purpose             |       0.0286223 |        0.000813348 |       0.231476 | 0.0262193  |
+| prepayment  | balance_pctile_in_month  |       0.021153  |        0.00177294  |       0.180882 | 0.0193771  |
+| prepayment  | dpd_mean_12m             |       0.0210422 |        0.00146339  |       0.444628 | 0.0192756  |
+| prepayment  | paydown_6m               |       0.0193005 |       -0.00892222  |       0.214885 | 0.0176801  |
+| prepayment  | term_progress            |       0.0185289 |        0.0163174   |       0.197244 | 0.0169733  |
+| prepayment  | servicer_name            |       0.0177533 |       -8.16107e-05 |       0.099533 | 0.0162628  |
 
 
 ## Loans selected for local explanation
@@ -101,177 +101,177 @@ Deliberately not a highlight reel: a confident hit, a confident false positive, 
 
 | model       | case                          |   position | loan_id      | reporting_month     |   predicted_probability |   actual_outcome |
 |:------------|:------------------------------|-----------:|:-------------|:--------------------|------------------------:|-----------------:|
-| delinquency | confident true positive       |       9235 | GY5ARW8PMV7P | 2023-01-01 00:00:00 |               1         |                1 |
-| delinquency | confident false positive      |       6668 | CD0OSLUPND2V | 2023-08-01 00:00:00 |               0.980952  |                0 |
-| delinquency | missed event (false negative) |       8762 | G5V6OJNQD5QO | 2023-01-01 00:00:00 |               0         |                1 |
-| delinquency | borderline                    |        137 | 08B77I816HSD | 2023-09-01 00:00:00 |               0.483108  |                0 |
-| default     | confident true positive       |       1042 | 22U6DIG1LM4Y | 2023-01-01 00:00:00 |               1         |                1 |
-| default     | confident false positive      |      14122 | PMI2G717VDTC | 2023-06-01 00:00:00 |               0.972727  |                0 |
+| delinquency | confident true positive       |       2364 | 4HXZZPFHCDEG | 2023-02-01 00:00:00 |               1         |                1 |
+| delinquency | confident false positive      |       1890 | 3MHIKIMSXP0D | 2023-08-01 00:00:00 |               0.967347  |                0 |
+| delinquency | missed event (false negative) |       1657 | 35ZTHLVR00QE | 2023-10-01 00:00:00 |               0.0254777 |                1 |
+| delinquency | borderline                    |      13941 | PE5PIWZQ3NS9 | 2023-04-01 00:00:00 |               0.524301  |                0 |
+| default     | confident true positive       |        877 | 1R1YNCRG5YFD | 2023-05-01 00:00:00 |               1         |                1 |
+| default     | confident false positive      |      11230 | KHK4PGKG9F2Q | 2023-01-01 00:00:00 |               0.982456  |                0 |
 | default     | missed event (false negative) |       5415 | 9X5K386P97VI | 2023-06-01 00:00:00 |               0         |                1 |
-| default     | borderline                    |        960 | 1W5M9PEAL1H5 | 2023-07-01 00:00:00 |               0.5       |                1 |
-| prepayment  | missed event (false negative) |       8774 | G8QEJP544TIQ | 2023-04-01 00:00:00 |               0.0176471 |                1 |
+| default     | borderline                    |         68 | 04BINLNBCBQ9 | 2023-02-01 00:00:00 |               0.470588  |                0 |
+| prepayment  | missed event (false negative) |       6616 | CD0OSLUPND2V | 2023-10-01 00:00:00 |               0.0128205 |                1 |
 
 
 ### Local explanation: delinquency -- confident true positive
 
-| feature                  | feature_value      |   shap_value | direction   |
-|:-------------------------|:-------------------|-------------:|:------------|
-| months_since_delinquency | 0.0                |    1.89204   | raises risk |
-| days_past_due            | 94.0               |    1.3023    | raises risk |
-| dpd_mean_6m              | 70.66666666666667  |   -0.381422  | lowers risk |
-| status_ordinal           | 4.0                |    0.270134  | raises risk |
-| is_delinquent            | 1.0                |    0.208607  | raises risk |
-| credit_score             | 660.0              |    0.171684  | raises risk |
-| dpd_lag_1m               | 98.0               |    0.160029  | raises risk |
-| ltv                      | 97.35              |    0.119817  | raises risk |
-| dpd_mean_12m             | 35.333333333333336 |    0.104541  | raises risk |
-| dpd_mean_3m              | 100.0              |    0.0925613 | raises risk |
-| dpd_delta_1m             | -4.0               |    0.0880827 | raises risk |
-| credit_score_band        | 660-699            |    0.0866681 | raises risk |
+| feature                  | feature_value   |   shap_value | direction   |
+|:-------------------------|:----------------|-------------:|:------------|
+| months_since_delinquency | 0.0             |    1.82439   | raises risk |
+| days_past_due            | 111.0           |    0.976318  | raises risk |
+| status_ordinal           | 4.0             |    0.285202  | raises risk |
+| credit_score             | 660.0           |    0.185628  | raises risk |
+| dpd_lag_1m               | 82.0            |    0.167274  | raises risk |
+| is_delinquent            | 1.0             |    0.146762  | raises risk |
+| dpd_mean_12m             | 31.5            |    0.118817  | raises risk |
+| ltv                      | 82.14           |    0.114697  | raises risk |
+| credit_score_band        | 620-659         |    0.101023  | raises risk |
+| dpd_delta_1m             | 29.0            |    0.0888188 | raises risk |
+| modified_ever            | 1.0             |    0.071197  | raises risk |
+| dpd_mean_3m              | 76.0            |    0.0649747 | raises risk |
 
 
 ### Local explanation: delinquency -- confident false positive
 
-| feature                  | feature_value      |   shap_value | direction   |
-|:-------------------------|:-------------------|-------------:|:------------|
-| months_since_delinquency | 0.0                |    1.96289   | raises risk |
-| days_past_due            | 76.0               |    1.30681   | raises risk |
-| dpd_mean_6m              | 63.166666666666664 |   -0.407833  | lowers risk |
-| status_ordinal           | 3.0                |    0.34834   | raises risk |
-| credit_score             | 638.0              |    0.258343  | raises risk |
-| is_delinquent            | 1.0                |    0.212056  | raises risk |
-| state                    | MN                 |   -0.138636  | lowers risk |
-| dpd_lag_1m               | 84.0               |    0.1354    | raises risk |
-| credit_score_band        | 620-659            |    0.0887822 | raises risk |
-| dpd_delta_1m             | -8.0               |    0.0874016 | raises risk |
-| status_changes_to_date   | 8.0                |   -0.0770223 | lowers risk |
-| dpd_mean_12m             | 34.083333333333336 |    0.0690444 | raises risk |
+| feature                  | feature_value   |   shap_value | direction   |
+|:-------------------------|:----------------|-------------:|:------------|
+| months_since_delinquency | 0.0             |    1.7892    | raises risk |
+| days_past_due            | 104.0           |    1.10739   | raises risk |
+| status_ordinal           | 4.0             |    0.277659  | raises risk |
+| is_delinquent            | 1.0             |    0.217951  | raises risk |
+| ltv                      | 92.3            |    0.177893  | raises risk |
+| dpd_lag_1m               | 78.0            |    0.167451  | raises risk |
+| dpd_mean_3m              | 74.0            |    0.117245  | raises risk |
+| dpd_delta_1m             | 26.0            |    0.0912602 | raises risk |
+| credit_score_band        | 660-699         |    0.0897913 | raises risk |
+| credit_score             | 668.0           |    0.0677566 | raises risk |
+| paydown_1m               | 0.0             |    0.0627704 | raises risk |
+| dpd_max_12m              | 104.0           |   -0.0601744 | lowers risk |
 
 
 ### Local explanation: delinquency -- missed event (false negative)
 
-| feature                   | feature_value         |   shap_value | direction   |
-|:--------------------------|:----------------------|-------------:|:------------|
-| dpd_mean_6m               | 58.333333333333336    |   -0.608709  | lowers risk |
-| state                     | OR                    |   -0.324735  | lowers risk |
-| balance_ratio             | 0.8124085816876122    |   -0.247552  | lowers risk |
-| status_changes_to_date    | 9.0                   |   -0.24499   | lowers risk |
-| delinquent_months_to_date | 9.0                   |   -0.203788  | lowers risk |
-| paydown_6m                | -0.005487109179072913 |   -0.1533    | lowers risk |
-| months_since_delinquency  | nan                   |   -0.133564  | lowers risk |
-| balance_vs_expected       | 1.0534428037453785    |   -0.126664  | lowers risk |
-| modified_ever             | 1.0                   |    0.126601  | raises risk |
-| dpd_mean_12m              | 56.916666666666664    |    0.0810525 | raises risk |
-| credit_score_band         | 660-699               |   -0.0805379 | lowers risk |
-| days_past_due             | 0.0                   |   -0.0761335 | lowers risk |
+| feature                  | feature_value         |   shap_value | direction   |
+|:-------------------------|:----------------------|-------------:|:------------|
+| paydown_6m               | -0.006773996037529706 |   -0.271823  | lowers risk |
+| credit_score_band        | 700-739               |   -0.212108  | lowers risk |
+| state                    | MN                    |   -0.196792  | lowers risk |
+| credit_score             | 704.0                 |   -0.160116  | lowers risk |
+| months_since_delinquency | nan                   |   -0.119564  | lowers risk |
+| ltv                      | 68.1                  |   -0.108184  | lowers risk |
+| dpd_mean_6m              | 15.5                  |   -0.0729915 | lowers risk |
+| dpd_max_12m              | 52.0                  |   -0.0621524 | lowers risk |
+| days_past_due            | 0.0                   |   -0.0607553 | lowers risk |
+| dpd_max_6m               | 52.0                  |   -0.0597438 | lowers risk |
+| balance_pctile_in_month  | 0.2424511545293073    |   -0.0383285 | lowers risk |
+| paydown_3m               | -0.005098292000316529 |   -0.0327646 | lowers risk |
 
 
 ### Local explanation: delinquency -- borderline
 
-| feature                  | feature_value          |   shap_value | direction   |
-|:-------------------------|:-----------------------|-------------:|:------------|
-| months_since_delinquency | 0.0                    |    1.60456   | raises risk |
-| days_past_due            | 34.0                   |    0.790131  | raises risk |
-| status_ordinal           | 2.0                    |    0.212849  | raises risk |
-| is_delinquent            | 1.0                    |    0.19173   | raises risk |
-| ltv                      | 68.93                  |   -0.134441  | lowers risk |
-| credit_score_band        | 660-699                |    0.101154  | raises risk |
-| status_changes_to_date   | 5.0                    |   -0.0933791 | lowers risk |
-| dti                      | 54.28                  |   -0.0933323 | lowers risk |
-| dpd_delta_1m             | 34.0                   |    0.0882424 | raises risk |
-| paydown_1m               | -0.0017225891231479329 |   -0.063559  | lowers risk |
-| dpd_lag_1m               | 0.0                    |   -0.0621178 | lowers risk |
-| current_status           | 30-DPD                 |    0.0549636 | raises risk |
+| feature                  | feature_value   |   shap_value | direction   |
+|:-------------------------|:----------------|-------------:|:------------|
+| months_since_delinquency | 0.0             |    1.7918    | raises risk |
+| days_past_due            | 49.0            |    0.742902  | raises risk |
+| credit_score             | 745.0           |   -0.3666    | lowers risk |
+| ltv                      | 85.13           |    0.203199  | raises risk |
+| status_ordinal           | 2.0             |    0.186236  | raises risk |
+| is_delinquent            | 1.0             |    0.16989   | raises risk |
+| credit_score_band        | 740-799         |   -0.120992  | lowers risk |
+| dpd_delta_1m             | 3.0             |    0.0932278 | raises risk |
+| paydown_1m               | 0.0             |    0.0603657 | raises risk |
+| state                    | CA              |    0.0592597 | raises risk |
+| dpd_lag_1m               | 46.0            |    0.0565237 | raises risk |
+| current_status           | 30-DPD          |    0.0562841 | raises risk |
 
 
 ### Local explanation: default -- confident true positive
 
-| feature           | feature_value      |   shap_value | direction   |
-|:------------------|:-------------------|-------------:|:------------|
-| days_past_due     | 116.0              |    2.41594   | raises risk |
-| credit_score      | 635.0              |    1.24561   | raises risk |
-| status_ordinal    | 4.0                |    0.506994  | raises risk |
-| credit_score_band | 620-659            |    0.349283  | raises risk |
-| ltv               | 86.09              |    0.163251  | raises risk |
-| dpd_lag_1m        | 115.0              |    0.132599  | raises risk |
-| is_delinquent     | 1.0                |    0.113798  | raises risk |
-| dpd_delta_1m      | 1.0                |    0.109107  | raises risk |
-| balance_ratio     | 0.8351985852713177 |   -0.10405   | lowers risk |
-| loan_age_months   | 47.0               |    0.0983803 | raises risk |
-| ltv_band          | 80-90%             |    0.0899423 | raises risk |
-| state             | WA                 |    0.0870348 | raises risk |
+| feature           | feature_value   |   shap_value | direction   |
+|:------------------|:----------------|-------------:|:------------|
+| days_past_due     | 99.0            |    2.29895   | raises risk |
+| credit_score      | 642.0           |    1.29285   | raises risk |
+| status_ordinal    | 4.0             |    0.459638  | raises risk |
+| credit_score_band | 620-659         |    0.33767   | raises risk |
+| ltv               | 86.27           |    0.263322  | raises risk |
+| dpd_lag_1m        | 66.0            |    0.141893  | raises risk |
+| is_delinquent     | 1.0             |    0.118926  | raises risk |
+| dpd_delta_3m      | 99.0            |    0.110123  | raises risk |
+| dpd_delta_1m      | 33.0            |    0.104553  | raises risk |
+| ltv_band          | 80-90%          |    0.0926019 | raises risk |
+| interest_rate     | 6.33            |   -0.0691723 | lowers risk |
+| paydown_1m        | 0.0             |    0.058505  | raises risk |
 
 
 ### Local explanation: default -- confident false positive
 
 | feature           | feature_value   |   shap_value | direction   |
 |:------------------|:----------------|-------------:|:------------|
-| days_past_due     | 108.0           |    2.42086   | raises risk |
-| credit_score      | 653.0           |    1.05894   | raises risk |
-| status_ordinal    | 4.0             |    0.493286  | raises risk |
-| ltv               | 87.5            |    0.37154   | raises risk |
-| credit_score_band | 620-659         |    0.36158   | raises risk |
-| dpd_lag_1m        | 71.0            |    0.144822  | raises risk |
-| is_delinquent     | 1.0             |    0.118716  | raises risk |
-| interest_rate     | 6.401           |   -0.118098  | lowers risk |
-| state             | OR              |   -0.115884  | lowers risk |
-| ltv_band          | 80-90%          |    0.104801  | raises risk |
-| dpd_delta_1m      | 37.0            |    0.0780039 | raises risk |
-| paydown_1m        | 0.0             |    0.0615417 | raises risk |
+| days_past_due     | 88.0            |    2.1025    | raises risk |
+| credit_score      | 585.0           |    1.56921   | raises risk |
+| status_ordinal    | 3.0             |    0.471213  | raises risk |
+| credit_score_band | <620            |    0.38518   | raises risk |
+| is_delinquent     | 1.0             |    0.130558  | raises risk |
+| dpd_delta_3m      | 88.0            |    0.105048  | raises risk |
+| ltv               | 74.89           |   -0.0902492 | lowers risk |
+| dpd_delta_1m      | 49.0            |    0.0845844 | raises risk |
+| dpd_lag_1m        | 39.0            |    0.0791556 | raises risk |
+| state             | TX              |    0.0773258 | raises risk |
+| paydown_1m        | 0.0             |    0.0712299 | raises risk |
+| dti               | 48.24           |    0.0708363 | raises risk |
 
 
 ### Local explanation: default -- missed event (false negative)
 
-| feature           | feature_value      |   shap_value | direction   |
-|:------------------|:-------------------|-------------:|:------------|
-| credit_score      | 707.0              |   -0.888921  | lowers risk |
-| state             | AL                 |   -0.660116  | lowers risk |
-| credit_score_band | 700-739            |   -0.309004  | lowers risk |
-| ltv               | 69.63              |   -0.201922  | lowers risk |
-| ltv_band          | 60-75%             |   -0.183883  | lowers risk |
-| days_past_due     | 0.0                |   -0.14091   | lowers risk |
-| rate_spread       | 2.6125             |    0.111395  | raises risk |
-| interest_rate     | 7.172              |   -0.0977821 | lowers risk |
-| dti               | 32.51              |   -0.0690953 | lowers risk |
-| status_ordinal    | 1.0                |   -0.0356052 | lowers risk |
-| balance_ratio     | 0.9992077205882353 |    0.0295514 | raises risk |
-| loan_age_months   | 1.0                |   -0.0266325 | lowers risk |
+| feature           | feature_value       |   shap_value | direction   |
+|:------------------|:--------------------|-------------:|:------------|
+| credit_score      | 707.0               |   -0.858878  | lowers risk |
+| state             | AL                  |   -0.61348   | lowers risk |
+| credit_score_band | 700-739             |   -0.283511  | lowers risk |
+| ltv               | 69.63               |   -0.259654  | lowers risk |
+| interest_rate     | 7.172               |   -0.21289   | lowers risk |
+| ltv_band          | 60-75%              |   -0.211729  | lowers risk |
+| rate_spread       | 2.6125              |    0.170481  | raises risk |
+| days_past_due     | 0.0                 |   -0.13883   | lowers risk |
+| dti               | 32.51               |   -0.0833961 | lowers risk |
+| loan_purpose      | Rate/Term Refinance |   -0.0583576 | lowers risk |
+| loan_age_months   | 1.0                 |   -0.0556295 | lowers risk |
+| balance_ratio     | 0.9992077205882353  |    0.0399635 | raises risk |
 
 
 ### Local explanation: default -- borderline
 
-| feature           | feature_value          |   shap_value | direction   |
-|:------------------|:-----------------------|-------------:|:------------|
-| credit_score      | 646.0                  |    1.62672   | raises risk |
-| days_past_due     | 50.0                   |    1.56995   | raises risk |
-| credit_score_band | 620-659                |    0.467025  | raises risk |
-| status_ordinal    | 2.0                    |    0.443746  | raises risk |
-| ltv               | 67.74                  |   -0.19501   | lowers risk |
-| is_delinquent     | 1.0                    |    0.116752  | raises risk |
-| dpd_delta_3m      | 50.0                   |    0.0861854 | raises risk |
-| occupancy_type    | Investment Property    |   -0.083179  | lowers risk |
-| paydown_6m        | -0.00580701619798607   |   -0.0653252 | lowers risk |
-| dti               | 42.23                  |    0.061525  | raises risk |
-| ltv_band          | 60-75%                 |   -0.0601072 | lowers risk |
-| paydown_1m        | -0.0009852800739298395 |    0.057636  | raises risk |
+| feature                | feature_value          |   shap_value | direction   |
+|:-----------------------|:-----------------------|-------------:|:------------|
+| days_past_due          | 49.0                   |    1.45987   | raises risk |
+| credit_score           | 660.0                  |    1.44369   | raises risk |
+| status_ordinal         | 2.0                    |    0.444955  | raises risk |
+| credit_score_band      | 620-659                |    0.401746  | raises risk |
+| state                  | AZ                     |    0.220722  | raises risk |
+| interest_rate          | 6.255                  |   -0.164743  | lowers risk |
+| ltv                    | 73.14                  |   -0.131708  | lowers risk |
+| is_delinquent          | 1.0                    |    0.115869  | raises risk |
+| dpd_delta_3m           | 49.0                   |    0.07474   | raises risk |
+| paydown_1m             | -0.0010083080590768123 |    0.0612568 | raises risk |
+| rate_spread            | 1.8149999999999995     |    0.0606148 | raises risk |
+| status_changes_to_date | 3.0                    |    0.0603587 | raises risk |
 
 
 ### Local explanation: prepayment -- missed event (false negative)
 
 | feature          | feature_value          |   shap_value | direction   |
 |:-----------------|:-----------------------|-------------:|:------------|
-| credit_score     | 644.0                  |   -0.924123  | lowers risk |
-| dpd_max_12m      | 116.0                  |   -0.314062  | lowers risk |
-| interest_rate    | 6.736                  |   -0.17333   | lowers risk |
-| dpd_mean_12m     | 9.666666666666666      |   -0.0917235 | lowers risk |
-| dpd_max_6m       | 116.0                  |   -0.0902053 | lowers risk |
-| days_past_due    | 116.0                  |   -0.055517  | lowers risk |
-| dti              | 31.24                  |    0.0523439 | raises risk |
-| original_balance | 452000.0               |    0.0317182 | raises risk |
-| loan_purpose     | Rate/Term Refinance    |    0.0276354 | raises risk |
-| dpd_mean_6m      | 19.333333333333332     |   -0.0238909 | lowers risk |
-| paydown_3m       | -0.002815663513674127  |    0.023258  | raises risk |
-| paydown_1m       | -0.0009455946870864373 |    0.0167201 | raises risk |
+| credit_score     | 638.0                  |   -0.91551   | lowers risk |
+| dpd_mean_12m     | 31.583333333333332     |   -0.317379  | lowers risk |
+| state            | MN                     |    0.259583  | raises risk |
+| dpd_max_6m       | 84.0                   |   -0.251222  | lowers risk |
+| dpd_max_12m      | 84.0                   |   -0.22652   | lowers risk |
+| interest_rate    | 6.18                   |   -0.135773  | lowers risk |
+| original_balance | 266000.0               |    0.0645554 | raises risk |
+| ltv              | 76.71                  |    0.0339022 | raises risk |
+| paydown_6m       | -0.0010162349921574165 |   -0.0328994 | lowers risk |
+| dpd_mean_6m      | 42.5                   |   -0.0238909 | lowers risk |
+| rate_spread      | 1.3594999999999997     |    0.0147751 | raises risk |
+| current_balance  | 263381.72              |    0.0146361 | raises risk |
 
 
 ## Confusion summary
@@ -280,18 +280,18 @@ At the threshold tuned in Task 2.
 
 | model       | outcome        |   records |     share |
 |:------------|:---------------|----------:|----------:|
-| delinquency | true positive  |      2581 | 0.0399826 |
-| delinquency | false positive |      1187 | 0.018388  |
-| delinquency | false negative |      4606 | 0.0713522 |
-| delinquency | true negative  |     56179 | 0.870277  |
-| default     | true positive  |      2360 | 0.0404234 |
-| default     | false positive |      2661 | 0.0455791 |
-| default     | false negative |      2703 | 0.0462985 |
-| default     | true negative  |     50658 | 0.867699  |
-| prepayment  | true positive  |      2992 | 0.0512487 |
-| prepayment  | false positive |     28378 | 0.486074  |
-| prepayment  | false negative |      2236 | 0.0382995 |
-| prepayment  | true negative  |     24776 | 0.424377  |
+| delinquency | true positive  |      2547 | 0.039456  |
+| delinquency | false positive |      1050 | 0.0162657 |
+| delinquency | false negative |      4640 | 0.0718789 |
+| delinquency | true negative  |     56316 | 0.872399  |
+| default     | true positive  |      2543 | 0.0435579 |
+| default     | false positive |      3100 | 0.0530986 |
+| default     | false negative |      2520 | 0.043164  |
+| default     | true negative  |     50219 | 0.86018   |
+| prepayment  | true positive  |      3924 | 0.0672125 |
+| prepayment  | false positive |     37771 | 0.646963  |
+| prepayment  | false negative |      1304 | 0.0223357 |
+| prepayment  | true negative  |     15383 | 0.263489  |
 
 
 ## Error rates by segment
@@ -300,51 +300,51 @@ Groups below the minimum size are dropped: a false positive rate computed on nin
 
 | model       | segment           | group   |   records |   actual_positives |   actual_negatives |   flagged |   false_positives |   false_negatives |   true_positives |   selection_rate |   precision |    recall |   false_positive_rate |   false_negative_rate |
 |:------------|:------------------|:--------|----------:|-------------------:|-------------------:|----------:|------------------:|------------------:|-----------------:|-----------------:|------------:|----------:|----------------------:|----------------------:|
-| delinquency | credit_score_band | 620-659 |      7173 |               1744 |               5429 |      1035 |               220 |               929 |              815 |        0.144291  |    0.78744  | 0.467317  |            0.0405231  |              0.532683 |
-| delinquency | credit_score_band | <620    |      2249 |                650 |               1599 |       387 |                62 |               325 |              325 |        0.172076  |    0.839793 | 0.5       |            0.0387742  |              0.5      |
-| delinquency | credit_score_band | 660-699 |     18417 |               2507 |              15910 |      1278 |               390 |              1619 |              888 |        0.0693924 |    0.694836 | 0.354208  |            0.0245129  |              0.645792 |
+| delinquency | credit_score_band | 620-659 |      7173 |               1744 |               5429 |       950 |               144 |               938 |              806 |        0.132441  |    0.848421 | 0.462156  |            0.0265242  |              0.537844 |
+| delinquency | credit_score_band | 660-699 |     18417 |               2507 |              15910 |      1261 |               375 |              1621 |              886 |        0.0684693 |    0.702617 | 0.35341   |            0.0235701  |              0.64659  |
+| delinquency | credit_score_band | <620    |      2249 |                650 |               1599 |       344 |                37 |               343 |              307 |        0.152957  |    0.892442 | 0.472308  |            0.0231395  |              0.527692 |
 | delinquency | credit_score_band | 700-739 |     20820 |               1539 |              19281 |       725 |               329 |              1143 |              396 |        0.0348223 |    0.546207 | 0.25731   |            0.0170634  |              0.74269  |
-| delinquency | credit_score_band | 740-799 |     14117 |                693 |              13424 |       321 |               169 |               541 |              152 |        0.0227385 |    0.47352  | 0.219336  |            0.0125894  |              0.780664 |
-| delinquency | credit_score_band | 800+    |      1777 |                 54 |               1723 |        22 |                17 |                49 |                5 |        0.0123804 |    0.227273 | 0.0925926 |            0.00986651 |              0.907407 |
-| delinquency | ltv_band          | 90-97%  |      3037 |                738 |               2299 |       469 |               128 |               397 |              341 |        0.154429  |    0.727079 | 0.46206   |            0.0556764  |              0.53794  |
-| delinquency | ltv_band          | 80-90%  |     13895 |               2294 |              11601 |      1245 |               307 |              1356 |              938 |        0.0896006 |    0.753414 | 0.408893  |            0.0264632  |              0.591107 |
-| delinquency | ltv_band          | 75-80%  |     12435 |               1426 |              11009 |       724 |               224 |               926 |              500 |        0.0582228 |    0.690608 | 0.350631  |            0.020347   |              0.649369 |
-| delinquency | ltv_band          | 60-75%  |     30370 |               2503 |              27867 |      1211 |               467 |              1759 |              744 |        0.0398749 |    0.614368 | 0.297243  |            0.0167582  |              0.702757 |
-| delinquency | ltv_band          | <60%    |      4816 |                226 |               4590 |       119 |                61 |               168 |               58 |        0.0247093 |    0.487395 | 0.256637  |            0.0132898  |              0.743363 |
-| delinquency | vintage_year      | 2018    |      2298 |                272 |               2026 |       149 |                48 |               171 |              101 |        0.064839  |    0.677852 | 0.371324  |            0.023692   |              0.628676 |
-| delinquency | vintage_year      | 2022    |     17090 |               1989 |              15101 |      1106 |               349 |              1232 |              757 |        0.0647162 |    0.684448 | 0.380593  |            0.0231111  |              0.619407 |
-| delinquency | vintage_year      | 2021    |     14160 |               1575 |              12585 |       791 |               260 |              1044 |              531 |        0.0558616 |    0.671302 | 0.337143  |            0.0206595  |              0.662857 |
-| delinquency | vintage_year      | 2019    |      9531 |                958 |               8573 |       544 |               174 |               588 |              370 |        0.0570769 |    0.680147 | 0.386221  |            0.0202963  |              0.613779 |
-| delinquency | vintage_year      | 2020    |     11469 |               1193 |              10276 |       644 |               200 |               749 |              444 |        0.0561514 |    0.689441 | 0.372171  |            0.0194628  |              0.627829 |
-| delinquency | vintage_year      | 2023    |     10005 |               1200 |               8805 |       534 |               156 |               822 |              378 |        0.0533733 |    0.707865 | 0.315     |            0.0177172  |              0.685    |
-| delinquency | state             | MI      |      2115 |                265 |               1850 |       168 |                52 |               149 |              116 |        0.0794326 |    0.690476 | 0.437736  |            0.0281081  |              0.562264 |
-| delinquency | state             | MN      |      1254 |                183 |               1071 |        88 |                29 |               124 |               59 |        0.0701754 |    0.670455 | 0.322404  |            0.0270775  |              0.677596 |
-| delinquency | state             | GA      |      2369 |                269 |               2100 |       151 |                56 |               174 |               95 |        0.06374   |    0.629139 | 0.35316   |            0.0266667  |              0.64684  |
-| delinquency | state             | MA      |      1581 |                184 |               1397 |       103 |                36 |               117 |               67 |        0.0651486 |    0.650485 | 0.36413   |            0.0257695  |              0.63587  |
+| delinquency | credit_score_band | 740-799 |     14117 |                693 |              13424 |       298 |               151 |               546 |              147 |        0.0211093 |    0.493289 | 0.212121  |            0.0112485  |              0.787879 |
+| delinquency | credit_score_band | 800+    |      1777 |                 54 |               1723 |        19 |                14 |                49 |                5 |        0.0106922 |    0.263158 | 0.0925926 |            0.00812536 |              0.907407 |
+| delinquency | ltv_band          | 80-90%  |     13895 |               2294 |              11601 |      1197 |               274 |              1371 |              923 |        0.0861461 |    0.771094 | 0.402354  |            0.0236187  |              0.597646 |
+| delinquency | ltv_band          | 90-97%  |      3037 |                738 |               2299 |       382 |                54 |               410 |              328 |        0.125782  |    0.858639 | 0.444444  |            0.0234885  |              0.555556 |
+| delinquency | ltv_band          | 75-80%  |     12435 |               1426 |              11009 |       717 |               217 |               926 |              500 |        0.0576598 |    0.69735  | 0.350631  |            0.0197111  |              0.649369 |
+| delinquency | ltv_band          | 60-75%  |     30370 |               2503 |              27867 |      1187 |               447 |              1763 |              740 |        0.0390846 |    0.62342  | 0.295645  |            0.0160405  |              0.704355 |
+| delinquency | ltv_band          | <60%    |      4816 |                226 |               4590 |       114 |                58 |               170 |               56 |        0.0236711 |    0.491228 | 0.247788  |            0.0126362  |              0.752212 |
+| delinquency | vintage_year      | 2018    |      2298 |                272 |               2026 |       146 |                45 |               171 |              101 |        0.0635335 |    0.691781 | 0.371324  |            0.0222113  |              0.628676 |
+| delinquency | vintage_year      | 2019    |      9531 |                958 |               8573 |       537 |               169 |               590 |              368 |        0.0563425 |    0.685289 | 0.384134  |            0.0197131  |              0.615866 |
+| delinquency | vintage_year      | 2021    |     14160 |               1575 |              12585 |       771 |               242 |              1046 |              529 |        0.0544492 |    0.686122 | 0.335873  |            0.0192292  |              0.664127 |
+| delinquency | vintage_year      | 2020    |     11469 |               1193 |              10276 |       638 |               195 |               750 |              443 |        0.0556282 |    0.694357 | 0.371333  |            0.0189763  |              0.628667 |
+| delinquency | vintage_year      | 2022    |     17090 |               1989 |              15101 |      1016 |               279 |              1252 |              737 |        0.05945   |    0.725394 | 0.370538  |            0.0184756  |              0.629462 |
+| delinquency | vintage_year      | 2023    |     10005 |               1200 |               8805 |       489 |               120 |               831 |              369 |        0.0488756 |    0.754601 | 0.3075    |            0.0136286  |              0.6925   |
+| delinquency | state             | MN      |      1254 |                183 |               1071 |        87 |                28 |               124 |               59 |        0.069378  |    0.678161 | 0.322404  |            0.0261438  |              0.677596 |
 | delinquency | state             | AL      |       952 |                 91 |                861 |        58 |                22 |                55 |               36 |        0.0609244 |    0.62069  | 0.395604  |            0.0255517  |              0.604396 |
-| delinquency | state             | CA      |      8064 |                950 |               7114 |       516 |               177 |               611 |              339 |        0.0639881 |    0.656977 | 0.356842  |            0.0248805  |              0.643158 |
-| delinquency | state             | WA      |      1815 |                197 |               1618 |        91 |                39 |               145 |               52 |        0.0501377 |    0.571429 | 0.263959  |            0.0241038  |              0.736041 |
-| delinquency | state             | TX      |      6519 |                759 |               5760 |       400 |               137 |               496 |              263 |        0.0613591 |    0.6575   | 0.346509  |            0.0237847  |              0.653491 |
-| delinquency | state             | AZ      |      1652 |                179 |               1473 |        92 |                33 |               120 |               59 |        0.0556901 |    0.641304 | 0.329609  |            0.0224033  |              0.670391 |
-| delinquency | state             | LA      |       849 |                108 |                741 |        55 |                16 |                69 |               39 |        0.0647821 |    0.709091 | 0.361111  |            0.0215924  |              0.638889 |
+| delinquency | state             | MA      |      1581 |                184 |               1397 |       100 |                33 |               117 |               67 |        0.0632511 |    0.67     | 0.36413   |            0.023622   |              0.63587  |
+| delinquency | state             | WA      |      1815 |                197 |               1618 |        89 |                37 |               145 |               52 |        0.0490358 |    0.58427  | 0.263959  |            0.0228677  |              0.736041 |
+| delinquency | state             | CA      |      8064 |                950 |               7114 |       491 |               158 |               617 |              333 |        0.0608879 |    0.678208 | 0.350526  |            0.0222097  |              0.649474 |
 | delinquency | state             | UT      |       569 |                 47 |                522 |        25 |                11 |                33 |               14 |        0.0439367 |    0.56     | 0.297872  |            0.0210728  |              0.702128 |
-| delinquency | state             | MO      |      1433 |                181 |               1252 |        82 |                26 |               125 |               56 |        0.0572226 |    0.682927 | 0.309392  |            0.0207668  |              0.690608 |
-| delinquency | state             | IN      |      1280 |                157 |               1123 |        83 |                23 |                97 |               60 |        0.0648438 |    0.722892 | 0.382166  |            0.0204809  |              0.617834 |
-| delinquency | state             | OH      |      2744 |                256 |               2488 |       138 |                48 |               166 |               90 |        0.0502915 |    0.652174 | 0.351562  |            0.0192926  |              0.648438 |
-| delinquency | state             | IL      |      2629 |                274 |               2355 |       146 |                45 |               173 |              101 |        0.0555344 |    0.691781 | 0.368613  |            0.0191083  |              0.631387 |
-| delinquency | state             | NY      |      3862 |                362 |               3500 |       173 |                65 |               254 |              108 |        0.0447954 |    0.624277 | 0.298343  |            0.0185714  |              0.701657 |
-| delinquency | state             | FL      |      6649 |                755 |               5894 |       384 |               109 |               480 |              275 |        0.057753  |    0.716146 | 0.364238  |            0.0184934  |              0.635762 |
-| delinquency | state             | NJ      |      1849 |                217 |               1632 |       118 |                30 |               129 |               88 |        0.0638183 |    0.745763 | 0.40553   |            0.0183824  |              0.59447  |
+| delinquency | state             | AZ      |      1652 |                179 |               1473 |        87 |                31 |               123 |               56 |        0.0526634 |    0.643678 | 0.312849  |            0.0210455  |              0.687151 |
+| delinquency | state             | TX      |      6519 |                759 |               5760 |       379 |               116 |               496 |              263 |        0.0581378 |    0.693931 | 0.346509  |            0.0201389  |              0.653491 |
+| delinquency | state             | MO      |      1433 |                181 |               1252 |        81 |                25 |               125 |               56 |        0.0565248 |    0.691358 | 0.309392  |            0.0199681  |              0.690608 |
+| delinquency | state             | GA      |      2369 |                269 |               2100 |       132 |                40 |               177 |               92 |        0.0557197 |    0.69697  | 0.342007  |            0.0190476  |              0.657993 |
+| delinquency | state             | LA      |       849 |                108 |                741 |        52 |                14 |                70 |               38 |        0.0612485 |    0.730769 | 0.351852  |            0.0188934  |              0.648148 |
+| delinquency | state             | IN      |      1280 |                157 |               1123 |        81 |                21 |                97 |               60 |        0.0632812 |    0.740741 | 0.382166  |            0.0186999  |              0.617834 |
+| delinquency | state             | NJ      |      1849 |                217 |               1632 |       117 |                30 |               130 |               87 |        0.0632774 |    0.74359  | 0.400922  |            0.0183824  |              0.599078 |
 | delinquency | state             | CT      |       622 |                 66 |                556 |        29 |                10 |                47 |               19 |        0.0466238 |    0.655172 | 0.287879  |            0.0179856  |              0.712121 |
-| delinquency | state             | VA      |      1903 |                212 |               1691 |       107 |                30 |               135 |               77 |        0.056227  |    0.719626 | 0.363208  |            0.017741   |              0.636792 |
-| delinquency | state             | KY      |       910 |                115 |                795 |        62 |                14 |                67 |               48 |        0.0681319 |    0.774194 | 0.417391  |            0.0176101  |              0.582609 |
+| delinquency | state             | NY      |      3862 |                362 |               3500 |       168 |                62 |               256 |              106 |        0.0435008 |    0.630952 | 0.292818  |            0.0177143  |              0.707182 |
+| delinquency | state             | KY      |       910 |                115 |                795 |        61 |                14 |                68 |               47 |        0.067033  |    0.770492 | 0.408696  |            0.0176101  |              0.591304 |
 | delinquency | state             | OR      |      1057 |                 90 |                967 |        41 |                17 |                66 |               24 |        0.038789  |    0.585366 | 0.266667  |            0.0175801  |              0.733333 |
-| delinquency | state             | PA      |      2687 |                351 |               2336 |       196 |                41 |               196 |              155 |        0.0729438 |    0.790816 | 0.441595  |            0.0175514  |              0.558405 |
-| delinquency | state             | TN      |      1485 |                148 |               1337 |        75 |                23 |                96 |               52 |        0.0505051 |    0.693333 | 0.351351  |            0.0172027  |              0.648649 |
+| delinquency | state             | IL      |      2629 |                274 |               2355 |       141 |                41 |               174 |              100 |        0.0536326 |    0.70922  | 0.364964  |            0.0174098  |              0.635036 |
+| delinquency | state             | VA      |      1903 |                212 |               1691 |       106 |                29 |               135 |               77 |        0.0557015 |    0.726415 | 0.363208  |            0.0171496  |              0.636792 |
+| delinquency | state             | PA      |      2687 |                351 |               2336 |       195 |                40 |               196 |              155 |        0.0725716 |    0.794872 | 0.441595  |            0.0171233  |              0.558405 |
 | delinquency | state             | SC      |       905 |                 78 |                827 |        38 |                14 |                54 |               24 |        0.041989  |    0.631579 | 0.307692  |            0.0169287  |              0.692308 |
-| delinquency | state             | NC      |      2294 |                259 |               2035 |       131 |                31 |               159 |              100 |        0.0571055 |    0.763359 | 0.3861    |            0.0152334  |              0.6139   |
-| delinquency | state             | MD      |      1275 |                125 |               1150 |        66 |                17 |                76 |               49 |        0.0517647 |    0.742424 | 0.392     |            0.0147826  |              0.608    |
-| delinquency | state             | WI      |      1335 |                122 |               1213 |        60 |                17 |                79 |               43 |        0.0449438 |    0.716667 | 0.352459  |            0.0140148  |              0.647541 |
+| delinquency | state             | FL      |      6649 |                755 |               5894 |       368 |                98 |               485 |              270 |        0.0553467 |    0.733696 | 0.357616  |            0.0166271  |              0.642384 |
+| delinquency | state             | MI      |      2115 |                265 |               1850 |       145 |                30 |               150 |              115 |        0.0685579 |    0.793103 | 0.433962  |            0.0162162  |              0.566038 |
+| delinquency | state             | TN      |      1485 |                148 |               1337 |        69 |                21 |               100 |               48 |        0.0464646 |    0.695652 | 0.324324  |            0.0157068  |              0.675676 |
+| delinquency | state             | NC      |      2294 |                259 |               2035 |       129 |                30 |               160 |               99 |        0.0562337 |    0.767442 | 0.382239  |            0.014742   |              0.617761 |
+| delinquency | state             | WI      |      1335 |                122 |               1213 |        59 |                16 |                79 |               43 |        0.0441948 |    0.728814 | 0.352459  |            0.0131904  |              0.647541 |
+| delinquency | state             | MD      |      1275 |                125 |               1150 |        60 |                15 |                80 |               45 |        0.0470588 |    0.75     | 0.36      |            0.0130435  |              0.64     |
+| delinquency | state             | OK      |       847 |                 91 |                756 |        46 |                 9 |                54 |               37 |        0.0543093 |    0.804348 | 0.406593  |            0.0119048  |              0.593407 |
 
 _Showing 45 of 156 rows._
 
@@ -355,36 +355,36 @@ Mean feature value among false positives against true negatives, standardised by
 
 | model       | feature                   |   false_positive_mean |   true_negative_mean |   standardised_gap_fp_vs_tn |   false_negative_mean |   true_positive_mean |   standardised_gap_fn_vs_tp |
 |:------------|:--------------------------|----------------------:|---------------------:|----------------------------:|----------------------:|---------------------:|----------------------------:|
-| delinquency | is_delinquent             |              0.914912 |           0.00646149 |                    3.75496  |            0.00564481 |             0.989926 |                  -4.06839   |
-| delinquency | status_changed_this_month |              0.734625 |           0.0334645  |                    2.63121  |            0.0334347  |             0.79814  |                  -2.86967   |
-| delinquency | days_past_due             |             46.1609   |           0.672155   |                    2.57358  |            0.589666   |            68.3712   |                  -3.83483   |
-| delinquency | status_ordinal            |              2.09773  |           1.01938    |                    2.2545   |            1.01693    |             2.8024   |                  -3.7329    |
-| delinquency | dpd_delta_3m              |             42.2575   |          -1.69318    |                    2.06979  |           -1.96052    |            57.4738   |                  -2.79896   |
-| delinquency | dpd_delta_6m              |             43.5      |          -1.51894    |                    2.05912  |           -2.36102    |            66.1168   |                  -3.1321    |
-| delinquency | dpd_max_3m                |             49.4288   |           4.27519    |                    1.84881  |            4.02149    |            70.623    |                  -2.72699   |
-| delinquency | dpd_delta_1m              |             29.3123   |          -1.16335    |                    1.74696  |           -1.21119    |            27.7053   |                  -1.65758   |
-| delinquency | dpd_mean_3m               |             23.7101   |           1.58459    |                    1.71055  |            1.49624    |            44.1504   |                  -3.29766   |
-| delinquency | dpd_max_6m                |             50.5442   |           8.48554    |                    1.44968  |            8.84129    |            71.6428   |                  -2.16465   |
-| delinquency | dpd_mean_6m               |             14.0433   |           1.87428    |                    1.32855  |            2.00357    |            26.2979   |                  -2.65232   |
-| delinquency | dpd_mean_12m              |              9.16259  |           1.89939    |                    1.1501   |            2.19427    |            16.6608   |                  -2.29072   |
-| default     | credit_score              |            643.758    |         714.726      |                   -1.48283  |          665.584      |           648.031    |                   0.366752  |
-| default     | is_delinquent             |              0.326193 |           0.0195428  |                    1.24417  |            0.0388457  |             0.775424 |                  -2.9885    |
-| default     | days_past_due             |             18.9113   |           1.23684    |                    0.975243 |            1.84166    |            59.1703   |                  -3.16329   |
-| default     | status_ordinal            |              1.46336  |           1.03231    |                    0.878079 |            1.04624    |             2.59619  |                  -3.15738   |
-| default     | status_changed_this_month |              0.280722 |           0.0438628  |                    0.877685 |            0.0558639  |             0.634322 |                  -2.14349   |
-| default     | ltv                       |             81.1037   |          73.1835     |                    0.824604 |           79.9922     |            81.6959   |                  -0.177381  |
-| default     | dpd_delta_3m              |             15.3653   |          -1.09186    |                    0.762811 |           -1.096      |            47.4902   |                  -2.25203   |
-| default     | dpd_delta_6m              |             15.2724   |          -0.925491   |                    0.726165 |           -1.30265    |            55.1282   |                  -2.52985   |
-| default     | dpd_mean_3m               |             11.1994   |           1.82785    |                    0.704447 |            2.04581    |            40.5505   |                  -2.89436   |
-| default     | dpd_max_3m                |             21.9658   |           4.839      |                    0.689821 |            5.16685    |            62.103    |                  -2.29323   |
-| default     | dti                       |             39.8479   |          34.87       |                    0.664743 |           38.5561     |            38.8987   |                  -0.0457571 |
-| default     | dpd_delta_1m              |              9.58571  |          -0.714936   |                    0.584118 |           -0.154748   |            20.0941   |                  -1.14825   |
-| prepayment  | credit_score              |            716.685    |         693.218      |                    0.490316 |          705.725      |           720.86     |                  -0.316216  |
-| prepayment  | dpd_mean_12m              |              1.54898  |           4.0762     |                   -0.391148 |            3.21192    |             1.47794  |                   0.268376  |
-| prepayment  | dpd_max_12m               |             12.3643   |          25.0388     |                   -0.369406 |           21.0121     |            12.7787   |                   0.239966  |
-| prepayment  | dpd_mean_6m               |              1.6436   |           5.06542    |                   -0.364056 |            3.49334    |             1.57753  |                   0.203827  |
-| prepayment  | dpd_mean_3m               |              1.80703  |           6.44752    |                   -0.34882  |            3.33028    |             1.72315  |                   0.120806  |
-| prepayment  | dpd_max_6m                |              7.31102  |          17.4807     |                   -0.347972 |           14.3135     |             7.68182  |                   0.226913  |
+| delinquency | is_delinquent             |              1        |           0.00708502 |                    4.10408  |            0.00732759 |             1        |                   -4.10308  |
+| delinquency | status_changed_this_month |              0.794286 |           0.0340578  |                    2.85286  |            0.0351293  |             0.805261 |                   -2.89003  |
+| delinquency | days_past_due             |             49.7371   |           0.716138   |                    2.77343  |            0.704526   |            69.0667   |                   -3.86768  |
+| delinquency | status_ordinal            |              2.1781   |           1.02051    |                    2.42018  |            1.01983    |             2.82097  |                   -3.76566  |
+| delinquency | dpd_delta_6m              |             46.6209   |          -1.47912    |                    2.20004  |           -2.31112    |            66.7635   |                   -3.1594   |
+| delinquency | dpd_delta_3m              |             44.9463   |          -1.6436     |                    2.19407  |           -1.85161    |            57.9162   |                   -2.81466  |
+| delinquency | dpd_max_3m                |             53.219    |           4.31437    |                    2.00239  |            4.13319    |            71.3086   |                   -2.75049  |
+| delinquency | dpd_mean_3m               |             25.9033   |           1.59752    |                    1.87912  |            1.53574    |            44.6478   |                   -3.33306  |
+| delinquency | dpd_delta_1m              |             30.7433   |          -1.11756    |                    1.82636  |           -1.10099    |            27.8992   |                   -1.66238  |
+| delinquency | dpd_max_6m                |             54.4457   |           8.51511    |                    1.58314  |            8.91767    |            72.342    |                   -2.18612  |
+| delinquency | dpd_mean_6m               |             15.3453   |           1.8796     |                    1.4701   |            2.02107    |            26.5904   |                   -2.68233  |
+| delinquency | dpd_mean_12m              |              9.94252  |           1.90251    |                    1.27311  |            2.21455    |            16.8169   |                   -2.31224  |
+| default     | credit_score              |            641.348    |         715.496      |                   -1.54925  |          668.755      |           646.151    |                    0.472286 |
+| default     | is_delinquent             |              0.292258 |           0.018957   |                    1.10886  |            0.0396825  |             0.721589 |                   -2.76668  |
+| default     | ltv                       |             81.4657   |          73.0919     |                    0.871824 |           79.6576     |            81.9048   |                   -0.23396  |
+| default     | days_past_due             |             16.8874   |           1.20727    |                    0.8652   |            1.92222    |            54.965    |                   -2.9268   |
+| default     | status_ordinal            |              1.41516  |           1.03152    |                    0.781509 |            1.04802    |             2.48289  |                   -2.92298  |
+| default     | status_changed_this_month |              0.252903 |           0.0435094  |                    0.775913 |            0.0571429  |             0.591427 |                   -1.9798   |
+| default     | dpd_delta_3m              |             13.6325   |          -1.11419    |                    0.683525 |           -0.877306   |            44.2255   |                   -2.09057  |
+| default     | dti                       |             39.783    |          34.8305     |                    0.66135  |           38.2199     |            39.2072   |                   -0.13184  |
+| default     | dpd_delta_6m              |             13.7217   |          -0.942981   |                    0.65743  |           -0.94033    |            51.7691   |                   -2.36301  |
+| default     | dpd_mean_3m               |             10.0847   |           1.81474    |                    0.621643 |            2.04874    |            37.7767   |                   -2.68563  |
+| default     | dpd_max_3m                |             19.9881   |           4.81137    |                    0.611276 |            5.12381    |            58.0484   |                   -2.13166  |
+| default     | dpd_delta_1m              |              8.52087  |          -0.735607   |                    0.524906 |           -0.0867197  |            18.6424   |                   -1.06207  |
+| prepayment  | credit_score              |            714.793    |         683.534      |                    0.653144 |          699.092      |           719.469    |                   -0.425768 |
+| prepayment  | dpd_mean_12m              |              1.68953  |           5.27424    |                   -0.554818 |            3.9224     |             1.65368  |                    0.351138 |
+| prepayment  | dpd_mean_6m               |              1.80464  |           6.75941    |                   -0.527152 |            4.13264    |             1.82011  |                    0.246036 |
+| prepayment  | dpd_mean_3m               |              2.01633  |           8.76713    |                   -0.507451 |            4.03106    |             1.87198  |                    0.162295 |
+| prepayment  | dpd_max_12m               |             13.3029   |          30.4734     |                   -0.500446 |           24.2155     |            13.6697   |                    0.307363 |
+| prepayment  | dpd_max_6m                |              7.8879   |          22.274      |                   -0.492241 |           15.9394     |             8.71662  |                    0.247139 |
 
 _Showing 30 of 36 rows._
 
@@ -395,37 +395,38 @@ Expected calibration error is the population-weighted mean gap between predicted
 
 | model       |   expected_calibration_error |   mean_predicted |   observed_rate |         bias |
 |:------------|-----------------------------:|-----------------:|----------------:|-------------:|
-| delinquency |                   0.00400925 |        0.111667  |       0.111335  |  0.000332136 |
-| default     |                   0.0070369  |        0.0808743 |       0.0867219 | -0.00584759  |
-| prepayment  |                   0.00848467 |        0.0838606 |       0.0895481 | -0.00568759  |
+| delinquency |                   0.00382324 |        0.111389  |       0.111335  |  5.42444e-05 |
+| default     |                   0.00512053 |        0.082415  |       0.0867219 | -0.0043069   |
+| prepayment  |                   0.0129867  |        0.0832439 |       0.0895481 | -0.0063042   |
 
 
 ### Reliability by probability bin
 
-| bin           |   records |   mean_predicted |   observed_rate |         gap | model       |
-|:--------------|----------:|-----------------:|----------------:|------------:|:------------|
-| (-0.001, 0.1] |     46209 |        0.0578409 |       0.0597935 | -0.00195265 | delinquency |
-| (0.1, 0.2]    |     14389 |        0.133752  |       0.125999  |  0.00775268 | delinquency |
-| (0.2, 0.3]    |       426 |        0.225844  |       0.20892   |  0.0169233  | delinquency |
-| (0.3, 0.4]    |         1 |        0.332733  |       0         |  0.332733   | delinquency |
-| (0.4, 0.5]    |       922 |        0.447871  |       0.43167   |  0.0162008  | delinquency |
-| (0.5, 0.6]    |        51 |        0.591638  |       0.607843  | -0.0162052  | delinquency |
-| (0.6, 0.7]    |       638 |        0.636508  |       0.626959  |  0.00954884 | delinquency |
-| (0.7, 0.8]    |       554 |        0.751496  |       0.772563  | -0.0210672  | delinquency |
-| (0.8, 0.9]    |       489 |        0.852833  |       0.869121  | -0.0162881  | delinquency |
-| (0.9, 1.0]    |       874 |        0.951955  |       0.961098  | -0.00914363 | delinquency |
-| (-0.001, 0.1] |     46593 |        0.0281993 |       0.0318717 | -0.00367246 | default     |
-| (0.1, 0.2]    |      5902 |        0.145177  |       0.172484  | -0.0273071  | default     |
-| (0.2, 0.3]    |      3870 |        0.267528  |       0.261757  |  0.00577081 | default     |
-| (0.3, 0.4]    |       232 |        0.357945  |       0.456897  | -0.0989519  | default     |
-| (0.4, 0.5]    |        12 |        0.5       |       0.666667  | -0.166667   | default     |
-| (0.5, 0.6]    |       285 |        0.574968  |       0.550877  |  0.0240913  | default     |
-| (0.6, 0.7]    |        81 |        0.680134  |       0.691358  | -0.0112241  | default     |
-| (0.7, 0.8]    |       543 |        0.731748  |       0.745856  | -0.0141087  | default     |
-| (0.8, 0.9]    |       280 |        0.866763  |       0.903571  | -0.0368089  | default     |
-| (0.9, 1.0]    |       584 |        0.971777  |       0.962329  |  0.00944867 | default     |
-| (-0.001, 0.1] |     55545 |        0.082209  |       0.089657  | -0.00744806 | prepayment  |
-| (0.1, 0.2]    |      2837 |        0.116197  |       0.0874163 |  0.0287803  | prepayment  |
+| bin           |   records |   mean_predicted |   observed_rate |          gap | model       |
+|:--------------|----------:|-----------------:|----------------:|-------------:|:------------|
+| (-0.001, 0.1] |     45898 |        0.057157  |       0.0592836 | -0.00212661  | delinquency |
+| (0.1, 0.2]    |     14447 |        0.132002  |       0.125286  |  0.00671625  | delinquency |
+| (0.2, 0.3]    |       699 |        0.219413  |       0.195994  |  0.0234187   | delinquency |
+| (0.3, 0.4]    |       171 |        0.387586  |       0.409357  | -0.0217703   | delinquency |
+| (0.4, 0.5]    |       505 |        0.452358  |       0.429703  |  0.0226555   | delinquency |
+| (0.5, 0.6]    |       444 |        0.530224  |       0.533784  | -0.00356002  | delinquency |
+| (0.6, 0.7]    |       402 |        0.648811  |       0.651741  | -0.00293044  | delinquency |
+| (0.7, 0.8]    |       553 |        0.743418  |       0.75226   | -0.00884268  | delinquency |
+| (0.8, 0.9]    |       658 |        0.847004  |       0.866261  | -0.0192579   | delinquency |
+| (0.9, 1.0]    |       776 |        0.96303   |       0.962629  |  0.000401369 | delinquency |
+| (-0.001, 0.1] |     44643 |        0.0252517 |       0.0284703 | -0.00321866  | default     |
+| (0.1, 0.2]    |      7741 |        0.14098   |       0.149981  | -0.00900063  | default     |
+| (0.2, 0.3]    |      3113 |        0.255581  |       0.261484  | -0.00590299  | default     |
+| (0.3, 0.4]    |      1053 |        0.328502  |       0.330484  | -0.00198276  | default     |
+| (0.4, 0.5]    |       129 |        0.44323   |       0.542636  | -0.099406    | default     |
+| (0.5, 0.6]    |         3 |        0.537769  |       0.333333  |  0.204435    | default     |
+| (0.6, 0.7]    |       579 |        0.669873  |       0.639033  |  0.0308399   | default     |
+| (0.7, 0.8]    |       138 |        0.719471  |       0.797101  | -0.0776305   | default     |
+| (0.8, 0.9]    |       349 |        0.845755  |       0.896848  | -0.0510928   | default     |
+| (0.9, 1.0]    |       634 |        0.962588  |       0.954259  |  0.00832977  | default     |
+| (-0.001, 0.1] |     41527 |        0.0753939 |       0.0889542 | -0.0135603   | prepayment  |
+| (0.1, 0.2]    |     16651 |        0.100429  |       0.0912858 |  0.00914293  | prepayment  |
+| (0.2, 0.3]    |       204 |        0.278571  |       0.0686275 |  0.209944    | prepayment  |
 
 
 ### Confidence profile
@@ -434,18 +435,18 @@ A model that never leaves a narrow band is technically calibrated and operationa
 
 | model       | band                                 |     share |
 |:------------|:-------------------------------------|----------:|
-| delinquency | confident, flagged                   | 0.048193  |
-| delinquency | uncertain (within 0.05 of threshold) | 0.012176  |
-| delinquency | confident, cleared                   | 0.0841634 |
+| delinquency | confident, flagged                   | 0.0438864 |
+| delinquency | uncertain (within 0.05 of threshold) | 0.0017505 |
+| delinquency | confident, cleared                   | 0.516227  |
 | delinquency | max predicted probability            | 1         |
-| default     | confident, flagged                   | 0.0305745 |
-| default     | uncertain (within 0.05 of threshold) | 0.0663047 |
-| default     | confident, cleared                   | 0.685297  |
+| default     | confident, flagged                   | 0.0313624 |
+| default     | uncertain (within 0.05 of threshold) | 0.0586653 |
+| default     | confident, cleared                   | 0.402898  |
 | default     | max predicted probability            | 1         |
 | prepayment  | confident, flagged                   | 0         |
-| prepayment  | uncertain (within 0.05 of threshold) | 0.984036  |
+| prepayment  | uncertain (within 0.05 of threshold) | 0.980456  |
 | prepayment  | confident, cleared                   | 0         |
-| prepayment  | max predicted probability            | 0.190476  |
+| prepayment  | max predicted probability            | 0.278571  |
 
 
 ## Disparity screen
@@ -481,36 +482,36 @@ represented to a regulator as a compliance test.
 
 | model       | segment           | kind                       | metric              |   groups_compared | worst_group                  |   worst_value |   worst_group_records |   worst_group_events | best_group                    |   best_value |   ratio_best_to_worst | below_floor   |      p_value | enough_events_to_test   | significant   | interpretable   | escalate   |   overall_selection_rate |
 |:------------|:------------------|:---------------------------|:--------------------|------------------:|:-----------------------------|--------------:|----------------------:|---------------------:|:------------------------------|-------------:|----------------------:|:--------------|-------------:|:------------------------|:--------------|:----------------|:-----------|-------------------------:|
-| delinquency | state             | screen for disparity       | false_positive_rate |                30 | MI                           |     0.0281081 |                  2115 |                   52 | CO                            |   0.00945378 |            0.336336   | True          | 0.00135165   | True                    | True          | True            | True       |                0.0583706 |
-| delinquency | state             | screen for disparity       | selection_rate      |                30 | MI                           |     0.0794326 |                  2115 |                  168 | OR                            |   0.038789   |            0.488326   | True          | 1.36616e-05  | True                    | True          | True            | True       |                0.0583706 |
-| delinquency | servicer_name     | screen for disparity       | false_positive_rate |                 5 | Beacon Home Loans            |     0.0242122 |                 12641 |                  272 | Northgate Financial Servicing |   0.0169178  |            0.69873    | True          | 0.000111753  | True                    | True          | True            | True       |                0.0583706 |
-| delinquency | state             | screen for disparity       | false_negative_rate |                30 | WA                           |     0.736041  |                  1815 |                  145 | PA                            |   0.558405   |            0.75866    | True          | 3.85975e-05  | True                    | True          | True            | True       |                0.0583706 |
-| delinquency | credit_score_band | risk factor (gap expected) | selection_rate      |                 6 | <620                         |     0.172076  |                  2249 |                  387 | 800+                          |   0.0123804  |            0.0719472  | True          | 2.80316e-62  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | ltv_band          | risk factor (gap expected) | selection_rate      |                 5 | 90-97%                       |     0.154429  |                  3037 |                  469 | <60%                          |   0.0247093  |            0.160005   | True          | 2.1206e-100  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | ltv_band          | risk factor (gap expected) | false_positive_rate |                 5 | 90-97%                       |     0.0556764 |                  3037 |                  128 | <60%                          |   0.0132898  |            0.238697   | True          | 3.12218e-24  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | credit_score_band | risk factor (gap expected) | false_positive_rate |                 6 | 620-659                      |     0.0405231 |                  7173 |                  220 | 800+                          |   0.00986651 |            0.243479   | True          | 5.86621e-10  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | credit_score_band | risk factor (gap expected) | false_negative_rate |                 6 | 800+                         |     0.907407  |                  1777 |                   49 | <620                          |   0.5        |            0.55102    | True          | 8.18076e-09  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | ltv_band          | risk factor (gap expected) | false_negative_rate |                 5 | <60%                         |     0.743363  |                  4816 |                  168 | 90-97%                        |   0.53794    |            0.723658   | True          | 4.11068e-08  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | servicer_name     | screen for disparity       | selection_rate      |                 5 | Meridian Residential Capital |     0.063666  |                 12597 |                  802 | Northgate Financial Servicing |   0.0529235  |            0.831268   | False         | 0.000271897  | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | vintage_year      | risk factor (gap expected) | false_negative_rate |                 6 | 2023                         |     0.685     |                 10005 |                  822 | 2019                          |   0.613779   |            0.896027   | False         | 0.00055191   | True                    | True          | True            | False      |                0.0583706 |
-| delinquency | vintage_year      | risk factor (gap expected) | false_positive_rate |                 6 | 2018                         |     0.023692  |                  2298 |                   48 | 2023                          |   0.0177172  |            0.747814   | True          | 0.0744727    | True                    | False         | True            | False      |                0.0583706 |
-| delinquency | vintage_year      | risk factor (gap expected) | selection_rate      |                 6 | 2018                         |     0.064839  |                  2298 |                  149 | 2023                          |   0.0533733  |            0.823167   | False         | 0.0304192    | True                    | False         | True            | False      |                0.0583706 |
-| delinquency | servicer_name     | screen for disparity       | false_negative_rate |                 5 | Beacon Home Loans            |     0.66027   |                 12641 |                  929 | Meridian Residential Capital  |   0.623584   |            0.944438   | False         | 0.03927      | True                    | False         | True            | False      |                0.0583706 |
-| default     | state             | screen for disparity       | false_positive_rate |                30 | WI                           |     0.0995392 |                  1184 |                  108 | OK                            |   0.00997151 |            0.100177   | True          | 4.85317e-14  | True                    | True          | True            | True       |                0.0860025 |
-| default     | state             | screen for disparity       | selection_rate      |                30 | WI                           |     0.149493  |                  1184 |                  177 | SC                            |   0.0379267  |            0.253702   | True          | 2.16512e-15  | True                    | True          | True            | True       |                0.0860025 |
-| default     | state             | screen for disparity       | false_negative_rate |                30 | CT                           |     0.75      |                   545 |                   33 | MA                            |   0.25       |            0.333333   | True          | 5.45012e-09  | True                    | True          | True            | True       |                0.0860025 |
-| default     | servicer_name     | screen for disparity       | false_positive_rate |                 5 | Atlas Mortgage Services      |     0.0588831 |                 11970 |                  640 | Northgate Financial Servicing |   0.0429827  |            0.729967   | True          | 1.46641e-07  | True                    | True          | True            | True       |                0.0860025 |
-| default     | servicer_name     | screen for disparity       | selection_rate      |                 5 | Atlas Mortgage Services      |     0.0999165 |                 11970 |                 1196 | Cornerstone Loan Servicing    |   0.0744943  |            0.745566   | True          | 2.51972e-12  | True                    | True          | True            | True       |                0.0860025 |
-| default     | credit_score_band | risk factor (gap expected) | selection_rate      |                 6 | <620                         |     0.500463  |                  2158 |                 1080 | 800+                          |   0.0018797  |            0.00375592 | True          | 1.27878e-243 | True                    | True          | True            | False      |                0.0860025 |
-| default     | credit_score_band | risk factor (gap expected) | false_positive_rate |                 6 | <620                         |     0.433116  |                  2158 |                  599 | 800+                          |   0.0018797  |            0.00433994 | True          | 7.49911e-188 | True                    | True          | True            | False      |                0.0860025 |
-| default     | ltv_band          | risk factor (gap expected) | selection_rate      |                 5 | 90-97%                       |     0.279791  |                  2870 |                  803 | <60%                          |   0.013523   |            0.0483324  | True          | 1.50287e-252 | True                    | True          | True            | False      |                0.0860025 |
-| default     | ltv_band          | risk factor (gap expected) | false_positive_rate |                 5 | 90-97%                       |     0.194087  |                  2870 |                  407 | <60%                          |   0.00964252 |            0.0496815  | True          | 1.90764e-160 | True                    | True          | True            | False      |                0.0860025 |
-| default     | vintage_year      | risk factor (gap expected) | false_positive_rate |                 6 | 2021                         |     0.0751192 |                 14160 |                  977 | 2018                          |   0.00735294 |            0.0978837  | True          | 0.00273943   | True                    | True          | True            | False      |                0.0860025 |
-| default     | vintage_year      | risk factor (gap expected) | selection_rate      |                 6 | 2018                         |     0.331897  |                   232 |                   77 | 2023                          |   0.0516446  |            0.155605   | True          | 7.74758e-73  | True                    | True          | True            | False      |                0.0860025 |
-| default     | vintage_year      | risk factor (gap expected) | false_negative_rate |                 6 | 2023                         |     0.699301  |                  9972 |                  700 | 2018                          |   0.208333   |            0.297917   | True          | 3.8336e-22   | True                    | True          | True            | False      |                0.0860025 |
-| default     | credit_score_band | risk factor (gap expected) | false_negative_rate |                 5 | 700-739                      |     0.740291  |                 18569 |                  305 | <620                          |   0.379355   |            0.51244    | True          | 2.42315e-32  | True                    | True          | True            | False      |                0.0860025 |
-| default     | ltv_band          | risk factor (gap expected) | false_negative_rate |                 5 | 75-80%                       |     0.599369  |                 11315 |                  570 | 80-90%                        |   0.483919   |            0.80738    | False         | 4.17889e-09  | True                    | True          | True            | False      |                0.0860025 |
-| default     | servicer_name     | screen for disparity       | false_negative_rate |                 5 | Cornerstone Loan Servicing   |     0.596728  |                 12162 |                  620 | Atlas Mortgage Services       |   0.495005   |            0.829532   | False         | 2.3308e-06   | True                    | True          | True            | False      |                0.0860025 |
+| delinquency | state             | screen for disparity       | false_positive_rate |                30 | MN                           |     0.0261438 |                  1254 |                   28 | CO                            |   0.00945378 |            0.361607   | True          | 0.00516981   | True                    | True          | True            | True       |                0.0557217 |
+| delinquency | state             | screen for disparity       | selection_rate      |                30 | PA                           |     0.0725716 |                  2687 |                  195 | OR                            |   0.038789   |            0.534493   | True          | 0.000128843  | True                    | True          | True            | True       |                0.0557217 |
+| delinquency | state             | screen for disparity       | false_negative_rate |                30 | WA                           |     0.736041  |                  1815 |                  145 | PA                            |   0.558405   |            0.75866    | True          | 3.85975e-05  | True                    | True          | True            | True       |                0.0557217 |
+| delinquency | credit_score_band | risk factor (gap expected) | selection_rate      |                 6 | <620                         |     0.152957  |                  2249 |                  344 | 800+                          |   0.0106922  |            0.0699032  | True          | 3.34799e-55  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | ltv_band          | risk factor (gap expected) | selection_rate      |                 5 | 90-97%                       |     0.125782  |                  3037 |                  382 | <60%                          |   0.0236711  |            0.188191   | True          | 2.37921e-73  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | credit_score_band | risk factor (gap expected) | false_positive_rate |                 6 | 620-659                      |     0.0265242 |                  7173 |                  144 | 800+                          |   0.00812536 |            0.306337   | True          | 5.98112e-06  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | ltv_band          | risk factor (gap expected) | false_positive_rate |                 5 | 80-90%                       |     0.0236187 |                 13895 |                  274 | <60%                          |   0.0126362  |            0.535008   | True          | 8.82569e-06  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | credit_score_band | risk factor (gap expected) | false_negative_rate |                 6 | 800+                         |     0.907407  |                  1777 |                   49 | <620                          |   0.527692   |            0.581538   | True          | 6.76472e-08  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | vintage_year      | risk factor (gap expected) | false_positive_rate |                 6 | 2018                         |     0.0222113 |                  2298 |                   45 | 2023                          |   0.0136286  |            0.613591   | True          | 0.00445814   | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | ltv_band          | risk factor (gap expected) | false_negative_rate |                 5 | <60%                         |     0.752212  |                  4816 |                  170 | 90-97%                        |   0.555556   |            0.738562   | True          | 1.26498e-07  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | vintage_year      | risk factor (gap expected) | selection_rate      |                 6 | 2018                         |     0.0635335 |                  2298 |                  146 | 2023                          |   0.0488756  |            0.769288   | True          | 0.00418293   | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | servicer_name     | screen for disparity       | selection_rate      |                 5 | Meridian Residential Capital |     0.0609669 |                 12597 |                  768 | Northgate Financial Servicing |   0.0517351  |            0.848576   | False         | 0.00147815   | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | vintage_year      | risk factor (gap expected) | false_negative_rate |                 6 | 2023                         |     0.6925    |                 10005 |                  831 | 2019                          |   0.615866   |            0.889338   | False         | 0.000191618  | True                    | True          | True            | False      |                0.0557217 |
+| delinquency | servicer_name     | screen for disparity       | false_positive_rate |                 5 | Atlas Mortgage Services      |     0.0196229 |                 13276 |                  230 | Northgate Financial Servicing |   0.0159485  |            0.812752   | False         | 0.0349243    | True                    | False         | True            | False      |                0.0557217 |
+| delinquency | servicer_name     | screen for disparity       | false_negative_rate |                 5 | Beacon Home Loans            |     0.665956  |                 12641 |                  937 | Meridian Residential Capital  |   0.626915   |            0.941377   | False         | 0.0278208    | True                    | False         | True            | False      |                0.0557217 |
+| default     | state             | screen for disparity       | false_positive_rate |                30 | WI                           |     0.121659  |                  1184 |                  132 | OK                            |   0.011396   |            0.0936718  | True          | 2.4208e-17   | True                    | True          | True            | True       |                0.0966565 |
+| default     | state             | screen for disparity       | selection_rate      |                30 | WI                           |     0.173986  |                  1184 |                  206 | UT                            |   0.0375235  |            0.215669   | True          | 1.0074e-14   | True                    | True          | True            | True       |                0.0966565 |
+| default     | state             | screen for disparity       | false_negative_rate |                30 | CO                           |     0.728261  |                   996 |                   67 | WI                            |   0.252525   |            0.346751   | True          | 4.87196e-11  | True                    | True          | True            | True       |                0.0966565 |
+| default     | servicer_name     | screen for disparity       | false_positive_rate |                 5 | Atlas Mortgage Services      |     0.0675315 |                 11970 |                  734 | Northgate Financial Servicing |   0.0494543  |            0.732314   | True          | 2.15118e-08  | True                    | True          | True            | True       |                0.0966565 |
+| default     | servicer_name     | screen for disparity       | selection_rate      |                 5 | Atlas Mortgage Services      |     0.112114  |                 11970 |                 1342 | Cornerstone Loan Servicing    |   0.0840322  |            0.749527   | True          | 2.1807e-13   | True                    | True          | True            | True       |                0.0966565 |
+| default     | servicer_name     | screen for disparity       | false_negative_rate |                 5 | Cornerstone Loan Servicing   |     0.563041  |                 12162 |                  585 | Atlas Mortgage Services       |   0.447775   |            0.795279   | True          | 9.81259e-08  | True                    | True          | True            | True       |                0.0966565 |
+| default     | credit_score_band | risk factor (gap expected) | selection_rate      |                 6 | <620                         |     0.612141  |                  2158 |                 1321 | 800+                          |   0.0018797  |            0.0030707  | True          | 0            | True                    | True          | True            | False      |                0.0966565 |
+| default     | credit_score_band | risk factor (gap expected) | false_positive_rate |                 6 | <620                         |     0.546638  |                  2158 |                  756 | 800+                          |   0.0018797  |            0.00343866 | True          | 7.87178e-254 | True                    | True          | True            | False      |                0.0966565 |
+| default     | ltv_band          | risk factor (gap expected) | false_positive_rate |                 5 | 90-97%                       |     0.243681  |                  2870 |                  511 | <60%                          |   0.0101129  |            0.0415004  | True          | 3.31338e-211 | True                    | True          | True            | False      |                0.0966565 |
+| default     | ltv_band          | risk factor (gap expected) | selection_rate      |                 5 | 90-97%                       |     0.326132  |                  2870 |                  936 | <60%                          |   0.0139893  |            0.0428945  | True          | 3.88755e-306 | True                    | True          | True            | False      |                0.0966565 |
+| default     | vintage_year      | risk factor (gap expected) | false_positive_rate |                 6 | 2021                         |     0.080732  |                 14160 |                 1050 | 2018                          |   0.00735294 |            0.0910784  | True          | 0.00169859   | True                    | True          | True            | False      |                0.0966565 |
+| default     | vintage_year      | risk factor (gap expected) | selection_rate      |                 6 | 2018                         |     0.336207  |                   232 |                   78 | 2023                          |   0.0713999  |            0.212369   | True          | 2.46762e-50  | True                    | True          | True            | False      |                0.0966565 |
+| default     | vintage_year      | risk factor (gap expected) | false_negative_rate |                 6 | 2023                         |     0.638362  |                  9972 |                  639 | 2018                          |   0.197917   |            0.310038   | True          | 3.96267e-17  | True                    | True          | True            | False      |                0.0966565 |
+| default     | credit_score_band | risk factor (gap expected) | false_negative_rate |                 5 | 700-739                      |     0.740291  |                 18569 |                  305 | <620                          |   0.270968   |            0.366029   | True          | 2.12889e-54  | True                    | True          | True            | False      |                0.0966565 |
+| default     | ltv_band          | risk factor (gap expected) | false_negative_rate |                 5 | 75-80%                       |     0.584648  |                 11315 |                  556 | 80-90%                        |   0.420089   |            0.718534   | True          | 5.20505e-17  | True                    | True          | True            | False      |                0.0966565 |
 
 _Showing 30 of 45 rows._
 
@@ -519,66 +520,66 @@ _Showing 30 of 45 rows._
 
 | model       | segment           | kind                       | group                         |   records |   actual_positives |   actual_negatives |   flagged |   false_positives |   false_negatives |   true_positives |   selection_rate |   precision |      recall |   false_positive_rate |   false_negative_rate |
 |:------------|:------------------|:---------------------------|:------------------------------|----------:|-------------------:|-------------------:|----------:|------------------:|------------------:|-----------------:|-----------------:|------------:|------------:|----------------------:|----------------------:|
-| delinquency | credit_score_band | risk factor (gap expected) | 620-659                       |      7173 |               1744 |               5429 |      1035 |               220 |               929 |              815 |       0.144291   |    0.78744  |   0.467317  |            0.0405231  |              0.532683 |
-| delinquency | credit_score_band | risk factor (gap expected) | <620                          |      2249 |                650 |               1599 |       387 |                62 |               325 |              325 |       0.172076   |    0.839793 |   0.5       |            0.0387742  |              0.5      |
-| delinquency | credit_score_band | risk factor (gap expected) | 660-699                       |     18417 |               2507 |              15910 |      1278 |               390 |              1619 |              888 |       0.0693924  |    0.694836 |   0.354208  |            0.0245129  |              0.645792 |
+| delinquency | credit_score_band | risk factor (gap expected) | 620-659                       |      7173 |               1744 |               5429 |       950 |               144 |               938 |              806 |       0.132441   |    0.848421 |   0.462156  |            0.0265242  |              0.537844 |
+| delinquency | credit_score_band | risk factor (gap expected) | 660-699                       |     18417 |               2507 |              15910 |      1261 |               375 |              1621 |              886 |       0.0684693  |    0.702617 |   0.35341   |            0.0235701  |              0.64659  |
+| delinquency | credit_score_band | risk factor (gap expected) | <620                          |      2249 |                650 |               1599 |       344 |                37 |               343 |              307 |       0.152957   |    0.892442 |   0.472308  |            0.0231395  |              0.527692 |
 | delinquency | credit_score_band | risk factor (gap expected) | 700-739                       |     20820 |               1539 |              19281 |       725 |               329 |              1143 |              396 |       0.0348223  |    0.546207 |   0.25731   |            0.0170634  |              0.74269  |
-| delinquency | credit_score_band | risk factor (gap expected) | 740-799                       |     14117 |                693 |              13424 |       321 |               169 |               541 |              152 |       0.0227385  |    0.47352  |   0.219336  |            0.0125894  |              0.780664 |
-| delinquency | credit_score_band | risk factor (gap expected) | 800+                          |      1777 |                 54 |               1723 |        22 |                17 |                49 |                5 |       0.0123804  |    0.227273 |   0.0925926 |            0.00986651 |              0.907407 |
-| delinquency | ltv_band          | risk factor (gap expected) | 90-97%                        |      3037 |                738 |               2299 |       469 |               128 |               397 |              341 |       0.154429   |    0.727079 |   0.46206   |            0.0556764  |              0.53794  |
-| delinquency | ltv_band          | risk factor (gap expected) | 80-90%                        |     13895 |               2294 |              11601 |      1245 |               307 |              1356 |              938 |       0.0896006  |    0.753414 |   0.408893  |            0.0264632  |              0.591107 |
-| delinquency | ltv_band          | risk factor (gap expected) | 75-80%                        |     12435 |               1426 |              11009 |       724 |               224 |               926 |              500 |       0.0582228  |    0.690608 |   0.350631  |            0.020347   |              0.649369 |
-| delinquency | ltv_band          | risk factor (gap expected) | 60-75%                        |     30370 |               2503 |              27867 |      1211 |               467 |              1759 |              744 |       0.0398749  |    0.614368 |   0.297243  |            0.0167582  |              0.702757 |
-| delinquency | ltv_band          | risk factor (gap expected) | <60%                          |      4816 |                226 |               4590 |       119 |                61 |               168 |               58 |       0.0247093  |    0.487395 |   0.256637  |            0.0132898  |              0.743363 |
-| delinquency | vintage_year      | risk factor (gap expected) | 2018                          |      2298 |                272 |               2026 |       149 |                48 |               171 |              101 |       0.064839   |    0.677852 |   0.371324  |            0.023692   |              0.628676 |
-| delinquency | vintage_year      | risk factor (gap expected) | 2022                          |     17090 |               1989 |              15101 |      1106 |               349 |              1232 |              757 |       0.0647162  |    0.684448 |   0.380593  |            0.0231111  |              0.619407 |
-| delinquency | vintage_year      | risk factor (gap expected) | 2021                          |     14160 |               1575 |              12585 |       791 |               260 |              1044 |              531 |       0.0558616  |    0.671302 |   0.337143  |            0.0206595  |              0.662857 |
-| delinquency | vintage_year      | risk factor (gap expected) | 2019                          |      9531 |                958 |               8573 |       544 |               174 |               588 |              370 |       0.0570769  |    0.680147 |   0.386221  |            0.0202963  |              0.613779 |
-| delinquency | vintage_year      | risk factor (gap expected) | 2020                          |     11469 |               1193 |              10276 |       644 |               200 |               749 |              444 |       0.0561514  |    0.689441 |   0.372171  |            0.0194628  |              0.627829 |
-| delinquency | vintage_year      | risk factor (gap expected) | 2023                          |     10005 |               1200 |               8805 |       534 |               156 |               822 |              378 |       0.0533733  |    0.707865 |   0.315     |            0.0177172  |              0.685    |
-| delinquency | state             | screen for disparity       | MI                            |      2115 |                265 |               1850 |       168 |                52 |               149 |              116 |       0.0794326  |    0.690476 |   0.437736  |            0.0281081  |              0.562264 |
-| delinquency | state             | screen for disparity       | MN                            |      1254 |                183 |               1071 |        88 |                29 |               124 |               59 |       0.0701754  |    0.670455 |   0.322404  |            0.0270775  |              0.677596 |
-| delinquency | state             | screen for disparity       | GA                            |      2369 |                269 |               2100 |       151 |                56 |               174 |               95 |       0.06374    |    0.629139 |   0.35316   |            0.0266667  |              0.64684  |
-| delinquency | state             | screen for disparity       | MA                            |      1581 |                184 |               1397 |       103 |                36 |               117 |               67 |       0.0651486  |    0.650485 |   0.36413   |            0.0257695  |              0.63587  |
+| delinquency | credit_score_band | risk factor (gap expected) | 740-799                       |     14117 |                693 |              13424 |       298 |               151 |               546 |              147 |       0.0211093  |    0.493289 |   0.212121  |            0.0112485  |              0.787879 |
+| delinquency | credit_score_band | risk factor (gap expected) | 800+                          |      1777 |                 54 |               1723 |        19 |                14 |                49 |                5 |       0.0106922  |    0.263158 |   0.0925926 |            0.00812536 |              0.907407 |
+| delinquency | ltv_band          | risk factor (gap expected) | 80-90%                        |     13895 |               2294 |              11601 |      1197 |               274 |              1371 |              923 |       0.0861461  |    0.771094 |   0.402354  |            0.0236187  |              0.597646 |
+| delinquency | ltv_band          | risk factor (gap expected) | 90-97%                        |      3037 |                738 |               2299 |       382 |                54 |               410 |              328 |       0.125782   |    0.858639 |   0.444444  |            0.0234885  |              0.555556 |
+| delinquency | ltv_band          | risk factor (gap expected) | 75-80%                        |     12435 |               1426 |              11009 |       717 |               217 |               926 |              500 |       0.0576598  |    0.69735  |   0.350631  |            0.0197111  |              0.649369 |
+| delinquency | ltv_band          | risk factor (gap expected) | 60-75%                        |     30370 |               2503 |              27867 |      1187 |               447 |              1763 |              740 |       0.0390846  |    0.62342  |   0.295645  |            0.0160405  |              0.704355 |
+| delinquency | ltv_band          | risk factor (gap expected) | <60%                          |      4816 |                226 |               4590 |       114 |                58 |               170 |               56 |       0.0236711  |    0.491228 |   0.247788  |            0.0126362  |              0.752212 |
+| delinquency | vintage_year      | risk factor (gap expected) | 2018                          |      2298 |                272 |               2026 |       146 |                45 |               171 |              101 |       0.0635335  |    0.691781 |   0.371324  |            0.0222113  |              0.628676 |
+| delinquency | vintage_year      | risk factor (gap expected) | 2019                          |      9531 |                958 |               8573 |       537 |               169 |               590 |              368 |       0.0563425  |    0.685289 |   0.384134  |            0.0197131  |              0.615866 |
+| delinquency | vintage_year      | risk factor (gap expected) | 2021                          |     14160 |               1575 |              12585 |       771 |               242 |              1046 |              529 |       0.0544492  |    0.686122 |   0.335873  |            0.0192292  |              0.664127 |
+| delinquency | vintage_year      | risk factor (gap expected) | 2020                          |     11469 |               1193 |              10276 |       638 |               195 |               750 |              443 |       0.0556282  |    0.694357 |   0.371333  |            0.0189763  |              0.628667 |
+| delinquency | vintage_year      | risk factor (gap expected) | 2022                          |     17090 |               1989 |              15101 |      1016 |               279 |              1252 |              737 |       0.05945    |    0.725394 |   0.370538  |            0.0184756  |              0.629462 |
+| delinquency | vintage_year      | risk factor (gap expected) | 2023                          |     10005 |               1200 |               8805 |       489 |               120 |               831 |              369 |       0.0488756  |    0.754601 |   0.3075    |            0.0136286  |              0.6925   |
+| delinquency | state             | screen for disparity       | MN                            |      1254 |                183 |               1071 |        87 |                28 |               124 |               59 |       0.069378   |    0.678161 |   0.322404  |            0.0261438  |              0.677596 |
 | delinquency | state             | screen for disparity       | AL                            |       952 |                 91 |                861 |        58 |                22 |                55 |               36 |       0.0609244  |    0.62069  |   0.395604  |            0.0255517  |              0.604396 |
-| delinquency | state             | screen for disparity       | CA                            |      8064 |                950 |               7114 |       516 |               177 |               611 |              339 |       0.0639881  |    0.656977 |   0.356842  |            0.0248805  |              0.643158 |
-| delinquency | state             | screen for disparity       | WA                            |      1815 |                197 |               1618 |        91 |                39 |               145 |               52 |       0.0501377  |    0.571429 |   0.263959  |            0.0241038  |              0.736041 |
-| delinquency | state             | screen for disparity       | TX                            |      6519 |                759 |               5760 |       400 |               137 |               496 |              263 |       0.0613591  |    0.6575   |   0.346509  |            0.0237847  |              0.653491 |
-| delinquency | state             | screen for disparity       | AZ                            |      1652 |                179 |               1473 |        92 |                33 |               120 |               59 |       0.0556901  |    0.641304 |   0.329609  |            0.0224033  |              0.670391 |
-| delinquency | state             | screen for disparity       | LA                            |       849 |                108 |                741 |        55 |                16 |                69 |               39 |       0.0647821  |    0.709091 |   0.361111  |            0.0215924  |              0.638889 |
+| delinquency | state             | screen for disparity       | MA                            |      1581 |                184 |               1397 |       100 |                33 |               117 |               67 |       0.0632511  |    0.67     |   0.36413   |            0.023622   |              0.63587  |
+| delinquency | state             | screen for disparity       | WA                            |      1815 |                197 |               1618 |        89 |                37 |               145 |               52 |       0.0490358  |    0.58427  |   0.263959  |            0.0228677  |              0.736041 |
+| delinquency | state             | screen for disparity       | CA                            |      8064 |                950 |               7114 |       491 |               158 |               617 |              333 |       0.0608879  |    0.678208 |   0.350526  |            0.0222097  |              0.649474 |
 | delinquency | state             | screen for disparity       | UT                            |       569 |                 47 |                522 |        25 |                11 |                33 |               14 |       0.0439367  |    0.56     |   0.297872  |            0.0210728  |              0.702128 |
-| delinquency | state             | screen for disparity       | MO                            |      1433 |                181 |               1252 |        82 |                26 |               125 |               56 |       0.0572226  |    0.682927 |   0.309392  |            0.0207668  |              0.690608 |
-| delinquency | state             | screen for disparity       | IN                            |      1280 |                157 |               1123 |        83 |                23 |                97 |               60 |       0.0648438  |    0.722892 |   0.382166  |            0.0204809  |              0.617834 |
-| delinquency | state             | screen for disparity       | OH                            |      2744 |                256 |               2488 |       138 |                48 |               166 |               90 |       0.0502915  |    0.652174 |   0.351562  |            0.0192926  |              0.648438 |
-| delinquency | state             | screen for disparity       | IL                            |      2629 |                274 |               2355 |       146 |                45 |               173 |              101 |       0.0555344  |    0.691781 |   0.368613  |            0.0191083  |              0.631387 |
-| delinquency | state             | screen for disparity       | NY                            |      3862 |                362 |               3500 |       173 |                65 |               254 |              108 |       0.0447954  |    0.624277 |   0.298343  |            0.0185714  |              0.701657 |
-| delinquency | state             | screen for disparity       | FL                            |      6649 |                755 |               5894 |       384 |               109 |               480 |              275 |       0.057753   |    0.716146 |   0.364238  |            0.0184934  |              0.635762 |
-| delinquency | state             | screen for disparity       | NJ                            |      1849 |                217 |               1632 |       118 |                30 |               129 |               88 |       0.0638183  |    0.745763 |   0.40553   |            0.0183824  |              0.59447  |
+| delinquency | state             | screen for disparity       | AZ                            |      1652 |                179 |               1473 |        87 |                31 |               123 |               56 |       0.0526634  |    0.643678 |   0.312849  |            0.0210455  |              0.687151 |
+| delinquency | state             | screen for disparity       | TX                            |      6519 |                759 |               5760 |       379 |               116 |               496 |              263 |       0.0581378  |    0.693931 |   0.346509  |            0.0201389  |              0.653491 |
+| delinquency | state             | screen for disparity       | MO                            |      1433 |                181 |               1252 |        81 |                25 |               125 |               56 |       0.0565248  |    0.691358 |   0.309392  |            0.0199681  |              0.690608 |
+| delinquency | state             | screen for disparity       | GA                            |      2369 |                269 |               2100 |       132 |                40 |               177 |               92 |       0.0557197  |    0.69697  |   0.342007  |            0.0190476  |              0.657993 |
+| delinquency | state             | screen for disparity       | LA                            |       849 |                108 |                741 |        52 |                14 |                70 |               38 |       0.0612485  |    0.730769 |   0.351852  |            0.0188934  |              0.648148 |
+| delinquency | state             | screen for disparity       | IN                            |      1280 |                157 |               1123 |        81 |                21 |                97 |               60 |       0.0632812  |    0.740741 |   0.382166  |            0.0186999  |              0.617834 |
+| delinquency | state             | screen for disparity       | NJ                            |      1849 |                217 |               1632 |       117 |                30 |               130 |               87 |       0.0632774  |    0.74359  |   0.400922  |            0.0183824  |              0.599078 |
 | delinquency | state             | screen for disparity       | CT                            |       622 |                 66 |                556 |        29 |                10 |                47 |               19 |       0.0466238  |    0.655172 |   0.287879  |            0.0179856  |              0.712121 |
-| delinquency | state             | screen for disparity       | VA                            |      1903 |                212 |               1691 |       107 |                30 |               135 |               77 |       0.056227   |    0.719626 |   0.363208  |            0.017741   |              0.636792 |
-| delinquency | state             | screen for disparity       | KY                            |       910 |                115 |                795 |        62 |                14 |                67 |               48 |       0.0681319  |    0.774194 |   0.417391  |            0.0176101  |              0.582609 |
+| delinquency | state             | screen for disparity       | NY                            |      3862 |                362 |               3500 |       168 |                62 |               256 |              106 |       0.0435008  |    0.630952 |   0.292818  |            0.0177143  |              0.707182 |
+| delinquency | state             | screen for disparity       | KY                            |       910 |                115 |                795 |        61 |                14 |                68 |               47 |       0.067033   |    0.770492 |   0.408696  |            0.0176101  |              0.591304 |
 | delinquency | state             | screen for disparity       | OR                            |      1057 |                 90 |                967 |        41 |                17 |                66 |               24 |       0.038789   |    0.585366 |   0.266667  |            0.0175801  |              0.733333 |
-| delinquency | state             | screen for disparity       | PA                            |      2687 |                351 |               2336 |       196 |                41 |               196 |              155 |       0.0729438  |    0.790816 |   0.441595  |            0.0175514  |              0.558405 |
-| delinquency | state             | screen for disparity       | TN                            |      1485 |                148 |               1337 |        75 |                23 |                96 |               52 |       0.0505051  |    0.693333 |   0.351351  |            0.0172027  |              0.648649 |
+| delinquency | state             | screen for disparity       | IL                            |      2629 |                274 |               2355 |       141 |                41 |               174 |              100 |       0.0536326  |    0.70922  |   0.364964  |            0.0174098  |              0.635036 |
+| delinquency | state             | screen for disparity       | VA                            |      1903 |                212 |               1691 |       106 |                29 |               135 |               77 |       0.0557015  |    0.726415 |   0.363208  |            0.0171496  |              0.636792 |
+| delinquency | state             | screen for disparity       | PA                            |      2687 |                351 |               2336 |       195 |                40 |               196 |              155 |       0.0725716  |    0.794872 |   0.441595  |            0.0171233  |              0.558405 |
 | delinquency | state             | screen for disparity       | SC                            |       905 |                 78 |                827 |        38 |                14 |                54 |               24 |       0.041989   |    0.631579 |   0.307692  |            0.0169287  |              0.692308 |
-| delinquency | state             | screen for disparity       | NC                            |      2294 |                259 |               2035 |       131 |                31 |               159 |              100 |       0.0571055  |    0.763359 |   0.3861    |            0.0152334  |              0.6139   |
-| delinquency | state             | screen for disparity       | MD                            |      1275 |                125 |               1150 |        66 |                17 |                76 |               49 |       0.0517647  |    0.742424 |   0.392     |            0.0147826  |              0.608    |
-| delinquency | state             | screen for disparity       | WI                            |      1335 |                122 |               1213 |        60 |                17 |                79 |               43 |       0.0449438  |    0.716667 |   0.352459  |            0.0140148  |              0.647541 |
-| delinquency | state             | screen for disparity       | OK                            |       847 |                 91 |                756 |        47 |                10 |                54 |               37 |       0.05549    |    0.787234 |   0.406593  |            0.0132275  |              0.593407 |
-| delinquency | state             | screen for disparity       | CO                            |      1048 |                 96 |                952 |        45 |                 9 |                60 |               36 |       0.0429389  |    0.8      |   0.375     |            0.00945378 |              0.625    |
-| delinquency | servicer_name     | screen for disparity       | Beacon Home Loans             |     12641 |               1407 |              11234 |       750 |               272 |               929 |              478 |       0.0593307  |    0.637333 |   0.33973   |            0.0242122  |              0.66027  |
-| delinquency | servicer_name     | screen for disparity       | Meridian Residential Capital  |     12597 |               1501 |              11096 |       802 |               237 |               936 |              565 |       0.063666   |    0.704489 |   0.376416  |            0.021359   |              0.623584 |
-| delinquency | servicer_name     | screen for disparity       | Atlas Mortgage Services       |     13276 |               1555 |              11721 |       816 |               248 |               987 |              568 |       0.0614643  |    0.696078 |   0.365273  |            0.0211586  |              0.634727 |
-| delinquency | servicer_name     | screen for disparity       | Cornerstone Loan Servicing    |     13417 |               1451 |              11966 |       732 |               238 |               957 |              494 |       0.0545577  |    0.674863 |   0.340455  |            0.0198897  |              0.659545 |
-| delinquency | servicer_name     | screen for disparity       | Northgate Financial Servicing |     12622 |               1273 |              11349 |       668 |               192 |               797 |              476 |       0.0529235  |    0.712575 |   0.37392   |            0.0169178  |              0.62608  |
-| default     | credit_score_band | risk factor (gap expected) | <620                          |      2158 |                775 |               1383 |      1080 |               599 |               294 |              481 |       0.500463   |    0.44537  |   0.620645  |            0.433116   |              0.379355 |
-| default     | credit_score_band | risk factor (gap expected) | 620-659                       |      6847 |               1980 |               4867 |      2480 |              1399 |               899 |             1081 |       0.362202   |    0.435887 |   0.54596   |            0.287446   |              0.45404  |
-| default     | credit_score_band | risk factor (gap expected) | 660-699                       |     16786 |               1790 |              14996 |      1155 |               506 |              1141 |              649 |       0.0688073  |    0.561905 |   0.36257   |            0.0337423  |              0.63743  |
-| default     | credit_score_band | risk factor (gap expected) | 700-739                       |     18569 |                412 |              18157 |       220 |               113 |               305 |              107 |       0.0118477  |    0.486364 |   0.259709  |            0.0062235  |              0.740291 |
-| default     | credit_score_band | risk factor (gap expected) | 740-799                       |     12426 |                106 |              12320 |        83 |                41 |                64 |               42 |       0.00667954 |    0.506024 |   0.396226  |            0.00332792 |              0.603774 |
+| delinquency | state             | screen for disparity       | FL                            |      6649 |                755 |               5894 |       368 |                98 |               485 |              270 |       0.0553467  |    0.733696 |   0.357616  |            0.0166271  |              0.642384 |
+| delinquency | state             | screen for disparity       | MI                            |      2115 |                265 |               1850 |       145 |                30 |               150 |              115 |       0.0685579  |    0.793103 |   0.433962  |            0.0162162  |              0.566038 |
+| delinquency | state             | screen for disparity       | TN                            |      1485 |                148 |               1337 |        69 |                21 |               100 |               48 |       0.0464646  |    0.695652 |   0.324324  |            0.0157068  |              0.675676 |
+| delinquency | state             | screen for disparity       | NC                            |      2294 |                259 |               2035 |       129 |                30 |               160 |               99 |       0.0562337  |    0.767442 |   0.382239  |            0.014742   |              0.617761 |
+| delinquency | state             | screen for disparity       | WI                            |      1335 |                122 |               1213 |        59 |                16 |                79 |               43 |       0.0441948  |    0.728814 |   0.352459  |            0.0131904  |              0.647541 |
+| delinquency | state             | screen for disparity       | MD                            |      1275 |                125 |               1150 |        60 |                15 |                80 |               45 |       0.0470588  |    0.75     |   0.36      |            0.0130435  |              0.64     |
+| delinquency | state             | screen for disparity       | OK                            |       847 |                 91 |                756 |        46 |                 9 |                54 |               37 |       0.0543093  |    0.804348 |   0.406593  |            0.0119048  |              0.593407 |
+| delinquency | state             | screen for disparity       | OH                            |      2744 |                256 |               2488 |       119 |                29 |               166 |               90 |       0.0433673  |    0.756303 |   0.351562  |            0.0116559  |              0.648438 |
+| delinquency | state             | screen for disparity       | CO                            |      1048 |                 96 |                952 |        44 |                 9 |                61 |               35 |       0.0419847  |    0.795455 |   0.364583  |            0.00945378 |              0.635417 |
+| delinquency | servicer_name     | screen for disparity       | Atlas Mortgage Services       |     13276 |               1555 |              11721 |       790 |               230 |               995 |              560 |       0.0595059  |    0.708861 |   0.360129  |            0.0196229  |              0.639871 |
+| delinquency | servicer_name     | screen for disparity       | Beacon Home Loans             |     12641 |               1407 |              11234 |       690 |               220 |               937 |              470 |       0.0545843  |    0.681159 |   0.334044  |            0.0195834  |              0.665956 |
+| delinquency | servicer_name     | screen for disparity       | Meridian Residential Capital  |     12597 |               1501 |              11096 |       768 |               208 |               941 |              560 |       0.0609669  |    0.729167 |   0.373085  |            0.0187455  |              0.626915 |
+| delinquency | servicer_name     | screen for disparity       | Cornerstone Loan Servicing    |     13417 |               1451 |              11966 |       696 |               211 |               966 |              485 |       0.0518745  |    0.696839 |   0.334252  |            0.0176333  |              0.665748 |
+| delinquency | servicer_name     | screen for disparity       | Northgate Financial Servicing |     12622 |               1273 |              11349 |       653 |               181 |               801 |              472 |       0.0517351  |    0.722818 |   0.370778  |            0.0159485  |              0.629222 |
+| default     | credit_score_band | risk factor (gap expected) | <620                          |      2158 |                775 |               1383 |      1321 |               756 |               210 |              565 |       0.612141   |    0.427706 |   0.729032  |            0.546638   |              0.270968 |
+| default     | credit_score_band | risk factor (gap expected) | 620-659                       |      6847 |               1980 |               4867 |      2814 |              1640 |               806 |             1174 |       0.410983   |    0.4172   |   0.592929  |            0.336963   |              0.407071 |
+| default     | credit_score_band | risk factor (gap expected) | 660-699                       |     16786 |               1790 |              14996 |      1193 |               537 |              1134 |              656 |       0.0710711  |    0.549874 |   0.36648   |            0.0358095  |              0.63352  |
+| default     | credit_score_band | risk factor (gap expected) | 700-739                       |     18569 |                412 |              18157 |       228 |               121 |               305 |              107 |       0.0122785  |    0.469298 |   0.259709  |            0.0066641  |              0.740291 |
+| default     | credit_score_band | risk factor (gap expected) | 740-799                       |     12426 |                106 |              12320 |        84 |                43 |                65 |               41 |       0.00676002 |    0.488095 |   0.386792  |            0.00349026 |              0.613208 |
 | default     | credit_score_band | risk factor (gap expected) | 800+                          |      1596 |                  0 |               1596 |         3 |                 3 |                 0 |                0 |       0.0018797  |    0        | nan         |            0.0018797  |            nan        |
-| default     | ltv_band          | risk factor (gap expected) | 90-97%                        |      2870 |                773 |               2097 |       803 |               407 |               377 |              396 |       0.279791   |    0.493151 |   0.51229   |            0.194087   |              0.48771  |
-| default     | ltv_band          | risk factor (gap expected) | 80-90%                        |     12993 |               2021 |              10972 |      2195 |              1152 |               978 |             1043 |       0.168937   |    0.475171 |   0.516081  |            0.104995   |              0.483919 |
+| default     | ltv_band          | risk factor (gap expected) | 90-97%                        |      2870 |                773 |               2097 |       936 |               511 |               348 |              425 |       0.326132   |    0.45406  |   0.549806  |            0.243681   |              0.450194 |
+| default     | ltv_band          | risk factor (gap expected) | 80-90%                        |     12993 |               2021 |              10972 |      2574 |              1402 |               849 |             1172 |       0.198107   |    0.455322 |   0.579911  |            0.12778    |              0.420089 |
 
 _Showing 60 of 156 rows._
 
@@ -589,9 +590,9 @@ Not a fairness question but a correctness one: if the model flags 740-799 borrow
 
 | model       | segment           | checked   | monotone_decreasing   | first_group   |   first_rate | last_group   |   last_rate |
 |:------------|:------------------|:----------|:----------------------|:--------------|-------------:|:-------------|------------:|
-| delinquency | credit_score_band | True      | True                  | <620          |     0.172076 | 800+         |   0.0123804 |
-| default     | credit_score_band | True      | True                  | <620          |     0.500463 | 800+         |   0.0018797 |
-| prepayment  | credit_score_band | True      | False                 | <620          |     0.149212 | 800+         |   0.515038  |
+| delinquency | credit_score_band | True      | True                  | <620          |     0.152957 | 800+         |   0.0106922 |
+| default     | credit_score_band | True      | True                  | <620          |     0.612141 | 800+         |   0.0018797 |
+| prepayment  | credit_score_band | True      | False                 | <620          |     0.273865 | 800+         |   0.741228  |
 
 
 ## Figures

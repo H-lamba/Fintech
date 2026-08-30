@@ -250,7 +250,9 @@ def main() -> None:
     )
     builder.save(reports_dir / "survival_report.md", reports_dir / "survival_report.html")
 
-    (outdir / "censoring_summary.json").write_text(json.dumps(frame.censoring, indent=2, default=str))
+    (outdir / "censoring_summary.json").write_text(
+        json.dumps(frame.censoring, indent=2, default=str), encoding="utf-8"
+    )
     print(f"\nWrote {reports_dir / 'survival_report.md'}")
 
 

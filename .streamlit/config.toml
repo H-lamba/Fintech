@@ -1,0 +1,30 @@
+# Streamlit's own theme, pinned to the palette in `src/viz.py`.
+#
+# This is not cosmetic. Streamlit picks a light or dark base from the viewer's
+# OS preference, and the dashboard's CSS only ever overrode *backgrounds* -- so
+# on a machine set to dark mode Streamlit painted its text near-white and the
+# custom CSS painted the sidebar near-white underneath it. Contrast ratio 1.03:1:
+# the navigation was invisible, and it was invisible only for readers whose
+# system was in dark mode, which is why it survived every screenshot taken on
+# the development machine.
+#
+# Pinning to light is the correct resolution rather than adding a dark variant:
+# every matplotlib figure the app embeds is rendered onto the light chart
+# surface at figure-generation time and cannot adapt at view time. A dark app
+# frame around a permanently light chart is the "two products stapled together"
+# failure the theme module exists to prevent.
+
+[server]
+# Serves ./static/ at /app/static/. This is what lets a generated report open
+# as a real page at its own URL in a new tab, rather than only rendering into
+# an iframe inside the app. Without it there is no way to reach reports/*.html
+# from the browser at all: Streamlit does not expose the working directory, and
+# a file:// link from an http page is blocked outright.
+enableStaticServing = true
+
+[theme]
+base = "light"
+primaryColor = "#2a78d6"          # viz.CATEGORICAL[0] -- the categorical blue
+backgroundColor = "#fcfcfb"       # viz.SURFACE
+secondaryBackgroundColor = "#f4f3ef"
+textColor = "#0b0b0b"             # viz.INK_PRIMARY

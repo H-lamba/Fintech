@@ -277,11 +277,13 @@ class ArtifactWriter:
         written.append(scenario_path)
 
         rules_path = self.output_dir / "validation_rules.json"
-        rules_path.write_text(json.dumps(ValidationRuleBuilder.build(), indent=2))
+        rules_path.write_text(
+            json.dumps(ValidationRuleBuilder.build(), indent=2), encoding="utf-8"
+        )
         written.append(rules_path)
 
         dictionary_path = self.output_dir / "data_dictionary.md"
-        dictionary_path.write_text(DataDictionaryBuilder.build())
+        dictionary_path.write_text(DataDictionaryBuilder.build(), encoding="utf-8")
         written.append(dictionary_path)
 
         template_path = self.output_dir / "submission_template.csv"

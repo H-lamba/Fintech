@@ -265,7 +265,7 @@ def main() -> None:
         global_importance, disparity_table, calibration_summary, error_segments,
         results_path=outdir / "global_importance.csv",
     )
-    (reports_dir / "model_card.md").write_text(card)
+    (reports_dir / "model_card.md").write_text(card, encoding="utf-8")
 
     print(f"\nWrote {reports_dir / 'explainability_report.md'} and {reports_dir / 'model_card.md'}")
 

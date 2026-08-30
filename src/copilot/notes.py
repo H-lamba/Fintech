@@ -20,7 +20,7 @@ import pandas as pd
 
 from . import guardrails
 from .llm_client import LLMResponse, call_llm, log_verdict
-from .retrieval import LoanContext, build_context, context_to_json
+from .retrieval import ACTION_TASK, LoanContext, build_context, context_to_json
 
 
 @dataclass
@@ -59,6 +59,8 @@ def generate_note(
     model_outputs: dict | None = None,
     anomaly: dict | None = None,
     offline: bool | None = None,
+    task: str = "",
+    purpose: str = "reviewer_note",
     **call_kwargs,
 ) -> ReviewerNote:
     """
@@ -71,12 +73,12 @@ def generate_note(
     """
     context = build_context(
         row, definitions, rule_specs,
-        triggered=triggered, model_outputs=model_outputs, anomaly=anomaly,
+        triggered=triggered, model_outputs=model_outputs, anomaly=anomaly, task=task,
     )
 
     response = call_llm(
         context.to_prompt(),
-        purpose="reviewer_note",
+        purpose=purpose,
         context_json=context_to_json(context),
         offline=offline,
         **call_kwargs,
@@ -103,6 +105,35 @@ def generate_note(
         response=response,
         context=context,
         released=verdict.passed,
+    )
+
+
+def generate_action(
+    row: pd.Series,
+    definitions: dict,
+    rule_specs: list,
+    triggered: str = "",
+    model_outputs: dict | None = None,
+    anomaly: dict | None = None,
+    offline: bool | None = None,
+    **call_kwargs,
+) -> ReviewerNote:
+    """
+    Suggested **verification steps** for one loan-month.
+
+    Deliberately not "the recommended action on the loan". The rule layer
+    already emits a suggested action, and it is deterministic and auditable;
+    what the model adds is the reviewer's checklist for confirming or refuting
+    it. Framing it as verification is what keeps this call on the correct side
+    of the decision guardrail rather than fighting it -- the guardrail still
+    runs, and a response that slips into recommending an outcome is withheld
+    exactly like any other.
+    """
+    return generate_note(
+        row, definitions, rule_specs,
+        triggered=triggered, model_outputs=model_outputs, anomaly=anomaly,
+        offline=offline, task=ACTION_TASK, purpose="verification_steps",
+        **call_kwargs,
     )
 
 

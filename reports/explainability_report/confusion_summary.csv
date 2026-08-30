@@ -1,13 +1,13 @@
 model,outcome,records,share
-delinquency,true positive,2581,0.03998264991557325
-delinquency,false positive,1187,0.0183879912629932
-delinquency,false negative,4606,0.07135222220500984
-delinquency,true negative,56179,0.8702771366164237
-default,true positive,2360,0.04042341817683533
-default,false positive,2661,0.04557911685108424
-default,false negative,2703,0.04629851666609571
-default,true negative,50658,0.8676989483059847
-prepayment,true positive,2992,0.05124867253605563
-prepayment,false positive,28378,0.4860744750094207
-prepayment,false negative,2236,0.038299475865849066
-prepayment,true negative,24776,0.4243773765886746
+delinquency,true positive,2547,0.039455950924046905
+delinquency,false positive,1050,0.01626570415007823
+delinquency,false negative,4640,0.07187892119653617
+delinquency,true negative,56316,0.8723994237293387
+default,true positive,2543,0.04355794594224247
+default,false positive,3100,0.05309855777465657
+default,false negative,2520,0.043163988900688566
+default,true negative,50219,0.8601795073824123
+prepayment,true positive,3924,0.06721249700250077
+prepayment,false positive,37771,0.6469631050666301
+prepayment,false negative,1304,0.022335651399403925
+prepayment,true negative,15383,0.2634887465314652

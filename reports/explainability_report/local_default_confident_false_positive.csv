@@ -1,13 +1,13 @@
 feature,feature_value,shap_value,direction
-days_past_due,108.0,2.4208623140791024,raises risk
-credit_score,653.0,1.0589440190526545,raises risk
-status_ordinal,4.0,0.4932861196973023,raises risk
-ltv,87.5,0.3715403286487032,raises risk
-credit_score_band,620-659,0.3615800373786428,raises risk
-dpd_lag_1m,71.0,0.14482160491459206,raises risk
-is_delinquent,1.0,0.11871607015296129,raises risk
-interest_rate,6.401,-0.11809787632433802,lowers risk
-state,OR,-0.11588364366551117,lowers risk
-ltv_band,80-90%,0.10480117452174495,raises risk
-dpd_delta_1m,37.0,0.07800387015684566,raises risk
-paydown_1m,0.0,0.06154166818707925,raises risk
+days_past_due,88.0,2.102498915634577,raises risk
+credit_score,585.0,1.5692125698274404,raises risk
+status_ordinal,3.0,0.47121278785634935,raises risk
+credit_score_band,<620,0.3851801741638033,raises risk
+is_delinquent,1.0,0.13055785414200713,raises risk
+dpd_delta_3m,88.0,0.10504803541305209,raises risk
+ltv,74.89,-0.09024923142150677,lowers risk
+dpd_delta_1m,49.0,0.08458444147555598,raises risk
+dpd_lag_1m,39.0,0.07915556321626563,raises risk
+state,TX,0.07732575198533984,raises risk
+paydown_1m,0.0,0.07122992699435914,raises risk
+dti,48.24,0.07083630480570949,raises risk

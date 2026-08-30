@@ -110,10 +110,16 @@ class ReportBuilder:
 </html>"""
 
     def save(self, md_path: Path | str, html_path: Path | str | None = None) -> None:
+        # encoding is explicit because it is not a default we can inherit: on
+        # Windows `write_text` falls back to cp1252, which cannot encode the
+        # typographic characters these reports legitimately carry (the copilot's
+        # own control-failure table documents a non-breaking hyphen). The HTML
+        # already declares utf-8 in its meta tag, so writing it as anything else
+        # produces a file that lies about its own encoding.
         md_path = Path(md_path)
         md_path.parent.mkdir(parents=True, exist_ok=True)
-        md_path.write_text(self.to_markdown())
+        md_path.write_text(self.to_markdown(), encoding="utf-8")
         if html_path:
             html_path = Path(html_path)
             html_path.parent.mkdir(parents=True, exist_ok=True)
-            html_path.write_text(self.to_html())
+            html_path.write_text(self.to_html(), encoding="utf-8")

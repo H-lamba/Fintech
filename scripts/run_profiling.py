@@ -454,7 +454,7 @@ def main() -> None:
     # from it -- and stays runnable on its own when it does not.
     feature_dict_path = reports_dir / "feature_dictionary.md"
     if feature_dict_path.exists():
-        body = feature_dict_path.read_text()
+        body = feature_dict_path.read_text(encoding="utf-8")
         body = body.split("\n", 1)[1].strip() if body.startswith("#") else body.strip()
         rb.add_text("10. Feature dictionary", body)
     else:
@@ -503,7 +503,7 @@ def main() -> None:
     html_path = reports_dir / "data_intelligence_report.html"
     rb.save(md_path, html_path)
 
-    with open(reports_dir / "batch_quality_summary.json", "w") as fh:
+    with open(reports_dir / "batch_quality_summary.json", "w", encoding="utf-8") as fh:
         json.dump(batch, fh, indent=2, default=str)
 
     print("\nDone.")
