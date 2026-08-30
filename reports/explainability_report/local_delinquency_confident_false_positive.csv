@@ -1,13 +1,13 @@
 feature,feature_value,shap_value,direction
-months_since_delinquency,0.0,1.962888036265062,raises risk
-days_past_due,76.0,1.3068143984966822,raises risk
-dpd_mean_6m,63.166666666666664,-0.40783256484929953,lowers risk
-status_ordinal,3.0,0.34834039199937694,raises risk
-credit_score,638.0,0.25834292580668544,raises risk
-is_delinquent,1.0,0.21205591682530528,raises risk
-state,MN,-0.1386363122234039,lowers risk
-dpd_lag_1m,84.0,0.13540012185967445,raises risk
-credit_score_band,620-659,0.08878222817390997,raises risk
-dpd_delta_1m,-8.0,0.08740155900052565,raises risk
-status_changes_to_date,8.0,-0.07702231989636675,lowers risk
-dpd_mean_12m,34.083333333333336,0.06904442755031291,raises risk
+months_since_delinquency,0.0,1.7892000106733763,raises risk
+days_past_due,104.0,1.107385396444166,raises risk
+status_ordinal,4.0,0.2776588337463364,raises risk
+is_delinquent,1.0,0.21795097988652382,raises risk
+ltv,92.3,0.1778929702530341,raises risk
+dpd_lag_1m,78.0,0.1674508778142801,raises risk
+dpd_mean_3m,74.0,0.11724520144084306,raises risk
+dpd_delta_1m,26.0,0.09126022684161249,raises risk
+credit_score_band,660-699,0.08979126798938242,raises risk
+credit_score,668.0,0.06775661538219123,raises risk
+paydown_1m,0.0,0.06277038425365083,raises risk
+dpd_max_12m,104.0,-0.06017438685391198,lowers risk

@@ -1,13 +1,13 @@
 feature,feature_value,shap_value,direction
-months_since_delinquency,0.0,1.8920384120027445,raises risk
-days_past_due,94.0,1.3022992272509213,raises risk
-dpd_mean_6m,70.66666666666667,-0.3814224624713555,lowers risk
-status_ordinal,4.0,0.27013420265672616,raises risk
-is_delinquent,1.0,0.20860719339507394,raises risk
-credit_score,660.0,0.17168368503330098,raises risk
-dpd_lag_1m,98.0,0.1600291103173134,raises risk
-ltv,97.35,0.1198170579672942,raises risk
-dpd_mean_12m,35.333333333333336,0.10454138684007984,raises risk
-dpd_mean_3m,100.0,0.09256125320114177,raises risk
-dpd_delta_1m,-4.0,0.0880826758837212,raises risk
-credit_score_band,660-699,0.08666810359513077,raises risk
+months_since_delinquency,0.0,1.8243941333536857,raises risk
+days_past_due,111.0,0.97631766308882,raises risk
+status_ordinal,4.0,0.28520213512620207,raises risk
+credit_score,660.0,0.1856282427503229,raises risk
+dpd_lag_1m,82.0,0.16727432695395136,raises risk
+is_delinquent,1.0,0.14676198531232154,raises risk
+dpd_mean_12m,31.5,0.11881682297518151,raises risk
+ltv,82.14,0.11469650914338632,raises risk
+credit_score_band,620-659,0.10102267923292606,raises risk
+dpd_delta_1m,29.0,0.08881881243842889,raises risk
+modified_ever,1.0,0.07119701697252168,raises risk
+dpd_mean_3m,76.0,0.06497471422643528,raises risk

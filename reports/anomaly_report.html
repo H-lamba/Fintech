@@ -27,7 +27,7 @@
 </head>
 <body>
 <h1>Anomaly &amp; Exception Report (Task 4)</h1>
-<p><em>Generated 2026-08-29 23:52:53</em></p>
+<p><em>Generated 2026-08-30 14:36:21</em></p>
 <h2>What this detects</h2>
 <p>Record-level data defects in the monthly performance panel: a continuous anomaly score for every row, a predicted probability and type for the <code>exception_required</code> / <code>exception_type</code> labels, the drivers behind each flag, and a curated queue a reviewer can work without opening the pipeline.</p>
 <p>Fitted on <code>2017-01 .. 2021-06</code> (108,125 records), tuned on <code>2021-07 .. 2022-12</code> (92,427) and reported on <code>2023-01 .. 2023-12</code> (67,573), which no detector was fitted or thresholded on.</p>
@@ -142,8 +142,8 @@ asserted: it shows how much of the result each layer is responsible for.</p>
 <td style="text-align: right;">0.287969</td>
 <td style="text-align: right;">67573</td>
 <td style="text-align: right;">1449</td>
-<td style="text-align: right;">0.338</td>
-<td style="text-align: right;">0.116632</td>
+<td style="text-align: right;">0.336</td>
+<td style="text-align: right;">0.115942</td>
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
@@ -330,16 +330,16 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">1</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__TEMPORAL_ORDERING</td>
-<td style="text-align: left;">rule</td>
+<td style="text-align: left;">date__date__origination_after_reporting</td>
+<td style="text-align: left;">date</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">1724</td>
 <td style="text-align: right;">0.643</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr>
-<td style="text-align: left;">date__date__origination_after_reporting</td>
-<td style="text-align: left;">date</td>
+<td style="text-align: left;">rule__json__TEMPORAL_ORDERING</td>
+<td style="text-align: left;">rule</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">1724</td>
 <td style="text-align: right;">0.643</td>
@@ -378,71 +378,71 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">1</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__closed_status_with_balance</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__zero_original_balance</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__default_and_prepaid_together</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">date__date__last_update_before_reporting</td>
-<td style="text-align: left;">date</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__dpd_implausibly_large</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">medium</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__negative_loan_age</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__implausible_interest_rate</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">medium</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__negative_remaining_term</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
 <td style="text-align: left;">rule__json__LOAN_ID_PRESENT</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__BALANCE_SIGN</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__REPORTING_MONTH_PRESENT</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__SEQUENTIAL_DELINQUENCY</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__DPD_RANGE</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__ABSORBING_STATE_FINALITY</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__DEFAULT_DELINQUENCY_CONSISTENCY</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__RATE_RANGE</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__json__STATUS_DOMAIN</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">0</td>
@@ -458,7 +458,7 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__REPORTING_MONTH_PRESENT</td>
+<td style="text-align: left;">rule__delinquent_but_current_status</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">0</td>
@@ -514,7 +514,23 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__RATE_RANGE</td>
+<td style="text-align: left;">rule__zero_original_balance</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__default_and_prepaid_together</td>
+<td style="text-align: left;">rule</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">rule__dpd_implausibly_large</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">medium</td>
 <td style="text-align: right;">0</td>
@@ -522,7 +538,7 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__DEFAULT_DELINQUENCY_CONSISTENCY</td>
+<td style="text-align: left;">rule__negative_loan_age</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">0</td>
@@ -530,7 +546,7 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__ABSORBING_STATE_FINALITY</td>
+<td style="text-align: left;">rule__negative_remaining_term</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">0</td>
@@ -538,23 +554,7 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__SEQUENTIAL_DELINQUENCY</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__json__STATUS_DOMAIN</td>
-<td style="text-align: left;">rule</td>
-<td style="text-align: left;">high</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">nan</td>
-</tr>
-<tr>
-<td style="text-align: left;">rule__json__DPD_RANGE</td>
+<td style="text-align: left;">rule__implausible_interest_rate</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">medium</td>
 <td style="text-align: right;">0</td>
@@ -562,7 +562,7 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__json__BALANCE_SIGN</td>
+<td style="text-align: left;">rule__closed_status_with_balance</td>
 <td style="text-align: left;">rule</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">0</td>
@@ -570,8 +570,8 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">nan</td>
 </tr>
 <tr>
-<td style="text-align: left;">rule__delinquent_but_current_status</td>
-<td style="text-align: left;">rule</td>
+<td style="text-align: left;">date__date__last_update_before_reporting</td>
+<td style="text-align: left;">date</td>
 <td style="text-align: left;">high</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
@@ -898,20 +898,6 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
 </tr>
 <tr>
-<td style="text-align: left;">SW3CSFZ1HQ5Y</td>
-<td style="text-align: left;">2023-06</td>
-<td style="text-align: left;">Current</td>
-<td style="text-align: right;">439531</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.995</td>
-<td style="text-align: right;">0.999982</td>
-<td style="text-align: right;">0.999987</td>
-<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
-<td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
-<td style="text-align: left;">Zombie Loan</td>
-<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
-</tr>
-<tr>
 <td style="text-align: left;">RK1NEXSOD8VF</td>
 <td style="text-align: left;">2023-07</td>
 <td style="text-align: left;">Current</td>
@@ -934,6 +920,20 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: right;">0.995</td>
 <td style="text-align: right;">0.999982</td>
 <td style="text-align: right;">0.999988</td>
+<td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
+<td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
+<td style="text-align: left;">Zombie Loan</td>
+<td style="text-align: left;">Loan already reached a terminal state. Confirm the termination date with the servicer and suppress the later rows; do not re-activate the loan.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SW3CSFZ1HQ5Y</td>
+<td style="text-align: left;">2023-06</td>
+<td style="text-align: left;">Current</td>
+<td style="text-align: right;">439531</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.999982</td>
+<td style="text-align: right;">0.999987</td>
 <td style="text-align: left;">post_absorbing_activity; illegal_status_transition; balance_increase_without_modification</td>
 <td style="text-align: left;">post absorbing activity=1; transition rarity=0.00125; balance delta pct=missing</td>
 <td style="text-align: left;">Zombie Loan</td>
@@ -1150,30 +1150,30 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
 </tr>
 <tr>
-<td style="text-align: left;">ZJPBLUJS3016</td>
-<td style="text-align: left;">2023-09</td>
+<td style="text-align: left;">AIGO73RIEVD1</td>
+<td style="text-align: left;">2023-12</td>
 <td style="text-align: left;">Prepaid</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.999982</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.999982</td>
-<td style="text-align: right;">8.64613e-05</td>
+<td style="text-align: right;">5.35644e-05</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=125 (15 sigma)</td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); loan age months=58 (5 sigma)</td>
 <td style="text-align: left;">No exception</td>
 <td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
 </tr>
 <tr>
-<td style="text-align: left;">E040T9Q4QEV0</td>
-<td style="text-align: left;">2023-07</td>
+<td style="text-align: left;">P7EMYHAQKTY7</td>
+<td style="text-align: left;">2023-09</td>
 <td style="text-align: left;">Default</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.999982</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.999982</td>
-<td style="text-align: right;">1.74678e-05</td>
+<td style="text-align: right;">2.52434e-05</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=134 (14 sigma)</td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=191 (10 sigma)</td>
 <td style="text-align: left;">No exception</td>
 <td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
 </tr>
@@ -1192,16 +1192,16 @@ dropped as they are in Tasks 2 and 3 -- a terminal row can itself be the defect.
 <td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
 </tr>
 <tr>
-<td style="text-align: left;">IVR96W49E6ZI</td>
-<td style="text-align: left;">2023-12</td>
+<td style="text-align: left;">E040T9Q4QEV0</td>
+<td style="text-align: left;">2023-07</td>
 <td style="text-align: left;">Default</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.999982</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.999982</td>
-<td style="text-align: right;">3.84809e-05</td>
+<td style="text-align: right;">1.74678e-05</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); loan age months=59 (5 sigma)</td>
+<td style="text-align: left;">balance vs scheduled=0 (&gt;50 sigma); balance delta pct=-1.00 (&gt;50 sigma); remaining term months=134 (14 sigma)</td>
 <td style="text-align: left;">No exception</td>
 <td style="text-align: left;">No rule fired; the model flagged this on its pattern alone. Review manually and, if it is a genuine defect, write the rule that would have caught it.</td>
 </tr>

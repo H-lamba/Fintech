@@ -1,13 +1,13 @@
 model,band,share
-delinquency,"confident, flagged",0.048192957724660354
-delinquency,uncertain (within 0.05 of threshold),0.012176041392344275
-delinquency,"confident, cleared",0.08416340061654765
+delinquency,"confident, flagged",0.04388641891159203
+delinquency,uncertain (within 0.05 of threshold),0.0017504995894846095
+delinquency,"confident, cleared",0.5162269762830543
 delinquency,max predicted probability,1.0
-default,"confident, flagged",0.030574492137987738
-default,uncertain (within 0.05 of threshold),0.06630468295022439
-default,"confident, cleared",0.6852968380665273
+default,"confident, flagged",0.03136240622109554
+default,uncertain (within 0.05 of threshold),0.05866534205748347
+default,"confident, cleared",0.4028981535404748
 default,max predicted probability,1.0
 prepayment,"confident, flagged",0.0
-prepayment,uncertain (within 0.05 of threshold),0.9840361755335548
+prepayment,uncertain (within 0.05 of threshold),0.9804563050255216
 prepayment,"confident, cleared",0.0
-prepayment,max predicted probability,0.19047619047619047
+prepayment,max predicted probability,0.2785714285714286

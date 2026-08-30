@@ -1,13 +1,13 @@
 feature,feature_value,shap_value,direction
-dpd_mean_6m,58.333333333333336,-0.6087094349732516,lowers risk
-state,OR,-0.3247345554664267,lowers risk
-balance_ratio,0.8124085816876122,-0.24755192917574134,lowers risk
-status_changes_to_date,9.0,-0.244989538300853,lowers risk
-delinquent_months_to_date,9.0,-0.20378833585810496,lowers risk
-paydown_6m,-0.005487109179072913,-0.1533003187819198,lowers risk
-months_since_delinquency,,-0.13356407921004732,lowers risk
-balance_vs_expected,1.0534428037453785,-0.12666365836759388,lowers risk
-modified_ever,1.0,0.1266008355572196,raises risk
-dpd_mean_12m,56.916666666666664,0.08105245212872983,raises risk
-credit_score_band,660-699,-0.0805378630980866,lowers risk
-days_past_due,0.0,-0.07613349022716052,lowers risk
+paydown_6m,-0.006773996037529706,-0.2718229087119019,lowers risk
+credit_score_band,700-739,-0.21210846024394978,lowers risk
+state,MN,-0.19679245927694394,lowers risk
+credit_score,704.0,-0.1601155273815533,lowers risk
+months_since_delinquency,,-0.11956433369677243,lowers risk
+ltv,68.1,-0.10818373659287209,lowers risk
+dpd_mean_6m,15.5,-0.07299151297947128,lowers risk
+dpd_max_12m,52.0,-0.06215235916725339,lowers risk
+days_past_due,0.0,-0.060755275312144814,lowers risk
+dpd_max_6m,52.0,-0.059743805673121306,lowers risk
+balance_pctile_in_month,0.2424511545293073,-0.03832852806211038,lowers risk
+paydown_3m,-0.005098292000316529,-0.03276458153412559,lowers risk

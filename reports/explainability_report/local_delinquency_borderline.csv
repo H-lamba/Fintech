@@ -1,13 +1,13 @@
 feature,feature_value,shap_value,direction
-months_since_delinquency,0.0,1.6045572132018397,raises risk
-days_past_due,34.0,0.7901308702631574,raises risk
-status_ordinal,2.0,0.21284906412963997,raises risk
-is_delinquent,1.0,0.1917304475280962,raises risk
-ltv,68.93,-0.134440779591013,lowers risk
-credit_score_band,660-699,0.10115438075401433,raises risk
-status_changes_to_date,5.0,-0.09337910459158139,lowers risk
-dti,54.28,-0.09333231303207401,lowers risk
-dpd_delta_1m,34.0,0.08824239173087917,raises risk
-paydown_1m,-0.0017225891231479329,-0.06355897532187103,lowers risk
-dpd_lag_1m,0.0,-0.062117799941711446,lowers risk
-current_status,30-DPD,0.05496355225525978,raises risk
+months_since_delinquency,0.0,1.7917979731358868,raises risk
+days_past_due,49.0,0.7429022282361323,raises risk
+credit_score,745.0,-0.3666002061474585,lowers risk
+ltv,85.13,0.2031992238483463,raises risk
+status_ordinal,2.0,0.18623580458943187,raises risk
+is_delinquent,1.0,0.1698900344330199,raises risk
+credit_score_band,740-799,-0.12099234502688737,lowers risk
+dpd_delta_1m,3.0,0.09322779784949496,raises risk
+paydown_1m,0.0,0.06036566074847555,raises risk
+state,CA,0.05925972539724838,raises risk
+dpd_lag_1m,46.0,0.056523718257618,raises risk
+current_status,30-DPD,0.05628412740381793,raises risk

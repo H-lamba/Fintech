@@ -39,6 +39,27 @@ from .. import config
 
 # Always included: a reviewer cannot act on a note that does not say which loan,
 # which month, and what state it is in.
+# The default ask: summarise, restate, decide nothing.
+NOTE_TASK = (
+    "Write a short reviewer note (3-5 sentences) summarising the situation above "
+    "for a human loan reviewer. Restate only what is in this context. "
+    "Do not estimate, predict, or infer any number that is not written above. "
+    "Do not state a decision or a recommended outcome for the loan."
+)
+
+# The explorer's "recommend next steps" ask. Phrased as *verification*, not as
+# a decision, because the decision guardrail is not a formality to be worked
+# around -- a copilot that recommends an outcome is doing the reviewer's job,
+# and the challenge's qualification rule is explicit that the LLM may not.
+ACTION_TASK = (
+    "List the concrete verification steps a human loan reviewer should take on this "
+    "record, as 3-5 short bullet points. Each bullet must name the specific field, "
+    "rule or document to check and why it is worth checking, using only what is "
+    "written above. Do not estimate, predict, or infer any number that is not "
+    "written above. Do not state a decision, an outcome, or a recommendation about "
+    "the loan itself -- describe only what should be verified, and by what evidence."
+)
+
 CORE_FIELDS = [
     "loan_id",
     "reporting_month",
@@ -68,6 +89,11 @@ class LoanContext:
     triggered_rules: list = field(default_factory=list)
     model_outputs: dict = field(default_factory=dict)
     anomaly: dict = field(default_factory=dict)
+    # What the model is asked to produce from this context. Defaults to the
+    # reviewer note; the explorer's "recommend next steps" asks a different
+    # question of the *same* grounded context, and the grounding is the part
+    # that must not vary between them.
+    task: str = ""
 
     def grounded_numbers(self) -> set[str]:
         """
@@ -144,13 +170,7 @@ class LoanContext:
         if self.anomaly:
             blocks.append("## Anomaly detection output\n\n" + _render_kv(self.anomaly))
 
-        blocks.append(
-            "## Your task\n\n"
-            "Write a short reviewer note (3-5 sentences) summarising the situation above "
-            "for a human loan reviewer. Restate only what is in this context. "
-            "Do not estimate, predict, or infer any number that is not written above. "
-            "Do not state a decision or a recommended outcome for the loan."
-        )
+        blocks.append("## Your task\n\n" + (self.task or NOTE_TASK))
         return "\n\n".join(blocks)
 
 
@@ -232,6 +252,7 @@ def build_context(
     model_outputs: dict | None = None,
     anomaly: dict | None = None,
     extra_fields: list | None = None,
+    task: str = "",
 ) -> LoanContext:
     """
     Assemble one loan's grounded context.
@@ -243,9 +264,19 @@ def build_context(
     fields = list(dict.fromkeys([*CORE_FIELDS, *(extra_fields or [])]))
     record = {f: row[f] for f in fields if f in row.index}
 
+    # A queue row with no triggered rules reads back from CSV as float NaN, and
+    # NaN is *truthy* -- so `triggered or ""` passes it through and `str()` turns
+    # it into a rule literally named "nan". The model then faithfully reports
+    # that a rule called `nan` fired with severity "unknown": a fabricated
+    # finding produced by perfectly correct, grounded behaviour, and one the
+    # guardrails cannot catch because the string really was in its context.
+    # Guarded here because every caller funnels through this function.
+    if triggered is None or (isinstance(triggered, float) and pd.isna(triggered)):
+        triggered = ""
+
     rule_lookup = {str(spec.get("name", "")): spec for spec in rule_specs or []}
     rules = []
-    for name in [part.strip() for part in str(triggered or "").split(";") if part.strip()]:
+    for name in [part.strip() for part in str(triggered).split(";") if part.strip()]:
         clean = name.split("(")[0].strip()
         spec = rule_lookup.get(clean) or rule_lookup.get(clean.replace("json__", ""))
         rules.append(
@@ -264,6 +295,7 @@ def build_context(
         triggered_rules=rules,
         model_outputs=model_outputs or {},
         anomaly=anomaly or {},
+        task=task,
     )
 
 

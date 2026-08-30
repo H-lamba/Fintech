@@ -70,8 +70,8 @@ section 8.
 **Top drivers by SHAP** (mean |SHAP|, share of total):
 
 - Delinquency: `credit_score` (15%), `months_since_delinquency` (11%), `credit_score_band` (11%), `ltv` (7%)
-- Default: `credit_score` (28%), `credit_score_band` (10%), `ltv` (8%), `state` (7%)
-- Prepayment: `credit_score` (20%), `state` (17%), `interest_rate` (10%), `ltv` (7%)
+- Default: `credit_score` (28%), `credit_score_band` (10%), `ltv` (9%), `state` (7%)
+- Prepayment: `credit_score` (19%), `state` (16%), `interest_rate` (10%), `ltv` (7%)
 
 ---
 
@@ -188,15 +188,15 @@ All figures are on held-out windows the model was neither fitted nor thresholded
 | target                   | model    |    roc_auc |      pr_auc |         f1 |   brier_uncalibrated |   brier_calibrated |   macro_f1 |
 |:-------------------------|:---------|-----------:|------------:|-----------:|---------------------:|-------------------:|-----------:|
 | next_3m_delinquency_flag | baseline |   0.760455 |   0.443463  |   0.456443 |            0.160317  |          0.076347  | nan        |
-| next_3m_delinquency_flag | improved |   0.752681 |   0.471967  |   0.4712   |            0.137909  |          0.0744786 | nan        |
+| next_3m_delinquency_flag | improved |   0.753776 |   0.473821  |   0.472366 |            0.137134  |          0.07446   | nan        |
 | next_6m_delinquency_flag | baseline |   0.846928 |   0.482     |   0.498129 |            0.130828  |          0.0528095 | nan        |
-| next_6m_delinquency_flag | improved |   0.850286 |   0.531306  |   0.516843 |            0.0914606 |          0.0508147 | nan        |
+| next_6m_delinquency_flag | improved |   0.84903  |   0.532272  |   0.517279 |            0.0912545 |          0.0508203 | nan        |
 | next_12m_default_flag    | baseline |   0.866736 |   0.471491  |   0.464958 |            0.145594  |          0.0577116 | nan        |
-| next_12m_default_flag    | improved |   0.867494 |   0.506575  |   0.468068 |            0.0915871 |          0.0562154 | nan        |
+| next_12m_default_flag    | improved |   0.869644 |   0.512219  |   0.475061 |            0.0944238 |          0.0559945 | nan        |
 | next_12m_prepayment_flag | baseline |   0.519649 |   0.0924322 |   0.155217 |            0.252342  |          0.0820726 | nan        |
-| next_12m_prepayment_flag | improved |   0.52357  |   0.0931902 |   0.163506 |            0.109719  |          0.0814886 | nan        |
-| next_state               | baseline | nan        | nan         | nan        |            0.609332  |          0.107903  |   0.407782 |
-| next_state               | improved | nan        | nan         | nan        |            0.11123   |          0.0992262 |   0.530017 |
+| next_12m_prepayment_flag | improved |   0.519313 |   0.0926993 |   0.167253 |            0.108856  |          0.0817167 | nan        |
+| next_state               | baseline | nan        | nan         | nan        |            0.609534  |          0.107905  |   0.407811 |
+| next_state               | improved | nan        | nan         | nan        |            0.11089   |          0.0993515 |   0.527072 |
 
 ### Task 3 -- time to event
 
@@ -225,9 +225,9 @@ All figures are on held-out windows the model was neither fitted nor thresholded
 
 | model       |   expected_calibration_error |   mean_predicted |   observed_rate |
 |:------------|-----------------------------:|-----------------:|----------------:|
-| delinquency |                   0.00400925 |        0.111667  |       0.111335  |
-| default     |                   0.0070369  |        0.0808743 |       0.0867219 |
-| prepayment  |                   0.00848467 |        0.0838606 |       0.0895481 |
+| delinquency |                   0.00382324 |        0.111389  |       0.111335  |
+| default     |                   0.00512053 |        0.082415  |       0.0867219 |
+| prepayment  |                   0.0129867  |        0.0832439 |       0.0895481 |
 
 ---
 
@@ -310,15 +310,15 @@ minimum group size.
 
 **Escalated findings:**
 
-- `state` on `false_positive_rate` (delinquency model): ratio 0.34 -- worst `MI` at 2.8%, best `CO` at 0.9% (p = 1.4e-03).
-- `state` on `selection_rate` (delinquency model): ratio 0.49 -- worst `MI` at 7.9%, best `OR` at 3.9% (p = 1.4e-05).
-- `servicer_name` on `false_positive_rate` (delinquency model): ratio 0.70 -- worst `Beacon Home Loans` at 2.4%, best `Northgate Financial Servicing` at 1.7% (p = 1.1e-04).
+- `state` on `false_positive_rate` (delinquency model): ratio 0.36 -- worst `MN` at 2.6%, best `CO` at 0.9% (p = 5.2e-03).
+- `state` on `selection_rate` (delinquency model): ratio 0.53 -- worst `PA` at 7.3%, best `OR` at 3.9% (p = 1.3e-04).
 - `state` on `false_negative_rate` (delinquency model): ratio 0.76 -- worst `WA` at 73.6%, best `PA` at 55.8% (p = 3.9e-05).
-- `state` on `false_positive_rate` (default model): ratio 0.10 -- worst `WI` at 10.0%, best `OK` at 1.0% (p = 4.9e-14).
-- `state` on `selection_rate` (default model): ratio 0.25 -- worst `WI` at 14.9%, best `SC` at 3.8% (p = 2.2e-15).
-- `state` on `false_negative_rate` (default model): ratio 0.33 -- worst `CT` at 75.0%, best `MA` at 25.0% (p = 5.5e-09).
-- `servicer_name` on `false_positive_rate` (default model): ratio 0.73 -- worst `Atlas Mortgage Services` at 5.9%, best `Northgate Financial Servicing` at 4.3% (p = 1.5e-07).
-- `servicer_name` on `selection_rate` (default model): ratio 0.75 -- worst `Atlas Mortgage Services` at 10.0%, best `Cornerstone Loan Servicing` at 7.4% (p = 2.5e-12).
+- `state` on `false_positive_rate` (default model): ratio 0.09 -- worst `WI` at 12.2%, best `OK` at 1.1% (p = 2.4e-17).
+- `state` on `selection_rate` (default model): ratio 0.22 -- worst `WI` at 17.4%, best `UT` at 3.8% (p = 1.0e-14).
+- `state` on `false_negative_rate` (default model): ratio 0.35 -- worst `CO` at 72.8%, best `WI` at 25.3% (p = 4.9e-11).
+- `servicer_name` on `false_positive_rate` (default model): ratio 0.73 -- worst `Atlas Mortgage Services` at 6.8%, best `Northgate Financial Servicing` at 4.9% (p = 2.2e-08).
+- `servicer_name` on `selection_rate` (default model): ratio 0.75 -- worst `Atlas Mortgage Services` at 11.2%, best `Cornerstone Loan Servicing` at 8.4% (p = 2.2e-13).
+- `servicer_name` on `false_negative_rate` (default model): ratio 0.80 -- worst `Cornerstone Loan Servicing` at 56.3%, best `Atlas Mortgage Services` at 44.8% (p = 9.8e-08).
 
 Credit-band and vintage gaps are **not** escalated: a model that flagged sub-620 and 800+ borrowers alike would be broken, and vintage within one reporting window is almost pure loan age.
 

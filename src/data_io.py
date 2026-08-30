@@ -58,7 +58,7 @@ def load_validation_rules() -> list[dict]:
     path = config.VALIDATION_RULES_PATH
     if not path.exists():
         return []
-    with open(path) as fh:
+    with open(path, encoding="utf-8") as fh:
         payload = json.load(fh)
     if isinstance(payload, dict):
         return payload.get("rules", [])
@@ -77,7 +77,7 @@ def load_data_dictionary() -> dict[str, str]:
     if not path.exists():
         return {}
 
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     definitions: dict[str, str] = {}
 
     for raw_line in text.splitlines():

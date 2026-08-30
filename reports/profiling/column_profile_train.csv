@@ -1,5 +1,5 @@
 column,dtype,n_missing,pct_missing,n_unique,top_values,is_constant,mean,std,min,p01,p25,p50,p75,p99,max,skew,n_zero,n_negative,n_true,pct_true
-loan_id,object,0,0.0,10000,7QQM1UJV6V2F=62 (0.0%); XFVSFD44QQD5=62 (0.0%); BV2N8A1RB1FU=61 (0.0%); 7S7HZCN11GEB=60 (0.0%); 2RJGGDRTOEN3=60 (0.0%),False,,,,,,,,,,,,,,
+loan_id,object,0,0.0,10000,7QQM1UJV6V2F=62 (0.0%); XFVSFD44QQD5=62 (0.0%); BV2N8A1RB1FU=61 (0.0%); Y0LBUKYQYFQC=60 (0.0%); LK4LE2STYIT9=60 (0.0%),False,,,,,,,,,,,,,,
 month_index,int64,0,0.0,62,,,18.8734,14.7273,0.0,0.0,7.0,16.0,29.0,56.0,61.0,0.737,10000.0,0.0,,
 reporting_month,datetime64[ns],0,0.0,84,,,,,2017-01-01 00:00:00,,,,,,2023-12-01 00:00:00,,,,,
 origination_month,datetime64[ns],0,0.0,72,,,,,2018-01-01 00:00:00,,,,,,2023-12-01 00:00:00,,,,,

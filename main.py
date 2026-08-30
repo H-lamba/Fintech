@@ -2,6 +2,7 @@
 Loan Performance Intelligence Engine -- single-command entrypoint.
 
     python main.py                  # every phase, ending in submission/submission.csv
+    python main.py --live-copilot   # same, but Phase 8 calls the real LLM provider
     python main.py --submission     # inference and submission only (needs trained models)
     python main.py --model-card     # regenerate the model card from existing reports
     python main.py --sample 2000    # fast pass on 2,000 loans
@@ -46,10 +47,17 @@ def _phase(name: str, script: str, args: list[str]) -> tuple[str, float, bool]:
     return name, elapsed, ok
 
 
-def run_pipeline(sample: int | None, skip: set, no_figures: bool) -> list:
+def run_pipeline(
+    sample: int | None, skip: set, no_figures: bool, live_copilot: bool = False
+) -> list:
     """Every phase, in the order that resolves their dependencies."""
     sample_args = ["--sample", str(sample)] if sample else []
     figure_args = ["--no-figures"] if no_figures else []
+
+    # Offline stays the default -- see the module docstring. `--live-copilot`
+    # is the deliberate act that spends credits and sends data to a provider.
+    copilot_flag = "--live" if live_copilot else "--offline"
+    copilot_label = "live" if live_copilot else "offline"
 
     plan = [
         ("Phase 1  Data intelligence & profiling (Task 1)", "run_profiling.py",
@@ -64,8 +72,8 @@ def run_pipeline(sample: int | None, skip: set, no_figures: bool) -> list:
          sample_args + figure_args),
         ("Phase 7  Explainability & responsible AI (Task 6)", "run_explainability.py",
          sample_args + figure_args),
-        ("Phase 8  LLM reviewer copilot, offline (Task 7)", "run_copilot.py",
-         ["--offline", "--notes", "4"]),
+        (f"Phase 8  LLM reviewer copilot, {copilot_label} (Task 7)", "run_copilot.py",
+         [copilot_flag, "--notes", "4"]),
         ("Phase 1b  Re-profile, folding in the feature dictionary", "run_profiling.py",
          (["--sample", str(sample * 30)] if sample else []) + figure_args),
     ]
@@ -124,6 +132,10 @@ def main() -> None:
     parser.add_argument("--skip", nargs="+", default=[],
                         help="Phase keys to skip, e.g. --skip survival scenario copilot.")
     parser.add_argument("--no-figures", action="store_true", help="Skip chart rendering.")
+    parser.add_argument("--live-copilot", action="store_true",
+                        help="Run Phase 8 against the real LLM provider. Sends loan data "
+                             "to a third party and spends account credits; without it the "
+                             "copilot runs offline with deterministic stubs.")
     args = parser.parse_args()
 
     from src.submission import model_card
@@ -135,7 +147,9 @@ def main() -> None:
     started = time.perf_counter()
     timings = []
     if not args.submission:
-        timings = run_pipeline(args.sample, set(args.skip), args.no_figures)
+        timings = run_pipeline(
+            args.sample, set(args.skip), args.no_figures, live_copilot=args.live_copilot
+        )
 
     build_submission(args.sample)
     card = model_card.write()

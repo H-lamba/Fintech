@@ -1,10 +1,10 @@
 model,case,position,loan_id,reporting_month,predicted_probability,actual_outcome
-delinquency,confident true positive,9235,GY5ARW8PMV7P,2023-01-01,1.0,1
-delinquency,confident false positive,6668,CD0OSLUPND2V,2023-08-01,0.9809523809523809,0
-delinquency,missed event (false negative),8762,G5V6OJNQD5QO,2023-01-01,0.0,1
-delinquency,borderline,137,08B77I816HSD,2023-09-01,0.4831081081081081,0
-default,confident true positive,1042,22U6DIG1LM4Y,2023-01-01,1.0,1
-default,confident false positive,14122,PMI2G717VDTC,2023-06-01,0.9727272727272728,0
+delinquency,confident true positive,2364,4HXZZPFHCDEG,2023-02-01,1.0,1
+delinquency,confident false positive,1890,3MHIKIMSXP0D,2023-08-01,0.9673469387755103,0
+delinquency,missed event (false negative),1657,35ZTHLVR00QE,2023-10-01,0.025477707006369428,1
+delinquency,borderline,13941,PE5PIWZQ3NS9,2023-04-01,0.5243008977261737,0
+default,confident true positive,877,1R1YNCRG5YFD,2023-05-01,1.0,1
+default,confident false positive,11230,KHK4PGKG9F2Q,2023-01-01,0.9824561403508771,0
 default,missed event (false negative),5415,9X5K386P97VI,2023-06-01,0.0,1
-default,borderline,960,1W5M9PEAL1H5,2023-07-01,0.5,1
-prepayment,missed event (false negative),8774,G8QEJP544TIQ,2023-04-01,0.01764705882352941,1
+default,borderline,68,04BINLNBCBQ9,2023-02-01,0.47058823529411764,0
+prepayment,missed event (false negative),6616,CD0OSLUPND2V,2023-10-01,0.01282051282051282,1

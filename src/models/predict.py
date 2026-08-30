@@ -547,7 +547,7 @@ def run_task2(
     dictionary = feature_module.feature_dictionary(frame, spec)
     dictionary.to_csv(reports_dir / "feature_dictionary.csv", index=False)
     (reports_dir / "feature_dictionary.md").write_text(
-        feature_module.feature_dictionary_markdown(dictionary, spec)
+        feature_module.feature_dictionary_markdown(dictionary, spec), encoding="utf-8"
     )
     undocumented = dictionary.loc[dictionary["family"] == "unclassified", "feature"].tolist()
     if undocumented:
@@ -588,7 +588,7 @@ def run_task2(
     results.to_csv(reports_dir / "task2_model_results.csv", index=False)
     split_audit.to_csv(reports_dir / "task2_split_audit.csv", index=False)
     (reports_dir / "task2_model_results.md").write_text(
-        _results_document(results, split_audit, resolved_backend, spec)
+        _results_document(results, split_audit, resolved_backend, spec), encoding="utf-8"
     )
 
     if save_models:
@@ -653,7 +653,9 @@ def _save_models(outcomes: dict[str, TargetOutcome]) -> None:
                     "path": str(path.relative_to(config.PROJECT_ROOT)),
                 }
             )
-    (config.MODELS_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    (config.MODELS_DIR / "manifest.json").write_text(
+        json.dumps(manifest, indent=2), encoding="utf-8"
+    )
 
 
 def _results_document(
