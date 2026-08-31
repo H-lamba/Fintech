@@ -22,6 +22,7 @@ and the development log.
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -29,6 +30,41 @@ import streamlit as st
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
+
+
+def _bridge_secrets_to_env() -> None:
+    """
+    Make Streamlit Cloud's secrets visible to the copilot, which reads `os.environ`.
+
+    Locally the key comes from `.env`, which is gitignored and therefore absent
+    on a deployment. Streamlit's own store is `st.secrets`, and while top-level
+    secrets are also exported as environment variables, secrets nested under a
+    section are not -- so a key pasted as `[llm]\\napi_key = ...` would leave the
+    copilot silently serving offline stubs on a hosted app with a perfectly
+    valid key configured.
+
+    Copying them across here keeps the pipeline modules free of any Streamlit
+    import: `src/copilot/llm_client.py` reads the environment and does not care
+    who populated it. Existing environment variables win, so a local `.env`
+    still takes precedence.
+    """
+    try:
+        secrets = st.secrets
+    except Exception:  # noqa: BLE001 -- no secrets file locally is the normal case
+        return
+
+    for key in ("LLM_API_KEY", "XAI_API_KEY", "GROQ_API_KEY", "OPENAI_API_KEY",
+                "LLM_BASE_URL", "LLM_MODEL"):
+        try:
+            value = secrets.get(key)
+        except Exception:  # noqa: BLE001
+            continue
+        if value and not os.environ.get(key):
+            os.environ[key] = str(value)
+
+
+# Must run before the copilot client is imported: it resolves the key at import time.
+_bridge_secrets_to_env()
 
 from src.dashboard import data, pages, theme  # noqa: E402
 
