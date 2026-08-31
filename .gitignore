@@ -28,3 +28,6 @@ mlruns/
 # Streamlit Cloud secrets are pasted in the web UI. A local copy of this file
 # holds a real API key -- never commit it. (.streamlit/config.toml IS tracked.)
 /.streamlit/secrets.toml
+
+# Recorded demo footage -- large, and uploaded rather than committed.
+/docs/demo/

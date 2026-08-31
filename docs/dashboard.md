@@ -6,7 +6,7 @@
 
 ---
 
-**Live app: [fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)** — no setup required; it serves the
+**Demo video: [five-minute walkthrough](https://www.loom.com/share/81cca5f0ad69456fb7ccead173950bc1)** · **Live app: [fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)** — no setup required; it serves the
 committed pipeline outputs.
 
 ```bash

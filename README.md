@@ -11,8 +11,10 @@ summarising, and drafting reviewer notes from grounded context — it never prod
 prediction. That is the challenge's qualification rule, and the architecture enforces it
 rather than promising it.
 
-**▶ Live app: [fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)** — the
-full dashboard, running on the committed pipeline outputs. No setup required.
+### ▶ [Watch the five-minute demo](https://www.loom.com/share/81cca5f0ad69456fb7ccead173950bc1) · 🚀 [Open the live app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)
+
+The video walks the full flow end to end; the app is the same dashboard running on the
+committed pipeline outputs, with no setup required.
 
 [![The Bellwether dashboard](docs/screenshots/overview.png)](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)
 
@@ -189,7 +191,7 @@ signal is not there to find.
 | Scenario report | [`reports/scenario_report.md`](reports/scenario_report.md) |
 | LLM copilot demo | [`reports/copilot_report.md`](reports/copilot_report.md) · [audit trail](reports/llm_prompt_log.jsonl) |
 | AI Development Log | [`ai_dev_log/log.md`](ai_dev_log/log.md) |
-| Five-minute demo video | **outstanding** |
+| Five-minute demo video | [Watch on Loom](https://www.loom.com/share/81cca5f0ad69456fb7ccead173950bc1) |
 
 The dashboard's Overview page resolves this checklist against the filesystem at run time,
 so it reports what is actually present rather than what was intended.
