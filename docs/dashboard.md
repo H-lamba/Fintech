@@ -6,6 +6,9 @@
 
 ---
 
+**Live app: [fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)** — no setup required; it serves the
+committed pipeline outputs.
+
 ```bash
 streamlit run app.py
 ```

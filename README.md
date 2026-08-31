@@ -11,7 +11,10 @@ summarising, and drafting reviewer notes from grounded context — it never prod
 prediction. That is the challenge's qualification rule, and the architecture enforces it
 rather than promising it.
 
-![The Bellwether dashboard](docs/screenshots/overview.png)
+**▶ Live app: [fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)** — the
+full dashboard, running on the committed pipeline outputs. No setup required.
+
+[![The Bellwether dashboard](docs/screenshots/overview.png)](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app)
 
 ---
 

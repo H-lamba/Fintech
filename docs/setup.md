@@ -251,6 +251,8 @@ To confirm it took after deploying: open **Loan explorer** and check the badge b
 
 ### 4. Deploy
 
+**This app is deployed at [fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app](https://fintech-cqm5kbt2xwkx3krp7gacjb.streamlit.app).**
+
 First build takes several minutes — the repo is ~190 MB and `requirements.txt` installs
 the full pipeline stack, not just the dashboard's five libraries.
 
