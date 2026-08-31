@@ -57,6 +57,20 @@ runtime on macOS (`brew install libomp`) and Linux (`apt-get install libgomp1`);
 Windows wheels ship it. See [troubleshooting](docs/setup.md#troubleshooting) if anything
 fails.
 
+**Optional — a live LLM copilot.** Everything above works without an API key: Phase 8 runs
+in offline mode with deterministic stubs, marked as such in the audit trail. To make real
+calls, copy the template and add a key:
+
+```bash
+cp .env.example .env      # then set LLM_API_KEY=... inside
+python main.py --live-copilot
+```
+
+Any OpenAI-compatible provider works — Groq, xAI or OpenAI — and the provider is detected
+from the key's prefix, so the key is the only line you need to change. Full instructions,
+including how to verify it worked, in
+**[docs/setup.md](docs/setup.md#configuring-env-optional--for-the-phase-8-copilot)**.
+
 ---
 
 ## What this is
@@ -122,9 +136,9 @@ Full tables and the caveats in **[docs/results.md](docs/results.md)**.
 | **Task 2** — 12-month default | ROC-AUC **0.870** · PR-AUC 0.512 · Brier 0.145 → **0.056** calibrated |
 | **Task 3** — time to default | Cox **C = 0.822** vs constant-hazard 0.500; IBS 0.044 vs 0.065 |
 | **Task 4** — exception detection | Rules alone 52% recall → **+ sequence detectors 99.7%** → supervised head 99.9% precision |
-| **Task 5** — adverse-credit @ 48m | Default 14.1% → **29.3%**; credit channel saturates, and the report says so |
+| **Task 5** — adverse-credit @ 48m | Default 13.8% → **28.4%**; credit channel saturates, and the report says so |
 | **Task 6** — calibration | Expected calibration error **0.004 – 0.013** across the three heads |
-| **Task 7** — copilot | **93 live calls logged**; the model passed all 6 adversarial probes |
+| **Task 7** — copilot | **107 live calls logged**; the model passed all 6 adversarial probes |
 
 **Reported as-is, not tuned until it looked better:** the **prepayment head does not
 work** — ROC-AUC 0.52 against a 0.09 base rate. Three phases reach that conclusion
@@ -172,7 +186,7 @@ signal is not there to find.
 | Scenario report | [`reports/scenario_report.md`](reports/scenario_report.md) |
 | LLM copilot demo | [`reports/copilot_report.md`](reports/copilot_report.md) · [audit trail](reports/llm_prompt_log.jsonl) |
 | AI Development Log | [`ai_dev_log/log.md`](ai_dev_log/log.md) |
-| Five-minute demo video | **outstanding** — the one deliverable not yet produced |
+| Five-minute demo video | **outstanding** |
 
 The dashboard's Overview page resolves this checklist against the filesystem at run time,
 so it reports what is actually present rather than what was intended.

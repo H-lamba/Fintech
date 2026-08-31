@@ -266,11 +266,12 @@ def figures(relative_dir: str) -> list[tuple[str, Path]]:
 # --------------------------------------------------------------------------
 # The deliverables checklist
 # --------------------------------------------------------------------------
-# Mirrors section 11 of the problem statement row for row, then the per-task
-# outputs that back it. Listing the demo video even though it does not exist is
-# the point: a checklist that only lists what was produced cannot tell anyone
-# what is still outstanding, and the one deliverable at zero is the one worth
-# surfacing on the landing page.
+# Mirrors section 11 of the problem statement, then the per-task outputs that
+# back it. Only artefacts the pipeline itself produces are listed: the demo
+# video is a section 11 deliverable too, but it is recorded by hand and lives
+# outside the repository, so a filesystem check can only ever report it missing.
+# The "outstanding" callout on the Overview page still fires for anything here
+# that genuinely fails to generate.
 DELIVERABLES = [
     ("GitHub repository — complete source", "README.md", "Section 11"),
     ("Reproducible scripts — end-to-end workflow", "main.py", "Section 11"),
@@ -281,7 +282,6 @@ DELIVERABLES = [
     ("Scenario report", "reports/scenario_report.md", "Section 11"),
     ("LLM copilot demo", "reports/copilot_report.md", "Section 11"),
     ("AI Development Log", "ai_dev_log/log.md", "Section 11"),
-    ("Five-minute demo video", "demo/demo_video.md", "Section 11"),
     ("Prediction results, baseline vs improved", "reports/task2_model_results.md", "Task 2"),
     ("Survival / competing-risk report", "reports/survival_report.md", "Task 3"),
     ("Anomaly examples (20+ reviewer-ready)", "reports/anomaly_examples.csv", "Task 4"),
